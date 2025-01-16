@@ -11,6 +11,28 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MADProject"
-        tools:targetApi="31" />
+        tools:targetApi="31">
+        <activity
+            android:name=".Settings"
+            android:exported="false" />
+        <activity
+            android:name=".TravelRoutes"
+            android:exported="false" />
+        <activity
+            android:name=".busarrivaltimes"
+            android:exported="false" />
+        <activity
+            android:name=".homepage"
+            android:exported="false" />
+        <activity
+            android:name=".main"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
 
 </manifest>
