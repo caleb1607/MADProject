@@ -20,7 +20,7 @@
             android:paddingBottom="8dp">
 
             <TextView
-                android:id="@+id/FROM"
+                android:id="@+id/PASSWORD"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
@@ -42,7 +42,7 @@
                 android:paddingRight="12dp">
 
                 <EditText
-                    android:id="@+id/From_InputField"
+                    android:id="@+id/Password_InputField"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:layout_gravity="center_vertical"

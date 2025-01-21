@@ -31,7 +31,7 @@
         </FrameLayout>
 
         <EditText
-            android:id="@+id/From_InputField"
+            android:id="@+id/Password_InputField"
             android:layout_width="360dp"
             android:layout_height="48dp"
             android:layout_gravity="center_horizontal|center_vertical"
