@@ -23,7 +23,7 @@
                 android:id="@+id/FROM"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
+                android:layout_gravity="bottom"
                 android:layout_weight="4"
                 android:fontFamily="sans-serif-medium"
                 android:text="From:"
@@ -32,7 +32,6 @@
                 android:textSize="24sp" />
 
             <FrameLayout
-                ndroid:layout_width="match_parent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -46,10 +45,12 @@
                     android:id="@+id/From_InputField"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:backgroundTint="#FFFFFF"
+                    android:layout_gravity="center_vertical"
+                    android:background="#000000"
                     android:hint="Search..."
+                    android:paddingLeft="6dp"
                     android:textColor="#FFFFFF"
-                    android:textColorHint="#FFFFFF"
+                    android:textColorHint="@android:color/darker_gray"
                     android:textSize="18sp" />
             </FrameLayout>
 
@@ -57,8 +58,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="4"
+            android:layout_height="60dp"
             android:orientation="horizontal"
             android:paddingTop="8dp"
             android:paddingBottom="16dp">
@@ -67,7 +67,7 @@
                 android:id="@+id/TO"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
+                android:layout_gravity="bottom|end"
                 android:layout_weight="4"
                 android:fontFamily="sans-serif-medium"
                 android:text="To:"
@@ -76,7 +76,6 @@
                 android:textSize="24sp" />
 
             <FrameLayout
-                ndroid:layout_width="match_parent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -88,10 +87,12 @@
                     android:id="@+id/To_InputField"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:backgroundTint="#FFFFFF"
+                    android:layout_gravity="center_vertical"
+                    android:background="#000000"
                     android:hint="Search..."
+                    android:paddingLeft="6dp"
                     android:textColor="#FFFFFF"
-                    android:textColorHint="#FFFFFF"
+                    android:textColorHint="@android:color/darker_gray"
                     android:textSize="18sp" />
             </FrameLayout>
 
