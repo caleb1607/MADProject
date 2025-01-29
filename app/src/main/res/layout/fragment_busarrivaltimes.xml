@@ -5,39 +5,50 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/mainBackground"
-    tools:context=".BusArrivalTimes">
+    tools:context=".BusTimes">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <FrameLayout
+        <Space
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp">
+            android:layout_height="16dp" />
+
+        <FrameLayout
+            android:layout_width="360dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/round_button"
+            android:backgroundTint="@color/buttonPanel">
 
             <Button
                 android:id="@+id/button"
-                android:layout_width="360dp"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
-                android:backgroundTint="@color/buttonPanel"
+                android:background="@color/transparent"
+                android:backgroundTint="@color/transparent"
                 android:fontFamily="sans-serif-medium"
                 android:text="View Map"
                 android:textColor="#FFFFFF" />
 
         </FrameLayout>
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="16dp" />
+
         <EditText
-            android:id="@+id/Password_InputField"
+            android:id="@+id/SearchBar"
             android:layout_width="360dp"
             android:layout_height="48dp"
             android:layout_gravity="center_horizontal|center_vertical"
-            android:background="#000000"
+            android:background="@drawable/round_box"
+            android:backgroundTint="@color/backgroundPanel"
             android:hint="Search..."
-            android:paddingLeft="6dp"
+            android:paddingLeft="12dp"
             android:textColor="#FFFFFF"
             android:textColorHint="@android:color/darker_gray"
             android:textSize="18sp" />

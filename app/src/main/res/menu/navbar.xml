@@ -2,12 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/homepage"
-        android:icon="@drawable/ic_homepage"
-        android:title="Homepage" />
+        android:icon="@drawable/ic_bookmark"
+        android:title="Bookmarks" />
     <item
         android:id="@+id/busarrivaltimes"
         android:icon="@drawable/ic_busarrivaltimes"
-        android:title="Arrival Times" />
+        android:title="Bus Times" />
     <item
         android:id="@+id/travelroutes"
         android:icon="@drawable/ic_travelroutes"

@@ -34,10 +34,10 @@
             android:name=".TravelRoutes"
             android:exported="false" />
         <activity
-            android:name=".BusArrivalTimes"
+            android:name=".BusTimes"
             android:exported="false" />
         <activity
-            android:name=".Homepage"
+            android:name=".Bookmarks"
             android:exported="false" />
         <activity
             android:name=".main"

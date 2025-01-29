@@ -26,7 +26,8 @@
             android:layout_width="360dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/round_inputfield"
+            android:background="@drawable/round_box"
+            android:backgroundTint="@color/backgroundPanel"
             android:orientation="vertical">
 
             <TextView
@@ -68,7 +69,8 @@
             android:layout_width="360dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/round_inputfield"
+            android:background="@drawable/round_box"
+            android:backgroundTint="@color/backgroundPanel"
             android:orientation="vertical">
 
             <TextView

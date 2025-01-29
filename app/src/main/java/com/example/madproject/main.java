@@ -15,7 +15,7 @@ public class main extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Set default fragment
-        loadFragment(new Homepage());
+        loadFragment(new Bookmarks());
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         // find navbar clicked item
@@ -23,9 +23,9 @@ public class main extends AppCompatActivity {
             Fragment selectedFragment = null;
             int itemID = item.getItemId();
             if (itemID == R.id.homepage) {
-                selectedFragment = new Homepage(); // fragment declaration
+                selectedFragment = new Bookmarks(); // fragment declaration
             } else if (itemID == R.id.busarrivaltimes) {
-                selectedFragment = new BusArrivalTimes();
+                selectedFragment = new BusTimes();
             } else if (itemID == R.id.travelroutes) {
                 selectedFragment = new TravelRoutes();
             } else if (itemID == R.id.settings) {
