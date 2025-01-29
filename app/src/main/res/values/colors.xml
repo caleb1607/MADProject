@@ -14,5 +14,6 @@
     <color name="navBarPanel">#1F2025</color>
     <color name="redError">#F44336</color>
     <color name="transparent">#00000000</color>
-    <color name="hintGray">#B0B0B0</color>
+    <color name="hintGray">#9599A8</color>
+    <color name="darkGray" >#373942</color>
 </resources>

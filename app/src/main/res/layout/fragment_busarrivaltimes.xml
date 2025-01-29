@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/mainBackground"
-    tools:context=".BusTimes">
+    tools:context=".ui.bus_times.BusTimes">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,7 +24,7 @@
             android:backgroundTint="@color/buttonPanel">
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/ViewMapButton"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
@@ -48,10 +48,92 @@
             android:background="@drawable/round_box"
             android:backgroundTint="@color/backgroundPanel"
             android:hint="Search..."
+            android:maxLines="1"
             android:paddingLeft="12dp"
+            android:singleLine="true"
             android:textColor="#FFFFFF"
             android:textColorHint="@android:color/darker_gray"
             android:textSize="18sp" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="16dp" />
+
+        <LinearLayout
+            android:layout_width="360dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:background="@drawable/round_button"
+                android:backgroundTint="@color/buttonPanel">
+
+                <Button
+                    android:id="@+id/BusServicesButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@color/transparent"
+                    android:backgroundTint="@color/transparent"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="Bus Services"
+                    android:textColor="#FFFFFF" />
+
+            </FrameLayout>
+
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:background="@drawable/round_button"
+                android:backgroundTint="@color/buttonPanel">
+
+                <Button
+                    android:id="@+id/BusStopsButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@color/transparent"
+                    android:backgroundTint="@color/transparent"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="Bus Stops"
+                    android:textColor="#FFFFFF" />
+
+            </FrameLayout>
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="16dp" />
+
+        <FrameLayout
+            android:layout_width="360dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/round_box"
+            android:backgroundTint="@color/backgroundPanel">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/SearchResults"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </FrameLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="16dp" />
 
     </LinearLayout>
 
