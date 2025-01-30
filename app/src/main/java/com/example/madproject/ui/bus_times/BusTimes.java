@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.madproject.R;
+import com.example.madproject.datasets.BusStopsComplete;
 import com.example.madproject.helper.JSONReader;
 
 public class BusTimes extends Fragment {
@@ -34,7 +35,7 @@ public class BusTimes extends Fragment {
         transaction(searchResultList.get(position).getType(), searchResultList.get(position).getValue());
     });
     List<String> busServicesList;
-    List<BusStopData> busStopsList;
+    List<BusStopsComplete> busStopsList;
     Boolean includeBusServices = Boolean.TRUE;
     Boolean includeBusStops = Boolean.TRUE;
 
@@ -44,6 +45,7 @@ public class BusTimes extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_busarrivaltimes, container, false);
+        // views setup
         viewMapButton = rootView.findViewById(R.id.ViewMapButton);
         viewMapButton.setOnClickListener(onViewMap);
         searchBar = rootView.findViewById(R.id.SearchBar);
@@ -62,7 +64,6 @@ public class BusTimes extends Fragment {
         if (includeBusServices) {
             for (String item : busServicesList) {
                 if (item.toLowerCase().trim().contains(query.toLowerCase().trim())) {
-                    Log.d("added1", item);
                     searchResultList.add(new SearchResultItem(
                             "busService",
                             item,
@@ -74,12 +75,11 @@ public class BusTimes extends Fragment {
             }
         }
         if (includeBusStops) {
-            for (BusStopData item : busStopsList) {
+            for (BusStopsComplete item : busStopsList) {
                 if (
                         item.getBusStopCode().toLowerCase().trim().contains(query.toLowerCase().trim())
                         || item.getDescription().toLowerCase().trim().contains(query.toLowerCase().trim())
                 ) {
-                    Log.d("added2", item.getDescription());
                     searchResultList.add(new SearchResultItem(
                             "busStop",
                             item.getBusStopCode(),
@@ -161,7 +161,6 @@ public class BusTimes extends Fragment {
     private void transaction(String type, String value) {
         Fragment selectedFragment = (type == "busService") ? new BusStopsList() : new BusServicesList();
         Bundle bundle = new Bundle();
-        bundle.putString("type", type);
         bundle.putString("value", value);
         selectedFragment.setArguments(bundle);
         getActivity()

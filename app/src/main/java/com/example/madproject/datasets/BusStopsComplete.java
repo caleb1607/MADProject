@@ -1,8 +1,8 @@
-package com.example.madproject.ui.bus_times;
+package com.example.madproject.datasets;
 
 import com.google.gson.annotations.SerializedName;
 
-public class BusStopData {
+public class BusStopsComplete {
     @SerializedName("BusStopCode") // gson annotation mapping
     private String busStopCode;
     @SerializedName("RoadName")
