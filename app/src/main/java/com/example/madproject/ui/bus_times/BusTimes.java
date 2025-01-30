@@ -30,7 +30,9 @@ public class BusTimes extends Fragment {
     EditText searchBar;
     // variables
     List<SearchResultItem> searchResultList = new ArrayList<>();
-    ItemAdapter adapter = new ItemAdapter(searchResultList);
+    ItemAdapter adapter = new ItemAdapter(searchResultList, position -> {
+        transaction(searchResultList.get(position).getType(), searchResultList.get(position).getValue());
+    });
     List<String> busServicesList;
     List<BusStopData> busStopsList;
     Boolean includeBusServices = Boolean.TRUE;
@@ -63,6 +65,7 @@ public class BusTimes extends Fragment {
                     Log.d("added1", item);
                     searchResultList.add(new SearchResultItem(
                             "busService",
+                            item,
                             "Bus " + item,
                             "Bus Service",
                             ""
@@ -79,6 +82,7 @@ public class BusTimes extends Fragment {
                     Log.d("added2", item.getDescription());
                     searchResultList.add(new SearchResultItem(
                             "busStop",
+                            item.getBusStopCode(),
                             item.getDescription(),
                             item.getBusStopCode(),
                             item.getRoadName()
@@ -105,11 +109,17 @@ public class BusTimes extends Fragment {
         };
     }
 
-    public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder> {
+    public static class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder> {
         private List<SearchResultItem> itemList;
+        private OnItemClickListener listener;
 
-        public ItemAdapter(List<SearchResultItem> itemList) {
+        public ItemAdapter(List<SearchResultItem> itemList, OnItemClickListener listener) {
+
             this.itemList = itemList;
+            this.listener = listener;
+        }
+        public interface OnItemClickListener {
+            void onItemClick(int position);
         }
 
         @Override
@@ -136,10 +146,29 @@ public class BusTimes extends Fragment {
 
             public ItemViewHolder(View itemView) {
                 super(itemView);
-                header = itemView.findViewById(R.id.header);
+                header = itemView.findViewById(R.id.BUS);
                 subheader1 = itemView.findViewById(R.id.subheader1);
                 subheader2 = itemView.findViewById(R.id.subheader2);
+                itemView.setOnClickListener(v -> {
+                    if (listener != null) {
+                        listener.onItemClick(getAdapterPosition());
+                    }
+                });
             }
         }
+    }
+
+    private void transaction(String type, String value) {
+        Fragment selectedFragment = (type == "busService") ? new BusStopsList() : new BusServicesList();
+        Bundle bundle = new Bundle();
+        bundle.putString("type", type);
+        bundle.putString("value", value);
+        selectedFragment.setArguments(bundle);
+        getActivity()
+                .getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, selectedFragment)
+                .addToBackStack(null) // allows for backing
+                .commit();
     }
 }
