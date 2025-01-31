@@ -19,7 +19,7 @@
             android:textColor="#FFFFFF" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/BusServicePanels"
+            android:id="@+id/BusServicesRW"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>

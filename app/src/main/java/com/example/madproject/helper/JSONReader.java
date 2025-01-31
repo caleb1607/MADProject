@@ -5,6 +5,7 @@ import android.content.Context;
 import com.example.madproject.R;
 import com.example.madproject.datasets.BusServicesAtStop;
 import com.example.madproject.datasets.BusStopsComplete;
+import com.example.madproject.datasets.BusStopsMap;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -50,6 +51,24 @@ public class JSONReader {
                 result.add(item);
             }
             return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static List<BusStopsMap> busstops_map(Context context) {
+        try {
+            // Reading the raw JSON file (busstop_map.json)
+            InputStreamReader reader = new InputStreamReader(context.getResources().openRawResource(R.raw.busstops_map));
+            Gson gson = new Gson();
+
+            // Parse the raw JSON into a Map where the key is a String (bus service code) and the value is a BusStopsMap
+            Type mapType = new TypeToken<Map<String, BusStopsMap>>() {}.getType();
+            Map<String, BusStopsMap> rawData = gson.fromJson(reader, mapType);
+
+            // Return the list of BusStopsMap objects
+            return new ArrayList<>(rawData.values());
         } catch (Exception e) {
             e.printStackTrace();
             return null;
