@@ -7,7 +7,8 @@
 
     <Space
         android:layout_width="4dp"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -75,16 +76,19 @@
 
                     <TextView
                         android:id="@+id/BusNumber"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="100dp"
+                        android:layout_height="56dp"
                         android:layout_gravity="center_horizontal"
+                        android:autoSizeMaxTextSize="48dp"
+                        android:autoSizeMinTextSize="40dp"
+                        android:autoSizeTextType="uniform"
                         android:ellipsize="end"
                         android:fontFamily="@font/albertsans8_extrabold"
+                        android:gravity="center_vertical"
                         android:maxLines="1"
-                        android:singleLine="true"
-                        android:text="000"
-                        android:textColor="@color/nyoomYellow"
-                        android:textSize="48sp" />
+                        android:text="901M"
+                        android:textAlignment="center"
+                        android:textColor="@color/nyoomYellow" />
 
                     <View
                         android:id="@+id/RECTANGLE"
@@ -205,6 +209,7 @@
 
     <Space
         android:layout_width="4dp"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
 
 </LinearLayout>

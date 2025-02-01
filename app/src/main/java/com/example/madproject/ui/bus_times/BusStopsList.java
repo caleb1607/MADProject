@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.example.madproject.R;
 import com.example.madproject.datasets.BusStopsMap;
+import com.example.madproject.helper.Helper;
 import com.example.madproject.helper.JSONReader;
 
 import java.util.ArrayList;
@@ -44,12 +45,13 @@ public class BusStopsList extends Fragment {
         List<BusStopsMap> busStopsMapList = JSONReader.busstops_map(getContext());
         for (BusStopsMap item : busStopsMapList) {
             if (item.getBusService().equals(busService)) {
-                for (BusStopsMap.BusStopInfo busStopInfo : item.getDirection1List()) {
-                    Log.d("getBusStopCode", busStopInfo.getBusStopCode());
+                for (BusStopsMap.BusStopInfo busStopData : item.getDirection1List()) {
+                    Log.d("getBusStopCode", busStopData.getBusStopCode());
+                    Helper.GetBusStopInfo busStopInfo = new Helper.GetBusStopInfo(getContext(), busStopData.getBusStopCode());
                     fullPanelList.add(new BusStopPanel(
-                            "busStopName?",
-                            busStopInfo.getBusStopCode(),
-                            "streetName?",
+                            busStopInfo.getDescription(),
+                            busStopData.getBusStopCode(),
+                            busStopInfo.getRoadName(),
                             new String[]{"3", "7", "12"},
                             false
                     ));
