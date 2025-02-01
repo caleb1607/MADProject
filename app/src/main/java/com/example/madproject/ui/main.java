@@ -70,7 +70,6 @@ public class main extends AppCompatActivity {
     private void loadFragment(Fragment fragment, Boolean animationGoesRight) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         if (animationGoesRight != null) {
-            Log.d("animationGoesRight", Boolean.toString(animationGoesRight));
             if (animationGoesRight == false) { // goes left
                 fragmentTransaction.setCustomAnimations(
                         R.anim.slidefade_in_left,  // Enter animation for the new fragment

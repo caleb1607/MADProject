@@ -2,10 +2,12 @@ package com.example.madproject.ui.bus_times;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -28,7 +30,10 @@ public class BusTimes extends Fragment {
 
     // widgets
     Button viewMapButton;
+    Button busServicesButton;
+    Button busStopsButton;
     EditText searchBar;
+    String query = "";
     // variables
     List<SearchResultItem> searchResultList = new ArrayList<>();
     ItemAdapter adapter = new ItemAdapter(searchResultList, position -> {
@@ -36,8 +41,8 @@ public class BusTimes extends Fragment {
     });
     List<String> busServicesList;
     List<BusStopsComplete> busStopsList;
-    Boolean includeBusServices = Boolean.TRUE;
-    Boolean includeBusStops = Boolean.TRUE;
+    Boolean includeBusServices = true;
+    Boolean includeBusStops = true;
 
     @Nullable
     @Override
@@ -48,6 +53,10 @@ public class BusTimes extends Fragment {
         // views setup
         viewMapButton = rootView.findViewById(R.id.ViewMapButton);
         viewMapButton.setOnClickListener(onViewMap);
+        busServicesButton = rootView.findViewById(R.id.BusServicesButton);
+        busServicesButton.setOnClickListener(toggleBusServicesFilter);
+        busStopsButton = rootView.findViewById(R.id.BusStopsButton);
+        busStopsButton.setOnClickListener(toggleBusStopsFilter);
         searchBar = rootView.findViewById(R.id.SearchBar);
         searchBar.addTextChangedListener(SearchBarTextWatcher());
         RecyclerView searchResults = rootView.findViewById(R.id.SearchResults);
@@ -59,34 +68,36 @@ public class BusTimes extends Fragment {
         return rootView;
     }
 
-    public void onSearch(String query) {
+    public void onSearch() {
         searchResultList.clear();
-        if (includeBusServices) {
-            for (String item : busServicesList) {
-                if (item.toLowerCase().trim().contains(query.toLowerCase().trim())) {
-                    searchResultList.add(new SearchResultItem(
-                            "busService",
-                            item,
-                            "Bus " + item,
-                            "Bus Service",
-                            ""
-                    ));
+        if (query != "") {
+            if (includeBusServices) {
+                for (String item : busServicesList) {
+                    if (item.toLowerCase().trim().contains(query.toLowerCase().trim())) {
+                        searchResultList.add(new SearchResultItem(
+                                "busService",
+                                item,
+                                "Bus " + item,
+                                "Bus Service",
+                                ""
+                        ));
+                    }
                 }
             }
-        }
-        if (includeBusStops) {
-            for (BusStopsComplete item : busStopsList) {
-                if (
-                        item.getBusStopCode().toLowerCase().trim().contains(query.toLowerCase().trim())
-                        || item.getDescription().toLowerCase().trim().contains(query.toLowerCase().trim())
-                ) {
-                    searchResultList.add(new SearchResultItem(
-                            "busStop",
-                            item.getBusStopCode(),
-                            item.getDescription(),
-                            item.getBusStopCode(),
-                            item.getRoadName()
-                    ));
+            if (includeBusStops) {
+                for (BusStopsComplete item : busStopsList) {
+                    if (
+                            item.getBusStopCode().toLowerCase().trim().contains(query.toLowerCase().trim())
+                                    || item.getDescription().toLowerCase().trim().contains(query.toLowerCase().trim())
+                    ) {
+                        searchResultList.add(new SearchResultItem(
+                                "busStop",
+                                item.getBusStopCode(),
+                                item.getDescription(),
+                                item.getBusStopCode(),
+                                item.getRoadName()
+                        ));
+                    }
                 }
             }
         }
@@ -95,14 +106,44 @@ public class BusTimes extends Fragment {
     private View.OnClickListener onViewMap = view -> {
         // on view map
     };
+    private View.OnClickListener toggleBusServicesFilter = view -> {
+        includeBusServices = true;
+        busServicesButton.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.white)));
+        busServicesButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.buttonPanel)));
+        if (includeBusStops) { // true
+            includeBusStops = false;
+            busStopsButton.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.hintGray)));
+            busStopsButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.buttonPanelPressed)));
+        } else { // false
+            includeBusStops = true;
+            busStopsButton.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.white)));
+            busStopsButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.buttonPanel)));
+        }
+        onSearch();
+    };
+    private View.OnClickListener toggleBusStopsFilter = view -> {
+        includeBusStops = true;
+        busStopsButton.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.white)));
+        busStopsButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.buttonPanel)));
+        if (includeBusServices) { // true
+            includeBusServices = false;
+            busServicesButton.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.hintGray)));
+            busServicesButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.buttonPanelPressed)));
+        } else { // false
+            includeBusServices = true;
+            busServicesButton.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.white)));
+            busServicesButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.buttonPanel)));
+        }
+        onSearch();
+    };
     private TextWatcher SearchBarTextWatcher() {
         return new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {}
             @Override
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-                String query = charSequence.toString();
-                onSearch(query);
+                query = charSequence.toString();
+                onSearch();
             }
             @Override
             public void afterTextChanged(Editable editable) {}
