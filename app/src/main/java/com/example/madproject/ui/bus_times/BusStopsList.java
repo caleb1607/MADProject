@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,15 +35,17 @@ public class BusStopsList extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_busstopslist, container, false);
         // views setup
         RecyclerView busStopPanels = rootView.findViewById(R.id.BusStopsRW);
-        busStopPanels.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        busStopPanels.setLayoutManager(new GridLayoutManager(getContext(), 1));
         // get input params
         Bundle bundle = getArguments();
         busService = bundle.getString("value");
+        Log.d("Bundle received:", busService);
         // Read from datasets
         List<BusStopsMap> busStopsMapList = JSONReader.busstops_map(getContext());
         for (BusStopsMap item : busStopsMapList) {
             if (item.getBusService().equals(busService)) {
                 for (BusStopsMap.BusStopInfo busStopInfo : item.getDirection1List()) {
+                    Log.d("getBusStopCode", busStopInfo.getBusStopCode());
                     fullPanelList.add(new BusStopPanel(
                             "busStopName?",
                             busStopInfo.getBusStopCode(),
@@ -54,7 +57,7 @@ public class BusStopsList extends Fragment {
             }
         }
         // adapter setup
-        adapter = new ItemAdapter(fullPanelList, position -> onPanelClick());
+        adapter = new ItemAdapter(fullPanelList, position -> onPanelClick(position));
         busStopPanels.setAdapter(adapter);
         return rootView;
     }
@@ -115,10 +118,10 @@ public class BusStopsList extends Fragment {
         }
     }
 
-    private void onPanelClick() { // move to BusStopsList
+    private void onPanelClick(int position) { // move to BusStopsList
         Fragment selectedFragment = new BusServicesList();
         Bundle bundle = new Bundle();
-        bundle.putString("value", busService);
+        bundle.putString("value", fullPanelList.get(position).getBusStopCode());
         selectedFragment.setArguments(bundle);
         getActivity()
                 .getSupportFragmentManager()

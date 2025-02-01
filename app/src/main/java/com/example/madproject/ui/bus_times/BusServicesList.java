@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,7 @@ public class BusServicesList extends Fragment {
         // get input params
         Bundle bundle = getArguments();
         busStopCode = bundle.getString("value");
+        Log.d("Bundle received:", busStopCode);
         // Read from datasets
         List<BusServicesAtStop> busServicesAtStopList = JSONReader.bus_services_at_stop(getContext());
         for (BusServicesAtStop item : busServicesAtStopList) {
@@ -52,7 +54,7 @@ public class BusServicesList extends Fragment {
             }
         }
         // adapter setup
-        adapter = new ItemAdapter(fullPanelList, position -> onPanelClick());
+        adapter = new ItemAdapter(fullPanelList, position -> onPanelClick(position));
         busServicePanels.setAdapter(adapter);
         return rootView;
     }
@@ -96,10 +98,10 @@ public class BusServicesList extends Fragment {
             TextView busNumber, AT1, AT2, AT3;
             public ItemViewHolder(View itemView) {
                 super(itemView);
-                busNumber = itemView.findViewById(R.id.BUS);
-                AT1 = itemView.findViewById(R.id.AT1b);
-                AT2 = itemView.findViewById(R.id.AT2b);
-                AT3 = itemView.findViewById(R.id.AT3b);
+                busNumber = itemView.findViewById(R.id.BusNumber);
+                AT1 = itemView.findViewById(R.id.AT1a);
+                AT2 = itemView.findViewById(R.id.AT2a);
+                AT3 = itemView.findViewById(R.id.AT3a);
                 itemView.setOnClickListener(v -> {
                     if (listener != null) {
                         listener.onItemClick(getAdapterPosition());
@@ -109,10 +111,10 @@ public class BusServicesList extends Fragment {
         }
     }
 
-    private void onPanelClick() { // move to BusStopsList
+    private void onPanelClick(int position) { // move to BusStopsList
         Fragment selectedFragment = new BusStopsList();
         Bundle bundle = new Bundle();
-        bundle.putString("value", busStopCode);
+        bundle.putString("value", fullPanelList.get(position).getBusNumber());
         selectedFragment.setArguments(bundle);
         getActivity()
                 .getSupportFragmentManager()
