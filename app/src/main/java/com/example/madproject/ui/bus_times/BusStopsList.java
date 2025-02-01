@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.madproject.R;
@@ -37,10 +39,14 @@ public class BusStopsList extends Fragment {
         // views setup
         RecyclerView busStopPanels = rootView.findViewById(R.id.BusStopsRW);
         busStopPanels.setLayoutManager(new GridLayoutManager(getContext(), 1));
+        Button backButton = rootView.findViewById(R.id.ReturnButton1);
+        backButton.setOnClickListener(view -> { goBack(); });
         // get input params
         Bundle bundle = getArguments();
         busService = bundle.getString("value");
-        Log.d("Bundle received:", busService);
+        // set title text
+        TextView busServiceText = rootView.findViewById(R.id.BusServiceText);
+        busServiceText.setText(busService);
         // Read from datasets
         List<BusStopsMap> busStopsMapList = JSONReader.busstops_map(getContext());
         for (BusStopsMap item : busStopsMapList) {
@@ -131,5 +137,10 @@ public class BusStopsList extends Fragment {
                 .replace(R.id.fragment_container, selectedFragment)
                 .addToBackStack(null) // allows for backing
                 .commit();
+    }
+    private void goBack() {
+        getActivity()
+                .getSupportFragmentManager()
+                .popBackStack("BusTimes", FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 }

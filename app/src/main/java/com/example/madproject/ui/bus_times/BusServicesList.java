@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,10 +13,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.madproject.R;
 import com.example.madproject.datasets.BusServicesAtStop;
+import com.example.madproject.helper.Helper;
 import com.example.madproject.helper.JSONReader;
 
 import java.util.ArrayList;
@@ -36,9 +39,16 @@ public class BusServicesList extends Fragment {
         // views setup
         RecyclerView busServicePanels = rootView.findViewById(R.id.BusServicesRW);
         busServicePanels.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        Button backButton = rootView.findViewById(R.id.ReturnButton2);
+        backButton.setOnClickListener(view -> { goBack(); });
+        //backButton.
         // get input params
         Bundle bundle = getArguments();
         busStopCode = bundle.getString("value");
+        // set title text
+        Helper.GetBusStopInfo busStopInfo = new Helper.GetBusStopInfo(getContext(), busStopCode);
+        TextView busStopNameText = rootView.findViewById(R.id.BusStopNameText);
+        busStopNameText.setText(busStopInfo.getDescription());
         Log.d("Bundle received:", busStopCode);
         // Read from datasets
         List<BusServicesAtStop> busServicesAtStopList = JSONReader.bus_services_at_stop(getContext());
@@ -122,5 +132,10 @@ public class BusServicesList extends Fragment {
                 .replace(R.id.fragment_container, selectedFragment)
                 .addToBackStack(null) // allows for backing
                 .commit();
+    }
+    private void goBack() {
+        getActivity()
+                .getSupportFragmentManager()
+                .popBackStack("BusTimes", FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 }

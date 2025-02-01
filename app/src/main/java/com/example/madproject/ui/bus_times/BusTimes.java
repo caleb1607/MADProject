@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -133,6 +134,9 @@ public class BusTimes extends Fragment {
             holder.header.setText(item.getHeader());
             holder.subheader1.setText(item.getSubheader1());
             holder.subheader2.setText(item.getSubheader2());
+            holder.icon.setImageResource(
+                    item.getType() == "busService" ? R.drawable.bus : R.drawable.bus_stop_icon
+            );
         }
 
         @Override
@@ -142,12 +146,13 @@ public class BusTimes extends Fragment {
 
         public class ItemViewHolder extends RecyclerView.ViewHolder {
             TextView header, subheader1, subheader2;
-
+            ImageView icon;
             public ItemViewHolder(View itemView) {
                 super(itemView);
                 header = itemView.findViewById(R.id.BUS);
                 subheader1 = itemView.findViewById(R.id.subheader1);
                 subheader2 = itemView.findViewById(R.id.subheader2);
+                icon = itemView.findViewById(R.id.TypeIcon);
                 itemView.setOnClickListener(v -> {
                     if (listener != null) {
                         listener.onItemClick(getAdapterPosition());
@@ -166,7 +171,7 @@ public class BusTimes extends Fragment {
                 .getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, selectedFragment)
-                .addToBackStack(null) // allows for backing
+                .addToBackStack("BusTimes") // allows for backing
                 .commit();
     }
 }
