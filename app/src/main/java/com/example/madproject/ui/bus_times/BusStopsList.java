@@ -139,8 +139,14 @@ public class BusStopsList extends Fragment {
                 .commit();
     }
     private void goBack() {
-        getActivity()
-                .getSupportFragmentManager()
-                .popBackStack("BusTimes", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        fragmentManager
+                .beginTransaction()
+                .setCustomAnimations(
+                        R.anim.slide_in_left,  // Enter animation for the fragment being revealed
+                        R.anim.slide_out_right // Exit animation for the current fragment
+                )
+                .commit();
+        fragmentManager.popBackStack("BusTimes", FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 }

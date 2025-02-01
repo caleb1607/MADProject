@@ -170,6 +170,12 @@ public class BusTimes extends Fragment {
         getActivity()
                 .getSupportFragmentManager()
                 .beginTransaction()
+                .setCustomAnimations(
+                        R.anim.slide_in_right,  // Enter animation
+                        R.anim.slide_out_left,  // Exit animation
+                        R.anim.slide_in_left,   // Pop enter animation (when fragment is re-added)
+                        R.anim.slide_out_right  // Pop exit animation (when fragment is removed)
+                )
                 .replace(R.id.fragment_container, selectedFragment)
                 .addToBackStack("BusTimes") // allows for backing
                 .commit();
