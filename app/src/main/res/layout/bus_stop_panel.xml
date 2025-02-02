@@ -154,7 +154,7 @@
                             android:textSize="14sp" />
 
                         <TextView
-                            android:id="@+id/unavailableText"
+                            android:id="@+id/UnavailableTextb"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -163,6 +163,18 @@
                             android:text="Unavailable"
                             android:textColor="@color/redError"
                             android:textSize="24sp"
+                            android:visibility="invisible" />
+
+                        <TextView
+                            android:id="@+id/NOWb"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left|center_vertical"
+                            android:fontFamily="@font/albertsans7_bold"
+                            android:paddingTop="8dp"
+                            android:text="Now"
+                            android:textColor="@color/nyoomGreen"
+                            android:textSize="42sp"
                             android:visibility="invisible" />
 
                         <LinearLayout

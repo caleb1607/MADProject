@@ -21,6 +21,7 @@ public class main extends AppCompatActivity {
 
     int currentFragmentId;
     int fragmentPosition;
+    BottomNavigationView bottomNavigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +31,7 @@ public class main extends AppCompatActivity {
         loadFragment(new Bookmarks(), null);
         currentFragmentId = R.id.bookmarks;
         fragmentPosition = 0;
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
         // find navbar clicked item
         bottomNavigationView.setOnItemSelectedListener(item -> {
             Fragment selectedFragment = null;
@@ -85,5 +86,26 @@ public class main extends AppCompatActivity {
         fragmentTransaction
                 .replace(R.id.fragment_container, fragment)
                 .commit();
+    }
+    @Override
+    public void onBackPressed() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+            fragmentManager.popBackStack();
+            Fragment previousFragment = fragmentManager.findFragmentById(R.id.fragment_container);
+            if (previousFragment != null) {
+                if (previousFragment instanceof Bookmarks) {
+                    bottomNavigationView.setSelectedItemId(R.id.bookmarks);
+                } else if (previousFragment instanceof BusTimes) {
+                    bottomNavigationView.setSelectedItemId(R.id.busarrivaltimes);
+                } else if (previousFragment instanceof TravelRoutes) {
+                    bottomNavigationView.setSelectedItemId(R.id.travelroutes);
+                } else if (previousFragment instanceof Settings) {
+                    bottomNavigationView.setSelectedItemId(R.id.settings);
+                }
+            }
+        } else {
+            super.onBackPressed();
+        }
     }
 }

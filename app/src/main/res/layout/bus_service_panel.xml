@@ -107,7 +107,19 @@
                         android:paddingRight="4dp">
 
                         <TextView
-                            android:id="@+id/UnavailableText"
+                            android:id="@+id/NOWa"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left|center_vertical"
+                            android:fontFamily="@font/albertsans7_bold"
+                            android:paddingTop="8dp"
+                            android:text="Now"
+                            android:textColor="@color/nyoomGreen"
+                            android:textSize="42sp"
+                            android:visibility="invisible" />
+
+                        <TextView
+                            android:id="@+id/UnavailableTexta"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"

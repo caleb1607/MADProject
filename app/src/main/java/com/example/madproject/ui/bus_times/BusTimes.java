@@ -34,7 +34,6 @@ import java.util.concurrent.Future;
 public class BusTimes extends Fragment {
 
     // widgets
-    TextView tempText;
     Button viewMapButton;
     Button busServicesButton;
     Button busStopsButton;
@@ -57,7 +56,6 @@ public class BusTimes extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_busarrivaltimes, container, false);
         // views setup
-        tempText = rootView.findViewById(R.id.TempText);
         viewMapButton = rootView.findViewById(R.id.ViewMapButton);
         viewMapButton.setOnClickListener(onViewMap);
         busServicesButton = rootView.findViewById(R.id.BusServicesButton);

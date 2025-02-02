@@ -81,7 +81,6 @@ public class BusStopsList extends Fragment {
             try {
                 for (int i = 0; i < fullPanelList.size(); i++) {
                     String[] arrivals = futures.get(i).get(); // Blocking call, waits for result
-                    Log.d("futures.get(i).get()", Arrays.toString(futures.get(i).get()));
                     if (arrivals != null) {
                         fullPanelList.get(i).setAT(arrivals);
                     } else {
@@ -128,6 +127,11 @@ public class BusStopsList extends Fragment {
             holder.busStopCode.setText(item.getBusStopCode());
             holder.streetName.setText(item.getStreetName());
             if (item.getAT() != null) {
+                if (item.getAT()[0].equals("0")) {
+                    holder.NOW.setVisibility(View.VISIBLE);
+                    holder.AT1.setVisibility(View.INVISIBLE);
+                    holder.MINS.setVisibility(View.INVISIBLE);
+                }
                 holder.AT1.setText(item.getAT()[0]);
                 holder.AT2.setText(item.getAT()[1]);
                 holder.AT3.setText(item.getAT()[2]);
@@ -146,7 +150,7 @@ public class BusStopsList extends Fragment {
         }
         // contains the reference of views (UI) of a single item in recyclerview
         public class ItemViewHolder extends RecyclerView.ViewHolder {
-            TextView busStopName, busStopCode, streetName, AT1, AT2, AT3, MINS, unavailableText;
+            TextView busStopName, busStopCode, streetName, AT1, AT2, AT3, MINS, NOW, unavailableText;
             public ItemViewHolder(View itemView) {
                 super(itemView);
                 busStopName = itemView.findViewById(R.id.BusStopName);
@@ -156,7 +160,8 @@ public class BusStopsList extends Fragment {
                 AT2 = itemView.findViewById(R.id.AT2b);
                 AT3 = itemView.findViewById(R.id.AT3b);
                 MINS = itemView.findViewById(R.id.MINS);
-                unavailableText = itemView.findViewById(R.id.UnavailableText);
+                NOW = itemView.findViewById(R.id.NOWb);
+                unavailableText = itemView.findViewById(R.id.UnavailableTextb);
                 itemView.setOnClickListener(v -> {
                     if (listener != null) {
                         listener.onItemClick(getAdapterPosition());
@@ -190,3 +195,5 @@ public class BusStopsList extends Fragment {
         fragmentManager.popBackStack("BusTimes", FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 }
+
+

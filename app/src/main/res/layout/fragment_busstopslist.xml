@@ -61,6 +61,7 @@
                 android:text=" Route"
                 android:textColor="@color/white"
                 android:textSize="32sp" />
+
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView

@@ -47,7 +47,7 @@
             android:layout_gravity="center_horizontal|center_vertical"
             android:background="@drawable/round_box"
             android:backgroundTint="@color/backgroundPanel"
-            android:hint="Search..."
+            android:hint="Find..."
             android:maxLines="1"
             android:paddingLeft="12dp"
             android:singleLine="true"
@@ -109,13 +109,6 @@
         <Space
             android:layout_width="match_parent"
             android:layout_height="16dp" />
-
-        <TextView
-            android:id="@+id/TempText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            android:textColor="@color/white" />
 
     </LinearLayout>
 
