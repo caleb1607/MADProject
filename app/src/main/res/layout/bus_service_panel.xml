@@ -107,6 +107,17 @@
                         android:paddingRight="4dp">
 
                         <TextView
+                            android:id="@+id/UnavailableText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/albertsans7_bold"
+                            android:text="Unavailable"
+                            android:textColor="@color/redError"
+                            android:textSize="24sp"
+                            android:visibility="invisible" />
+
+                        <TextView
                             android:id="@+id/ARRIVING_IN"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

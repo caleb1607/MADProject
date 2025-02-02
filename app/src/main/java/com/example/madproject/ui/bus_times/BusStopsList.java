@@ -24,6 +24,7 @@ import com.example.madproject.helper.Helper;
 import com.example.madproject.helper.JSONReader;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -56,7 +57,7 @@ public class BusStopsList extends Fragment {
         // Read from datasets
         List<BusStopsMap> busStopsMapList = JSONReader.busstops_map(getContext());
         // async
-        ExecutorService executor = Executors.newFixedThreadPool(5); // Use a thread pool for efficiency
+        ExecutorService executor = Executors.newFixedThreadPool(10); // Use a thread pool for efficiency
         List<Future<String[]>> futures = new ArrayList<>();
         for (BusStopsMap item : busStopsMapList) {
             if (item.getBusService().equals(busService)) {
@@ -80,10 +81,11 @@ public class BusStopsList extends Fragment {
             try {
                 for (int i = 0; i < fullPanelList.size(); i++) {
                     String[] arrivals = futures.get(i).get(); // Blocking call, waits for result
+                    Log.d("futures.get(i).get()", Arrays.toString(futures.get(i).get()));
                     if (arrivals != null) {
                         fullPanelList.get(i).setAT(arrivals);
                     } else {
-                        fullPanelList.get(i).setAT(new String[]{"No data"});
+                        fullPanelList.get(i).setAT(null);
                     }
                 }
             } catch (Exception e) {
@@ -125,9 +127,17 @@ public class BusStopsList extends Fragment {
             holder.busStopName.setText(item.getBusStopName());
             holder.busStopCode.setText(item.getBusStopCode());
             holder.streetName.setText(item.getStreetName());
-            holder.AT1.setText(item.getAT()[0]);
-            holder.AT2.setText(item.getAT()[1]);
-            holder.AT3.setText(item.getAT()[2]);
+            if (item.getAT() != null) {
+                holder.AT1.setText(item.getAT()[0]);
+                holder.AT2.setText(item.getAT()[1]);
+                holder.AT3.setText(item.getAT()[2]);
+            } else {
+                holder.unavailableText.setVisibility(View.VISIBLE);
+                holder.AT1.setVisibility(View.INVISIBLE);
+                holder.AT2.setVisibility(View.INVISIBLE);
+                holder.AT3.setVisibility(View.INVISIBLE);
+                holder.MINS.setVisibility(View.INVISIBLE);
+            }
         }
         // overrides size of recyclerview
         @Override
@@ -136,7 +146,7 @@ public class BusStopsList extends Fragment {
         }
         // contains the reference of views (UI) of a single item in recyclerview
         public class ItemViewHolder extends RecyclerView.ViewHolder {
-            TextView busStopName, busStopCode, streetName, AT1, AT2, AT3;
+            TextView busStopName, busStopCode, streetName, AT1, AT2, AT3, MINS, unavailableText;
             public ItemViewHolder(View itemView) {
                 super(itemView);
                 busStopName = itemView.findViewById(R.id.BusStopName);
@@ -145,6 +155,8 @@ public class BusStopsList extends Fragment {
                 AT1 = itemView.findViewById(R.id.AT1b);
                 AT2 = itemView.findViewById(R.id.AT2b);
                 AT3 = itemView.findViewById(R.id.AT3b);
+                MINS = itemView.findViewById(R.id.MINS);
+                unavailableText = itemView.findViewById(R.id.UnavailableText);
                 itemView.setOnClickListener(v -> {
                     if (listener != null) {
                         listener.onItemClick(getAdapterPosition());

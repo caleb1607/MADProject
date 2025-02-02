@@ -1,4 +1,4 @@
-package com.example.madproject.helper;
+package com.example.madproject.helper.BusArrival;
 
 import java.util.List;
 

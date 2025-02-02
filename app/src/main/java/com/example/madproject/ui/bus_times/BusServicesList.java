@@ -10,6 +10,8 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +25,11 @@ import com.example.madproject.helper.Helper;
 import com.example.madproject.helper.JSONReader;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class BusServicesList extends Fragment {
 
@@ -53,17 +59,41 @@ public class BusServicesList extends Fragment {
         Log.d("Bundle received:", busStopCode);
         // Read from datasets
         List<BusServicesAtStop> busServicesAtStopList = JSONReader.bus_services_at_stop(getContext());
+        // async
+        ExecutorService executor = Executors.newFixedThreadPool(10); // Use a thread pool for efficiency
+        List<Future<String[]>> futures = new ArrayList<>();
         for (BusServicesAtStop item : busServicesAtStopList) {
             if (item.getBusStopCode().equals(busStopCode)) {
                 for (String busService : item.getBusServices()) {
+                    Future<String[]> future = executor.submit(() ->
+                            Helper.fetchBusArrivals(busStopCode, busService)
+                    );
+                    futures.add(future);
                     fullPanelList.add(new BusServicePanel(
                             busService,
-                            new String[]{"3", "7", "12"},
+                            new String[]{"-", "-", "-"},
                             false
                     ));
                 }
             }
         }
+        new Handler(Looper.getMainLooper()).post(() -> {
+            try {
+                for (int i = 0; i < fullPanelList.size(); i++) {
+                    String[] arrivals = futures.get(i).get(); // Blocking call, waits for result
+                    Log.d("futures.get(i).get()", Arrays.toString(futures.get(i).get()));
+                    if (arrivals != null) {
+                        fullPanelList.get(i).setAT(arrivals);
+                    } else {
+                        fullPanelList.get(i).setAT(null);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        // Shutdown executor to prevent memory leaks
+        executor.shutdown();
         // adapter setup
         adapter = new ItemAdapter(fullPanelList, position -> onPanelClick(position));
         busServicePanels.setAdapter(adapter);
@@ -95,9 +125,17 @@ public class BusServicesList extends Fragment {
         public void onBindViewHolder(BusServicesList.ItemAdapter.ItemViewHolder holder, int position) {
             BusServicePanel item = panelList.get(position);
             holder.busNumber.setText(item.getBusNumber());
-            holder.AT1.setText(item.getAT()[0]);
-            holder.AT2.setText(item.getAT()[1]);
-            holder.AT3.setText(item.getAT()[2]);
+            if (item.getAT() != null) {
+                holder.AT1.setText(item.getAT()[0]);
+                holder.AT2.setText(item.getAT()[1]);
+                holder.AT3.setText(item.getAT()[2]);
+            } else {
+                holder.unavailableText.setVisibility(View.VISIBLE);
+                holder.AT1.setVisibility(View.INVISIBLE);
+                holder.AT2.setVisibility(View.INVISIBLE);
+                holder.AT3.setVisibility(View.INVISIBLE);
+                holder.MINS.setVisibility(View.INVISIBLE);
+            }
         }
         // overrides size of recyclerview
         @Override
@@ -106,13 +144,15 @@ public class BusServicesList extends Fragment {
         }
         // contains the reference of views (UI) of a single item in recyclerview
         public class ItemViewHolder extends RecyclerView.ViewHolder {
-            TextView busNumber, AT1, AT2, AT3;
+            TextView busNumber, AT1, AT2, AT3, MINS, unavailableText;
             public ItemViewHolder(View itemView) {
                 super(itemView);
                 busNumber = itemView.findViewById(R.id.BusNumber);
                 AT1 = itemView.findViewById(R.id.AT1a);
                 AT2 = itemView.findViewById(R.id.AT2a);
                 AT3 = itemView.findViewById(R.id.AT3a);
+                MINS = itemView.findViewById(R.id.MINS);
+                unavailableText = itemView.findViewById(R.id.UnavailableText);
                 itemView.setOnClickListener(v -> {
                     if (listener != null) {
                         listener.onItemClick(getAdapterPosition());

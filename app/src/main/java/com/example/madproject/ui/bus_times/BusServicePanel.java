@@ -12,6 +12,9 @@ public class BusServicePanel {
         this.AT = AT;
         this.isBookmarked = isBookmarked;
     }
+    public void setAT(String[] AT) {
+        this.AT = AT;
+    }
     public String getBusNumber() { return busNumber; }
     public String[] getAT() { return AT; }
     public boolean getIsBookmarked() { return isBookmarked; }
