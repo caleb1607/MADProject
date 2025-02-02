@@ -24,11 +24,17 @@ import java.util.List;
 
 import com.example.madproject.R;
 import com.example.madproject.datasets.BusStopsComplete;
+import com.example.madproject.helper.Helper;
 import com.example.madproject.helper.JSONReader;
-
+import android.os.Handler;
+import android.os.Looper;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 public class BusTimes extends Fragment {
 
     // widgets
+    TextView tempText;
     Button viewMapButton;
     Button busServicesButton;
     Button busStopsButton;
@@ -51,6 +57,7 @@ public class BusTimes extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_busarrivaltimes, container, false);
         // views setup
+        tempText = rootView.findViewById(R.id.TempText);
         viewMapButton = rootView.findViewById(R.id.ViewMapButton);
         viewMapButton.setOnClickListener(onViewMap);
         busServicesButton = rootView.findViewById(R.id.BusServicesButton);
@@ -104,7 +111,7 @@ public class BusTimes extends Fragment {
         adapter.notifyDataSetChanged();
     }
     private View.OnClickListener onViewMap = view -> {
-        // on view map
+
     };
     private View.OnClickListener toggleBusServicesFilter = view -> {
         includeBusServices = true;

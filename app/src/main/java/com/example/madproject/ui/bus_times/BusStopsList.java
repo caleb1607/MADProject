@@ -9,6 +9,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +25,10 @@ import com.example.madproject.helper.JSONReader;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 
 public class BusStopsList extends Fragment {
 
@@ -49,21 +55,43 @@ public class BusStopsList extends Fragment {
         busServiceText.setText(busService);
         // Read from datasets
         List<BusStopsMap> busStopsMapList = JSONReader.busstops_map(getContext());
+        // async
+        ExecutorService executor = Executors.newFixedThreadPool(5); // Use a thread pool for efficiency
+        List<Future<String[]>> futures = new ArrayList<>();
         for (BusStopsMap item : busStopsMapList) {
             if (item.getBusService().equals(busService)) {
                 for (BusStopsMap.BusStopInfo busStopData : item.getDirection1List()) {
-                    Log.d("getBusStopCode", busStopData.getBusStopCode());
+                    Future<String[]> future = executor.submit(() ->
+                            Helper.fetchBusArrivals(busStopData.getBusStopCode(), busService)
+                    );
+                    futures.add(future);
                     Helper.GetBusStopInfo busStopInfo = new Helper.GetBusStopInfo(getContext(), busStopData.getBusStopCode());
                     fullPanelList.add(new BusStopPanel(
                             busStopInfo.getDescription(),
                             busStopData.getBusStopCode(),
                             busStopInfo.getRoadName(),
-                            new String[]{"3", "7", "12"},
+                            new String[]{"-", "-", "-"},
                             false
                     ));
                 }
             }
         }
+        new Handler(Looper.getMainLooper()).post(() -> {
+            try {
+                for (int i = 0; i < fullPanelList.size(); i++) {
+                    String[] arrivals = futures.get(i).get(); // Blocking call, waits for result
+                    if (arrivals != null) {
+                        fullPanelList.get(i).setAT(arrivals);
+                    } else {
+                        fullPanelList.get(i).setAT(new String[]{"No data"});
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        // Shutdown executor to prevent memory leaks
+        executor.shutdown();
         // adapter setup
         adapter = new ItemAdapter(fullPanelList, position -> onPanelClick(position));
         busStopPanels.setAdapter(adapter);
