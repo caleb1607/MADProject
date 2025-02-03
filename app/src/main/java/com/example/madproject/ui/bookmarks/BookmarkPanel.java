@@ -1,5 +1,9 @@
 package com.example.madproject.ui.bookmarks;
 
+import android.util.Log;
+
+import java.util.Arrays;
+
 public class BookmarkPanel {
     private String busNumber;
     private String busStopName;
@@ -14,9 +18,7 @@ public class BookmarkPanel {
         this.AT = AT;
         this.isBookmarked = isBookmarked;
     }
-    public void setAT(String[] AT) {
-        this.AT = AT;
-    }
+    public void setAT(String[] AT) { this.AT = AT; }
     public void setIsBookmarked(boolean isBookmarked) { this.isBookmarked = isBookmarked; }
     public String getBusNumber() { return busNumber; }
     public String getBusStopName() { return busStopName; }

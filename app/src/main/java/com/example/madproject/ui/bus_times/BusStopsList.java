@@ -81,11 +81,8 @@ public class BusStopsList extends Fragment {
             try {
                 for (int i = 0; i < fullPanelList.size(); i++) {
                     String[] arrivals = futures.get(i).get(); // Blocking call, waits for result
-                    if (arrivals != null) {
-                        fullPanelList.get(i).setAT(arrivals);
-                    } else {
-                        fullPanelList.get(i).setAT(null);
-                    }
+                    fullPanelList.get(i).setAT(arrivals);
+                    adapter.notifyItemChanged(i); // Update only the changed item
                 }
             } catch (Exception e) {
                 e.printStackTrace();

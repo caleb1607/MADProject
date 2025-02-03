@@ -80,11 +80,8 @@ public class BusServicesList extends Fragment {
             try {
                 for (int i = 0; i < fullPanelList.size(); i++) {
                     String[] arrivals = futures.get(i).get(); // Blocking call, waits for result
-                    if (arrivals != null) {
-                        fullPanelList.get(i).setAT(arrivals);
-                    } else {
-                        fullPanelList.get(i).setAT(null);
-                    }
+                    fullPanelList.get(i).setAT(arrivals);
+                    adapter.notifyItemChanged(i); // Update only the changed item
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -123,12 +120,14 @@ public class BusServicesList extends Fragment {
         public void onBindViewHolder(BusServicesList.ItemAdapter.ItemViewHolder holder, int position) {
             BusServicePanel item = panelList.get(position);
             holder.busNumber.setText(item.getBusNumber());
+            Log.d("item.getAT()2", Arrays.toString(item.getAT()));
             if (item.getAT() != null) {
                 if (item.getAT()[0].equals("0")) {
                     holder.NOW.setVisibility(View.VISIBLE);
                     holder.AT1.setVisibility(View.INVISIBLE);
                     holder.MINS.setVisibility(View.INVISIBLE);
                 }
+                Log.d("item.getAT()2",Arrays.toString(item.getAT()));
                 holder.AT1.setText(item.getAT()[0]);
                 holder.AT2.setText(item.getAT()[1]);
                 holder.AT3.setText(item.getAT()[2]);

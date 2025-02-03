@@ -75,18 +75,18 @@
 
                     <TextView
                         android:id="@+id/BusNumber"
-                        android:layout_width="100dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="48dp"
-                        android:layout_gravity="center_horizontal"
-                        android:autoSizeMaxTextSize="48dp"
-                        android:autoSizeMinTextSize="32dp"
-                        android:autoSizeTextType="uniform"
+                        android:layout_gravity="center"
                         android:ellipsize="end"
                         android:fontFamily="@font/albertsans8_extrabold"
-                        android:gravity="top|center_vertical"
+                        android:foregroundGravity="center"
+                        android:gravity="center|top"
                         android:maxLines="1"
                         android:text="858A"
-                        android:textColor="@color/nyoomYellow" />
+                        android:textAlignment="center"
+                        android:textColor="@color/nyoomYellow"
+                        android:textSize="42sp" />
 
                     <TextView
                         android:id="@+id/BusStopName"
