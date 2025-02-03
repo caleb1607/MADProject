@@ -21,7 +21,7 @@ public class TokenClient {
             .addConverterFactory(GsonConverterFactory.create())  // Use Gson converter for JSON
             .build();
 
-    public static ApiService apiService = retrofit.create(ApiService.class);
+    public static TokenService apiService = retrofit.create(TokenService.class);
 
     public static void getToken(final TokenCallback callback) {
         Map<String, String> authRequest = new HashMap<>();

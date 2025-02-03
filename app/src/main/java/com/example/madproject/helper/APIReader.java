@@ -43,8 +43,6 @@ public class APIReader {
         return null;
     }
     public static void setAPIKey() {
-        String ONEMAP_EMAIL = BuildConfig.ONEMAP_EMAIL;
-        String ONEMAP_PASSWORD = BuildConfig.ONEMAP_PASSWORD;
         TokenClient.getToken(new TokenCallback() {
             @Override
             public void onTokenReceived(String token) {
