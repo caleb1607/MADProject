@@ -1,4 +1,4 @@
-package com.example.madproject.ui.bookmarks;
+package com.example.madproject.pages.bookmarks;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,7 +16,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.madproject.R;
-import com.example.madproject.helper.Helper;
+import com.example.madproject.helper.APIReader;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,7 +50,7 @@ public class Bookmarks extends Fragment {
         List<Future<String[]>> futures = new ArrayList<>();
         for (List<String> row : sqlitedata) {
             Future<String[]> future = executor.submit(() ->
-                    Helper.fetchBusArrivals(row.get(2), row.get(3))
+                    APIReader.fetchBusArrivals(row.get(2), row.get(3))
             );
             futures.add(future);
             fullPanelList.add(new BookmarkPanel(
@@ -108,11 +107,18 @@ public class Bookmarks extends Fragment {
             holder.busNumber.setText(item.getBusNumber());
             holder.busStopName.setText(item.getBusStopName());
             if (item.getAT() != null) {
+                holder.unavailableText.setVisibility(View.INVISIBLE);
+                holder.AT1.setVisibility(View.VISIBLE);
+                holder.AT2.setVisibility(View.VISIBLE);
+                holder.AT3.setVisibility(View.VISIBLE);
+                holder.MINS.setVisibility(View.VISIBLE);
+                holder.NOW.setVisibility(View.INVISIBLE);
                 if (item.getAT()[0].equals("0")) {
-                    holder.NOW.setVisibility(View.VISIBLE);
                     holder.AT1.setVisibility(View.INVISIBLE);
                     holder.MINS.setVisibility(View.INVISIBLE);
+                    holder.NOW.setVisibility(View.VISIBLE);
                 }
+                Log.d("item.getAT()2",Arrays.toString(item.getAT()));
                 holder.AT1.setText(item.getAT()[0]);
                 holder.AT2.setText(item.getAT()[1]);
                 holder.AT3.setText(item.getAT()[2]);
@@ -121,7 +127,6 @@ public class Bookmarks extends Fragment {
                 holder.AT1.setVisibility(View.INVISIBLE);
                 holder.AT2.setVisibility(View.INVISIBLE);
                 holder.AT3.setVisibility(View.INVISIBLE);
-                holder.NOW.setVisibility(View.INVISIBLE);
                 holder.MINS.setVisibility(View.INVISIBLE);
             }
         }

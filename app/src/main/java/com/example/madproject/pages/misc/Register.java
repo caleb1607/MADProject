@@ -1,4 +1,4 @@
-package com.example.madproject.ui.misc;
+package com.example.madproject.pages.misc;
 
 import androidx.appcompat.app.AppCompatActivity;
 

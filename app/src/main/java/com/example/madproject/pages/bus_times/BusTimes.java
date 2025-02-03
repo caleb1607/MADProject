@@ -1,4 +1,4 @@
-package com.example.madproject.ui.bus_times;
+package com.example.madproject.pages.bus_times;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,6 +11,7 @@ import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,13 +25,9 @@ import java.util.List;
 
 import com.example.madproject.R;
 import com.example.madproject.datasets.BusStopsComplete;
-import com.example.madproject.helper.Helper;
+import com.example.madproject.helper.APIReader;
 import com.example.madproject.helper.JSONReader;
-import android.os.Handler;
-import android.os.Looper;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+
 public class BusTimes extends Fragment {
 
     // widgets
@@ -109,7 +106,7 @@ public class BusTimes extends Fragment {
         adapter.notifyDataSetChanged();
     }
     private View.OnClickListener onViewMap = view -> {
-
+        Log.d("the key", APIReader.getAPIKey());
     };
     private View.OnClickListener toggleBusServicesFilter = view -> {
         includeBusServices = true;

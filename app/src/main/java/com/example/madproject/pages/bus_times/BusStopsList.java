@@ -1,4 +1,4 @@
-package com.example.madproject.ui.bus_times;
+package com.example.madproject.pages.bus_times;
 
 import android.os.Bundle;
 
@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.example.madproject.R;
 import com.example.madproject.datasets.BusStopsMap;
+import com.example.madproject.helper.APIReader;
 import com.example.madproject.helper.Helper;
 import com.example.madproject.helper.JSONReader;
 
@@ -63,7 +64,7 @@ public class BusStopsList extends Fragment {
             if (item.getBusService().equals(busService)) {
                 for (BusStopsMap.BusStopInfo busStopData : item.getDirection1List()) {
                     Future<String[]> future = executor.submit(() ->
-                            Helper.fetchBusArrivals(busStopData.getBusStopCode(), busService)
+                            APIReader.fetchBusArrivals(busStopData.getBusStopCode(), busService)
                     );
                     futures.add(future);
                     Helper.GetBusStopInfo busStopInfo = new Helper.GetBusStopInfo(getContext(), busStopData.getBusStopCode());
@@ -124,11 +125,18 @@ public class BusStopsList extends Fragment {
             holder.busStopCode.setText(item.getBusStopCode());
             holder.streetName.setText(item.getStreetName());
             if (item.getAT() != null) {
+                holder.unavailableText.setVisibility(View.INVISIBLE);
+                holder.AT1.setVisibility(View.VISIBLE);
+                holder.AT2.setVisibility(View.VISIBLE);
+                holder.AT3.setVisibility(View.VISIBLE);
+                holder.MINS.setVisibility(View.VISIBLE);
+                holder.NOW.setVisibility(View.INVISIBLE);
                 if (item.getAT()[0].equals("0")) {
-                    holder.NOW.setVisibility(View.VISIBLE);
                     holder.AT1.setVisibility(View.INVISIBLE);
                     holder.MINS.setVisibility(View.INVISIBLE);
+                    holder.NOW.setVisibility(View.VISIBLE);
                 }
+                Log.d("item.getAT()2",Arrays.toString(item.getAT()));
                 holder.AT1.setText(item.getAT()[0]);
                 holder.AT2.setText(item.getAT()[1]);
                 holder.AT3.setText(item.getAT()[2]);

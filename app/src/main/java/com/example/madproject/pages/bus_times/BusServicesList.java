@@ -1,4 +1,4 @@
-package com.example.madproject.ui.bus_times;
+package com.example.madproject.pages.bus_times;
 
 import android.os.Bundle;
 
@@ -20,11 +20,11 @@ import android.widget.TextView;
 
 import com.example.madproject.R;
 import com.example.madproject.datasets.BusServicesAtStop;
+import com.example.madproject.helper.APIReader;
 import com.example.madproject.helper.Helper;
 import com.example.madproject.helper.JSONReader;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -65,7 +65,7 @@ public class BusServicesList extends Fragment {
             if (item.getBusStopCode().equals(busStopCode)) {
                 for (String busService : item.getBusServices()) {
                     Future<String[]> future = executor.submit(() ->
-                            Helper.fetchBusArrivals(busStopCode, busService)
+                            APIReader.fetchBusArrivals(busStopCode, busService)
                     );
                     futures.add(future);
                     fullPanelList.add(new BusServicePanel(
@@ -80,8 +80,11 @@ public class BusServicesList extends Fragment {
             try {
                 for (int i = 0; i < fullPanelList.size(); i++) {
                     String[] arrivals = futures.get(i).get(); // Blocking call, waits for result
-                    fullPanelList.get(i).setAT(arrivals);
-                    adapter.notifyItemChanged(i); // Update only the changed item
+                    if (arrivals != null) {
+                        fullPanelList.get(i).setAT(arrivals);
+                    } else {
+                        fullPanelList.get(i).setAT(null);
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -120,14 +123,12 @@ public class BusServicesList extends Fragment {
         public void onBindViewHolder(BusServicesList.ItemAdapter.ItemViewHolder holder, int position) {
             BusServicePanel item = panelList.get(position);
             holder.busNumber.setText(item.getBusNumber());
-            Log.d("item.getAT()2", Arrays.toString(item.getAT()));
             if (item.getAT() != null) {
                 if (item.getAT()[0].equals("0")) {
                     holder.NOW.setVisibility(View.VISIBLE);
                     holder.AT1.setVisibility(View.INVISIBLE);
                     holder.MINS.setVisibility(View.INVISIBLE);
                 }
-                Log.d("item.getAT()2",Arrays.toString(item.getAT()));
                 holder.AT1.setText(item.getAT()[0]);
                 holder.AT2.setText(item.getAT()[1]);
                 holder.AT3.setText(item.getAT()[2]);

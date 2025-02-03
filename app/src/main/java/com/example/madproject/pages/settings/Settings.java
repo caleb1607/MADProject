@@ -1,4 +1,4 @@
-package com.example.madproject.ui.settings;
+package com.example.madproject.pages.settings;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,7 +10,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.madproject.R;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class Settings extends Fragment {
     @Nullable

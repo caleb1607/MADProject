@@ -1,6 +1,4 @@
-package com.example.madproject.ui.bus_times;
-
-import java.util.List;
+package com.example.madproject.pages.bus_times;
 
 public class BusServicePanel {
     private String busNumber;
