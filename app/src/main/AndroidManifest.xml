@@ -16,6 +16,12 @@
         android:theme="@style/Theme.MADProject"
         tools:targetApi="31">
         <activity
+            android:name=".pages.travel_routes.TravelRoutes"
+            android:exported="false" />
+        <activity
+            android:name=".pages.travel_routes.TRSearch"
+            android:exported="false" />
+        <activity
             android:name=".pages.misc.Startup"
             android:exported="false" />
         <activity
@@ -34,7 +40,7 @@
             android:name=".pages.settings.Settings"
             android:exported="false" />
         <activity
-            android:name=".pages.travel_now.TravelRoutes"
+            android:name=".pages.travel_routes.TRSearch"
             android:exported="false" />
         <activity
             android:name=".pages.bus_times.BusTimes"

@@ -11,7 +11,8 @@ import com.example.madproject.R;
 import com.example.madproject.pages.bookmarks.Bookmarks;
 import com.example.madproject.pages.bus_times.BusTimes;
 import com.example.madproject.pages.settings.Settings;
-import com.example.madproject.pages.travel_now.TravelRoutes;
+import com.example.madproject.pages.travel_routes.TRSearch;
+import com.example.madproject.pages.travel_routes.TravelRoutes;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class main extends AppCompatActivity {
@@ -95,7 +96,7 @@ public class main extends AppCompatActivity {
                     bottomNavigationView.setSelectedItemId(R.id.bookmarks);
                 } else if (previousFragment instanceof BusTimes) {
                     bottomNavigationView.setSelectedItemId(R.id.busarrivaltimes);
-                } else if (previousFragment instanceof TravelRoutes) {
+                } else if (previousFragment instanceof TRSearch) {
                     bottomNavigationView.setSelectedItemId(R.id.travelroutes);
                 } else if (previousFragment instanceof Settings) {
                     bottomNavigationView.setSelectedItemId(R.id.settings);

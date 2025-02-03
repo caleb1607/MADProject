@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/mainBackground"
-    tools:context=".pages.travel_now.TravelRoutes">
+    tools:context=".pages.travel_routes.TRSearch">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -49,7 +49,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="16dp" />
+            android:layout_height="8dp" />
 
         <FrameLayout
             android:layout_width="360dp"
@@ -59,40 +59,34 @@
             android:backgroundTint="@color/backgroundPanel"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/STARTING_POINT"
+            <Button
+                android:id="@+id/TRFromButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:fontFamily="sans-serif-medium"
-                android:paddingLeft="16dp"
-                android:paddingTop="12dp"
-                android:text="Starting Point"
-                android:textColor="@color/hintGray"
-                android:textSize="13sp" />
+                android:background="@color/transparent"
+                android:backgroundTint="@color/transparent"
+                android:text="@string/blank" />
 
-            <EditText
-                android:id="@+id/StartingPointSearchBar"
+            <TextView
+                android:id="@+id/FromText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:background="#000000"
                 android:backgroundTint="#00FFFFFF"
                 android:fontFamily="sans-serif-medium"
-                android:hint="‎"
-                android:inputType="text"
                 android:paddingLeft="16dp"
-                android:paddingTop="36dp"
+                android:paddingTop="12dp"
                 android:paddingBottom="12dp"
-                android:textColor="#FFFFFF"
-                android:textColorHint="@color/hintGray"
+                android:text="From..."
+                android:textColor="@color/hintGray"
                 android:textSize="15sp" />
 
         </FrameLayout>
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="16dp" />
+            android:layout_height="8dp" />
 
         <FrameLayout
             android:layout_width="360dp"
@@ -102,46 +96,67 @@
             android:backgroundTint="@color/backgroundPanel"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/DESTINATION"
+            <Button
+                android:id="@+id/TRToButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:fontFamily="sans-serif-medium"
-                android:paddingLeft="16dp"
-                android:paddingTop="12dp"
-                android:text="Destination"
-                android:textColor="@color/hintGray"
-                android:textSize="13sp" />
+                android:background="@color/transparent"
+                android:backgroundTint="@color/transparent"
+                android:text="@string/blank" />
 
-            <EditText
-                android:id="@+id/DestinationSearchBar"
+            <TextView
+                android:id="@+id/ToText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:background="#000000"
                 android:backgroundTint="#00FFFFFF"
                 android:fontFamily="sans-serif-medium"
-                android:hint="‎"
-                android:inputType="text"
                 android:paddingLeft="16dp"
-                android:paddingTop="36dp"
+                android:paddingTop="12dp"
                 android:paddingBottom="12dp"
-                android:textColor="#FFFFFF"
-                android:textColorHint="@color/hintGray"
+                android:text="To Where?"
+                android:textColor="@color/hintGray"
                 android:textSize="15sp" />
 
         </FrameLayout>
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="16dp" />
+            android:layout_height="8dp" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/TravelRoutesRV"
-            android:layout_width="360dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/map"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:srcCompat="@drawable/placeholder" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="12dp" />
+
+                <Button
+                    android:id="@+id/FindRouteButton"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:backgroundTint="@color/nyoomGreen"
+                    android:text="Find Route"
+                    android:textColor="#FFFFFF"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+        </FrameLayout>
 
     </LinearLayout>
 

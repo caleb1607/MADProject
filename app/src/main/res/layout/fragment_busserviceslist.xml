@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/mainBackground"
-    tools:context=".pages.travel_now.TravelRoutes">
+    tools:context=".pages.travel_routes.TRSearch">
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout

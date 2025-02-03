@@ -118,7 +118,6 @@ public class Bookmarks extends Fragment {
                     holder.MINS.setVisibility(View.INVISIBLE);
                     holder.NOW.setVisibility(View.VISIBLE);
                 }
-                Log.d("item.getAT()2",Arrays.toString(item.getAT()));
                 holder.AT1.setText(item.getAT()[0]);
                 holder.AT2.setText(item.getAT()[1]);
                 holder.AT3.setText(item.getAT()[2]);
