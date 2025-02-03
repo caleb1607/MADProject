@@ -24,8 +24,8 @@ android {
             buildConfigField "String", "ONEMAP_PASSWORD", "\"RisBPAcK3ZMS\""
         }
         debug {
-            buildConfigField "String", "ONEMAP_EMAIL", "\"caleb.23@ichat.sp.edu.sg\""
-            buildConfigField "String", "ONEMAP_PASSWORD", "\"RisBPAcK3ZMS\""
+            buildConfigField "String", "ONEMAP_EMAIL", ONEMAP_EMAIL
+            buildConfigField "String", "ONEMAP_PASSWORD", ONEMAP_PASSWORD
         }
     }
     compileOptions {
