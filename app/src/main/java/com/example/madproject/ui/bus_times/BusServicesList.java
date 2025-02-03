@@ -122,10 +122,16 @@ public class BusServicesList extends Fragment {
             holder.busNumber.setText(item.getBusNumber());
             Log.d("item.getAT()2", Arrays.toString(item.getAT()));
             if (item.getAT() != null) {
+                holder.unavailableText.setVisibility(View.INVISIBLE);
+                holder.AT1.setVisibility(View.VISIBLE);
+                holder.AT2.setVisibility(View.VISIBLE);
+                holder.AT3.setVisibility(View.VISIBLE);
+                holder.MINS.setVisibility(View.VISIBLE);
+                holder.NOW.setVisibility(View.INVISIBLE);
                 if (item.getAT()[0].equals("0")) {
-                    holder.NOW.setVisibility(View.VISIBLE);
                     holder.AT1.setVisibility(View.INVISIBLE);
                     holder.MINS.setVisibility(View.INVISIBLE);
+                    holder.NOW.setVisibility(View.VISIBLE);
                 }
                 Log.d("item.getAT()2",Arrays.toString(item.getAT()));
                 holder.AT1.setText(item.getAT()[0]);
@@ -136,7 +142,6 @@ public class BusServicesList extends Fragment {
                 holder.AT1.setVisibility(View.INVISIBLE);
                 holder.AT2.setVisibility(View.INVISIBLE);
                 holder.AT3.setVisibility(View.INVISIBLE);
-                holder.NOW.setVisibility(View.INVISIBLE);
                 holder.MINS.setVisibility(View.INVISIBLE);
             }
         }
