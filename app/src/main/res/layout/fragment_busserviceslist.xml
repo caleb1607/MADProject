@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,14 +13,44 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="bus services list"
-            android:textColor="#FFFFFF" />
+            android:orientation="horizontal"
+            android:paddingLeft="16dp"
+            android:paddingTop="8dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="8dp">
+
+            <Button
+                android:id="@+id/ReturnButton2"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/slide_arrow_left"
+                android:text="@string/blank"
+                app:backgroundTint="@color/white" />
+
+            <Space
+                android:layout_width="12dp"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:id="@+id/BusStopNameText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@color/transparent"
+                android:backgroundTint="@color/transparent"
+                android:fontFamily="@font/albertsans6_semibold"
+                android:text="Woodlands Int"
+                android:textColor="@color/white"
+                android:textSize="32sp" />
+
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/BusServicePanels"
+            android:id="@+id/BusServicesRW"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>

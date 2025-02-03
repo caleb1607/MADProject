@@ -47,7 +47,7 @@
             android:layout_gravity="center_horizontal|center_vertical"
             android:background="@drawable/round_box"
             android:backgroundTint="@color/backgroundPanel"
-            android:hint="Search..."
+            android:hint="Find..."
             android:maxLines="1"
             android:paddingLeft="12dp"
             android:singleLine="true"
@@ -65,52 +65,35 @@
             android:layout_gravity="center_horizontal"
             android:orientation="horizontal">
 
-            <FrameLayout
+            <Button
+                android:id="@+id/BusServicesButton"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="1"
                 android:background="@drawable/round_button"
-                android:backgroundTint="@color/buttonPanel">
-
-                <Button
-                    android:id="@+id/BusServicesButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@color/transparent"
-                    android:backgroundTint="@color/transparent"
-                    android:fontFamily="sans-serif-medium"
-                    android:text="Bus Services"
-                    android:textColor="#FFFFFF" />
-
-            </FrameLayout>
+                app:backgroundTint="@color/buttonPanel"
+                android:fontFamily="sans-serif-medium"
+                android:text="Bus Services"
+                android:textColor="#FFFFFF" />
 
             <Space
                 android:layout_width="10dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0" />
 
-            <FrameLayout
+            <Button
+                android:id="@+id/BusStopsButton"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="1"
                 android:background="@drawable/round_button"
-                android:backgroundTint="@color/buttonPanel">
+                app:backgroundTint="@color/buttonPanel"
+                android:fontFamily="sans-serif-medium"
+                android:text="Bus Stops"
+                android:textColor="#FFFFFF" />
 
-                <Button
-                    android:id="@+id/BusStopsButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@color/transparent"
-                    android:backgroundTint="@color/transparent"
-                    android:fontFamily="sans-serif-medium"
-                    android:text="Bus Stops"
-                    android:textColor="#FFFFFF" />
-
-            </FrameLayout>
         </LinearLayout>
 
         <Space

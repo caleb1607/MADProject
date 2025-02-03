@@ -1,11 +1,19 @@
 package com.example.madproject.helper;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.example.madproject.R;
 import com.example.madproject.datasets.BusServicesAtStop;
 import com.example.madproject.datasets.BusStopsComplete;
+import com.example.madproject.datasets.BusStopsMap;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.InputStreamReader;
@@ -52,6 +60,45 @@ public class JSONReader {
             return result;
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static List<BusStopsMap> busstops_map(Context context) {
+        try {
+            Log.d("busstops_map", "Opening JSON file...");
+
+            InputStreamReader reader = new InputStreamReader(context.getResources().openRawResource(R.raw.busstops_map));
+
+            Log.d("busstops_map", "JSON file opened successfully. Parsing JSON...");
+
+            Gson gson = new Gson();
+            Type mapType = new TypeToken<Map<String, BusStopsMap>>() {}.getType();
+            Map<String, BusStopsMap> rawData = gson.fromJson(reader, mapType);
+
+            if (rawData == null) {
+                Log.e("busstops_map", "Parsed JSON data is null!");
+                return null;
+            }
+
+            List<BusStopsMap> resultList = new ArrayList<>();
+
+            for (Map.Entry<String, BusStopsMap> entry : rawData.entrySet()) {
+                BusStopsMap busStopsMap = entry.getValue();
+                busStopsMap.setBusService(entry.getKey()); // Manually assign the bus service key
+                resultList.add(busStopsMap);
+            }
+
+            if (resultList.isEmpty()) {
+                Log.e("busstops_map", "Result list is empty!");
+                return null;
+            }
+
+            Log.d("busstops_map", "Returning parsed list with " + resultList.size() + " elements.");
+            return resultList;
+
+        } catch (Exception e) {
+            Log.e("busstops_map", "Error parsing JSON: " + e.getMessage(), e);
             return null;
         }
     }

@@ -2,19 +2,21 @@ package com.example.madproject.ui.bus_times;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -22,13 +24,21 @@ import java.util.List;
 
 import com.example.madproject.R;
 import com.example.madproject.datasets.BusStopsComplete;
+import com.example.madproject.helper.Helper;
 import com.example.madproject.helper.JSONReader;
-
+import android.os.Handler;
+import android.os.Looper;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 public class BusTimes extends Fragment {
 
     // widgets
     Button viewMapButton;
+    Button busServicesButton;
+    Button busStopsButton;
     EditText searchBar;
+    String query = "";
     // variables
     List<SearchResultItem> searchResultList = new ArrayList<>();
     ItemAdapter adapter = new ItemAdapter(searchResultList, position -> {
@@ -36,8 +46,8 @@ public class BusTimes extends Fragment {
     });
     List<String> busServicesList;
     List<BusStopsComplete> busStopsList;
-    Boolean includeBusServices = Boolean.TRUE;
-    Boolean includeBusStops = Boolean.TRUE;
+    Boolean includeBusServices = true;
+    Boolean includeBusStops = true;
 
     @Nullable
     @Override
@@ -48,6 +58,10 @@ public class BusTimes extends Fragment {
         // views setup
         viewMapButton = rootView.findViewById(R.id.ViewMapButton);
         viewMapButton.setOnClickListener(onViewMap);
+        busServicesButton = rootView.findViewById(R.id.BusServicesButton);
+        busServicesButton.setOnClickListener(toggleBusServicesFilter);
+        busStopsButton = rootView.findViewById(R.id.BusStopsButton);
+        busStopsButton.setOnClickListener(toggleBusStopsFilter);
         searchBar = rootView.findViewById(R.id.SearchBar);
         searchBar.addTextChangedListener(SearchBarTextWatcher());
         RecyclerView searchResults = rootView.findViewById(R.id.SearchResults);
@@ -59,41 +73,73 @@ public class BusTimes extends Fragment {
         return rootView;
     }
 
-    public void onSearch(String query) {
+    public void onSearch() {
         searchResultList.clear();
-        if (includeBusServices) {
-            for (String item : busServicesList) {
-                if (item.toLowerCase().trim().contains(query.toLowerCase().trim())) {
-                    searchResultList.add(new SearchResultItem(
-                            "busService",
-                            item,
-                            "Bus " + item,
-                            "Bus Service",
-                            ""
-                    ));
+        if (query != "") {
+            if (includeBusServices) {
+                for (String item : busServicesList) {
+                    if (item.toLowerCase().trim().contains(query.toLowerCase().trim())) {
+                        searchResultList.add(new SearchResultItem(
+                                "busService",
+                                item,
+                                "Bus " + item,
+                                "Bus Service",
+                                ""
+                        ));
+                    }
                 }
             }
-        }
-        if (includeBusStops) {
-            for (BusStopsComplete item : busStopsList) {
-                if (
-                        item.getBusStopCode().toLowerCase().trim().contains(query.toLowerCase().trim())
-                        || item.getDescription().toLowerCase().trim().contains(query.toLowerCase().trim())
-                ) {
-                    searchResultList.add(new SearchResultItem(
-                            "busStop",
-                            item.getBusStopCode(),
-                            item.getDescription(),
-                            item.getBusStopCode(),
-                            item.getRoadName()
-                    ));
+            if (includeBusStops) {
+                for (BusStopsComplete item : busStopsList) {
+                    if (
+                            item.getBusStopCode().toLowerCase().trim().contains(query.toLowerCase().trim())
+                                    || item.getDescription().toLowerCase().trim().contains(query.toLowerCase().trim())
+                    ) {
+                        searchResultList.add(new SearchResultItem(
+                                "busStop",
+                                item.getBusStopCode(),
+                                item.getDescription(),
+                                item.getBusStopCode(),
+                                item.getRoadName()
+                        ));
+                    }
                 }
             }
         }
         adapter.notifyDataSetChanged();
     }
     private View.OnClickListener onViewMap = view -> {
-        // on view map
+
+    };
+    private View.OnClickListener toggleBusServicesFilter = view -> {
+        includeBusServices = true;
+        busServicesButton.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.white)));
+        busServicesButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.buttonPanel)));
+        if (includeBusStops) { // true
+            includeBusStops = false;
+            busStopsButton.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.hintGray)));
+            busStopsButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.buttonPanelPressed)));
+        } else { // false
+            includeBusStops = true;
+            busStopsButton.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.white)));
+            busStopsButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.buttonPanel)));
+        }
+        onSearch();
+    };
+    private View.OnClickListener toggleBusStopsFilter = view -> {
+        includeBusStops = true;
+        busStopsButton.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.white)));
+        busStopsButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.buttonPanel)));
+        if (includeBusServices) { // true
+            includeBusServices = false;
+            busServicesButton.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.hintGray)));
+            busServicesButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.buttonPanelPressed)));
+        } else { // false
+            includeBusServices = true;
+            busServicesButton.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.white)));
+            busServicesButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.buttonPanel)));
+        }
+        onSearch();
     };
     private TextWatcher SearchBarTextWatcher() {
         return new TextWatcher() {
@@ -101,8 +147,8 @@ public class BusTimes extends Fragment {
             public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {}
             @Override
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-                String query = charSequence.toString();
-                onSearch(query);
+                query = charSequence.toString();
+                onSearch();
             }
             @Override
             public void afterTextChanged(Editable editable) {}
@@ -134,6 +180,9 @@ public class BusTimes extends Fragment {
             holder.header.setText(item.getHeader());
             holder.subheader1.setText(item.getSubheader1());
             holder.subheader2.setText(item.getSubheader2());
+            holder.icon.setImageResource(
+                    item.getType() == "busService" ? R.drawable.bus : R.drawable.bus_stop_icon
+            );
         }
 
         @Override
@@ -143,12 +192,13 @@ public class BusTimes extends Fragment {
 
         public class ItemViewHolder extends RecyclerView.ViewHolder {
             TextView header, subheader1, subheader2;
-
+            ImageView icon;
             public ItemViewHolder(View itemView) {
                 super(itemView);
                 header = itemView.findViewById(R.id.BUS);
                 subheader1 = itemView.findViewById(R.id.subheader1);
                 subheader2 = itemView.findViewById(R.id.subheader2);
+                icon = itemView.findViewById(R.id.TypeIcon);
                 itemView.setOnClickListener(v -> {
                     if (listener != null) {
                         listener.onItemClick(getAdapterPosition());
@@ -166,8 +216,14 @@ public class BusTimes extends Fragment {
         getActivity()
                 .getSupportFragmentManager()
                 .beginTransaction()
+                .setCustomAnimations(
+                        R.anim.slide_in_right,  // Enter animation
+                        R.anim.slide_out_left,  // Exit animation
+                        R.anim.slide_in_left,   // Pop enter animation (when fragment is re-added)
+                        R.anim.slide_out_right  // Pop exit animation (when fragment is removed)
+                )
                 .replace(R.id.fragment_container, selectedFragment)
-                .addToBackStack(null) // allows for backing
+                .addToBackStack("BusTimes") // allows for backing
                 .commit();
     }
 }

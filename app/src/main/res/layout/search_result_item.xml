@@ -28,11 +28,15 @@
                     android:id="@+id/TypeIcon"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
+                    android:paddingLeft="2dp"
+                    android:paddingTop="2dp"
+                    android:paddingRight="2dp"
+                    android:paddingBottom="2dp"
                     app:srcCompat="@drawable/bus"
-                    app:tint="@color/darkGray" />
+                    app:tint="@color/hintGray" />
 
                 <Space
-                    android:layout_width="10dp"
+                    android:layout_width="6dp"
                     android:layout_height="match_parent" />
 
                 <LinearLayout
