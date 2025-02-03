@@ -45,7 +45,7 @@ public class BusStopsList extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_busstopslist, container, false);
         // views setup
-        RecyclerView busStopPanels = rootView.findViewById(R.id.BusStopsRW);
+        RecyclerView busStopPanels = rootView.findViewById(R.id.BusStopsRV);
         busStopPanels.setLayoutManager(new GridLayoutManager(getContext(), 1));
         Button backButton = rootView.findViewById(R.id.ReturnButton1);
         backButton.setOnClickListener(view -> { goBack(); });

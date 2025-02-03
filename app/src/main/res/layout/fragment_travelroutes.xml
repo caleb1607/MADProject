@@ -72,7 +72,7 @@
                 android:textSize="13sp" />
 
             <EditText
-                android:id="@+id/Email_InputField"
+                android:id="@+id/StartingPointSearchBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -80,7 +80,7 @@
                 android:backgroundTint="#00FFFFFF"
                 android:fontFamily="sans-serif-medium"
                 android:hint="‎"
-                android:inputType="textEmailAddress"
+                android:inputType="text"
                 android:paddingLeft="16dp"
                 android:paddingTop="36dp"
                 android:paddingBottom="12dp"
@@ -115,7 +115,7 @@
                 android:textSize="13sp" />
 
             <EditText
-                android:id="@+id/Password_InputField"
+                android:id="@+id/DestinationSearchBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -123,7 +123,7 @@
                 android:backgroundTint="#00FFFFFF"
                 android:fontFamily="sans-serif-medium"
                 android:hint="‎"
-                android:inputType="textPassword"
+                android:inputType="text"
                 android:paddingLeft="16dp"
                 android:paddingTop="36dp"
                 android:paddingBottom="12dp"
@@ -136,6 +136,12 @@
         <Space
             android:layout_width="match_parent"
             android:layout_height="16dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/TravelRoutesRV"
+            android:layout_width="360dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center" />
 
     </LinearLayout>
 

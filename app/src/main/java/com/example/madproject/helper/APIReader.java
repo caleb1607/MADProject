@@ -6,10 +6,14 @@ import com.example.madproject.helper.API.BusArrivals.BusArrivalApi;
 import com.example.madproject.helper.API.BusArrivals.BusArrivalResponse;
 import com.example.madproject.helper.API.BusArrivals.RetrofitClient;
 import com.example.madproject.BuildConfig;
+import com.example.madproject.helper.API.OnemapSearch.OnemapSearchApi;
+import com.example.madproject.helper.API.OnemapSearch.OnemapSearchClient;
+import com.example.madproject.helper.API.OnemapSearch.OnemapSearchResponse;
 import com.example.madproject.helper.API.Token.TokenClient;
 import com.example.madproject.helper.API.Token.TokenCallback;
 
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 
 public class APIReader {

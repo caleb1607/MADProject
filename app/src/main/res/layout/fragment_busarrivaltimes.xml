@@ -101,7 +101,7 @@
             android:layout_height="16dp" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/SearchResults"
+            android:id="@+id/BusTimesRV"
             android:layout_width="360dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center" />

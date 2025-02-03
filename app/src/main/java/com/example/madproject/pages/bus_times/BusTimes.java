@@ -37,7 +37,7 @@ public class BusTimes extends Fragment {
     EditText searchBar;
     String query = "";
     // variables
-    List<SearchResultItem> searchResultList = new ArrayList<>();
+    List<BSSearchResultItem> searchResultList = new ArrayList<>();
     ItemAdapter adapter = new ItemAdapter(searchResultList, position -> {
         transaction(searchResultList.get(position).getType(), searchResultList.get(position).getValue());
     });
@@ -61,7 +61,7 @@ public class BusTimes extends Fragment {
         busStopsButton.setOnClickListener(toggleBusStopsFilter);
         searchBar = rootView.findViewById(R.id.SearchBar);
         searchBar.addTextChangedListener(SearchBarTextWatcher());
-        RecyclerView searchResults = rootView.findViewById(R.id.SearchResults);
+        RecyclerView searchResults = rootView.findViewById(R.id.BusTimesRV);
         searchResults.setLayoutManager(new LinearLayoutManager(getContext()));
         searchResults.setAdapter(adapter);
         // Read from datasets
@@ -76,7 +76,7 @@ public class BusTimes extends Fragment {
             if (includeBusServices) {
                 for (String item : busServicesList) {
                     if (item.toLowerCase().trim().contains(query.toLowerCase().trim())) {
-                        searchResultList.add(new SearchResultItem(
+                        searchResultList.add(new BSSearchResultItem(
                                 "busService",
                                 item,
                                 "Bus " + item,
@@ -92,7 +92,7 @@ public class BusTimes extends Fragment {
                             item.getBusStopCode().toLowerCase().trim().contains(query.toLowerCase().trim())
                                     || item.getDescription().toLowerCase().trim().contains(query.toLowerCase().trim())
                     ) {
-                        searchResultList.add(new SearchResultItem(
+                        searchResultList.add(new BSSearchResultItem(
                                 "busStop",
                                 item.getBusStopCode(),
                                 item.getDescription(),
@@ -153,10 +153,10 @@ public class BusTimes extends Fragment {
     }
 
     public static class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder> {
-        private List<SearchResultItem> itemList;
+        private List<BSSearchResultItem> itemList;
         private OnItemClickListener listener;
 
-        public ItemAdapter(List<SearchResultItem> itemList, OnItemClickListener listener) {
+        public ItemAdapter(List<BSSearchResultItem> itemList, OnItemClickListener listener) {
 
             this.itemList = itemList;
             this.listener = listener;
@@ -167,13 +167,13 @@ public class BusTimes extends Fragment {
 
         @Override
         public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_result_item, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.bustimes_searchresult_item, parent, false);
             return new ItemViewHolder(view);
         }
 
         @Override
         public void onBindViewHolder(ItemViewHolder holder, int position) {
-            SearchResultItem item = itemList.get(position);
+            BSSearchResultItem item = itemList.get(position);
             holder.header.setText(item.getHeader());
             holder.subheader1.setText(item.getSubheader1());
             holder.subheader2.setText(item.getSubheader2());
