@@ -1,4 +1,4 @@
-package com.example.madproject.ui.bus_times;
+package com.example.madproject.pages.bus_times;
 
 public class SearchResultItem {
     private String type;

@@ -1,4 +1,4 @@
-package com.example.madproject.ui;
+package com.example.madproject.pages;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -6,16 +6,13 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import com.example.madproject.R;
-import com.example.madproject.ui.bookmarks.Bookmarks;
-import com.example.madproject.ui.bus_times.BusTimes;
-import com.example.madproject.ui.settings.Settings;
-import com.example.madproject.ui.travel_now.TravelRoutes;
+import com.example.madproject.pages.bookmarks.Bookmarks;
+import com.example.madproject.pages.bus_times.BusTimes;
+import com.example.madproject.pages.settings.Settings;
+import com.example.madproject.pages.travel_now.TravelRoutes;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import java.util.Map;
 
 public class main extends AppCompatActivity {
 

@@ -20,6 +20,12 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "ONEMAP_EMAIL", "\"caleb.23@ichat.sp.edu.sg\""
+            buildConfigField "String", "ONEMAP_PASSWORD", "\"RisBPAcK3ZMS\""
+        }
+        debug {
+            buildConfigField "String", "ONEMAP_EMAIL", "\"caleb.23@ichat.sp.edu.sg\""
+            buildConfigField "String", "ONEMAP_PASSWORD", "\"RisBPAcK3ZMS\""
         }
     }
     compileOptions {
@@ -28,6 +34,7 @@ android {
     }
     buildFeatures {
         viewBinding true
+        buildConfig true
     }
 }
 

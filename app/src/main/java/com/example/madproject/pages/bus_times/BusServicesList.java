@@ -1,4 +1,4 @@
-package com.example.madproject.ui.bus_times;
+package com.example.madproject.pages.bus_times;
 
 import android.os.Bundle;
 
@@ -19,22 +19,21 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.madproject.R;
-import com.example.madproject.datasets.BusStopsMap;
+import com.example.madproject.datasets.BusServicesAtStop;
+import com.example.madproject.helper.APIReader;
 import com.example.madproject.helper.Helper;
 import com.example.madproject.helper.JSONReader;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+public class BusServicesList extends Fragment {
 
-public class BusStopsList extends Fragment {
-
-    String busService; // bus stop code of bus stop
-    List<BusStopPanel> fullPanelList = new ArrayList<>(); // list of panel data
+    String busStopCode; // bus stop code of bus stop
+    List<BusServicePanel> fullPanelList = new ArrayList<>(); // list of panel data
     ItemAdapter adapter;
 
     @Nullable
@@ -42,35 +41,35 @@ public class BusStopsList extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_busstopslist, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_busserviceslist, container, false);
         // views setup
-        RecyclerView busStopPanels = rootView.findViewById(R.id.BusStopsRW);
-        busStopPanels.setLayoutManager(new GridLayoutManager(getContext(), 1));
-        Button backButton = rootView.findViewById(R.id.ReturnButton1);
+        RecyclerView busServicePanels = rootView.findViewById(R.id.BusServicesRW);
+        busServicePanels.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        Button backButton = rootView.findViewById(R.id.ReturnButton2);
         backButton.setOnClickListener(view -> { goBack(); });
+        //backButton.
         // get input params
         Bundle bundle = getArguments();
-        busService = bundle.getString("value");
+        busStopCode = bundle.getString("value");
         // set title text
-        TextView busServiceText = rootView.findViewById(R.id.BusServiceText);
-        busServiceText.setText(busService);
+        Helper.GetBusStopInfo busStopInfo = new Helper.GetBusStopInfo(getContext(), busStopCode);
+        TextView busStopNameText = rootView.findViewById(R.id.BusStopNameText);
+        busStopNameText.setText(busStopInfo.getDescription());
+        Log.d("Bundle received:", busStopCode);
         // Read from datasets
-        List<BusStopsMap> busStopsMapList = JSONReader.busstops_map(getContext());
+        List<BusServicesAtStop> busServicesAtStopList = JSONReader.bus_services_at_stop(getContext());
         // async
         ExecutorService executor = Executors.newFixedThreadPool(10); // Use a thread pool for efficiency
         List<Future<String[]>> futures = new ArrayList<>();
-        for (BusStopsMap item : busStopsMapList) {
-            if (item.getBusService().equals(busService)) {
-                for (BusStopsMap.BusStopInfo busStopData : item.getDirection1List()) {
+        for (BusServicesAtStop item : busServicesAtStopList) {
+            if (item.getBusStopCode().equals(busStopCode)) {
+                for (String busService : item.getBusServices()) {
                     Future<String[]> future = executor.submit(() ->
-                            Helper.fetchBusArrivals(busStopData.getBusStopCode(), busService)
+                            APIReader.fetchBusArrivals(busStopCode, busService)
                     );
                     futures.add(future);
-                    Helper.GetBusStopInfo busStopInfo = new Helper.GetBusStopInfo(getContext(), busStopData.getBusStopCode());
-                    fullPanelList.add(new BusStopPanel(
-                            busStopInfo.getDescription(),
-                            busStopData.getBusStopCode(),
-                            busStopInfo.getRoadName(),
+                    fullPanelList.add(new BusServicePanel(
+                            busService,
                             new String[]{"-", "-", "-"},
                             false
                     ));
@@ -81,8 +80,11 @@ public class BusStopsList extends Fragment {
             try {
                 for (int i = 0; i < fullPanelList.size(); i++) {
                     String[] arrivals = futures.get(i).get(); // Blocking call, waits for result
-                    fullPanelList.get(i).setAT(arrivals);
-                    adapter.notifyItemChanged(i); // Update only the changed item
+                    if (arrivals != null) {
+                        fullPanelList.get(i).setAT(arrivals);
+                    } else {
+                        fullPanelList.get(i).setAT(null);
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -92,16 +94,16 @@ public class BusStopsList extends Fragment {
         executor.shutdown();
         // adapter setup
         adapter = new ItemAdapter(fullPanelList, position -> onPanelClick(position));
-        busStopPanels.setAdapter(adapter);
+        busServicePanels.setAdapter(adapter);
         return rootView;
     }
 
     // adapter for recycler view
-    public static class ItemAdapter extends RecyclerView.Adapter<BusStopsList.ItemAdapter.ItemViewHolder> {
-        private List<BusStopPanel> panelList;
-        private BusStopsList.ItemAdapter.OnItemClickListener listener;
+    public static class ItemAdapter extends RecyclerView.Adapter<BusServicesList.ItemAdapter.ItemViewHolder> {
+        private List<BusServicePanel> panelList;
+        private BusServicesList.ItemAdapter.OnItemClickListener listener;
 
-        public ItemAdapter(List<BusStopPanel> panelList, BusStopsList.ItemAdapter.OnItemClickListener listener) {
+        public ItemAdapter(List<BusServicePanel> panelList, BusServicesList.ItemAdapter.OnItemClickListener listener) {
             // constructor
             this.panelList = panelList;
             this.listener = listener;
@@ -112,30 +114,21 @@ public class BusStopsList extends Fragment {
 
         // changes layout view to our version
         @Override
-        public BusStopsList.ItemAdapter.ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.bus_stop_panel, parent, false);
-            return new BusStopsList.ItemAdapter.ItemViewHolder(view);
+        public BusServicesList.ItemAdapter.ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.bus_service_panel, parent, false);
+            return new BusServicesList.ItemAdapter.ItemViewHolder(view);
         }
         // changes what each item of recyclerview's value should be
         @Override
-        public void onBindViewHolder(BusStopsList.ItemAdapter.ItemViewHolder holder, int position) {
-            BusStopPanel item = panelList.get(position);
-            holder.busStopName.setText(item.getBusStopName());
-            holder.busStopCode.setText(item.getBusStopCode());
-            holder.streetName.setText(item.getStreetName());
+        public void onBindViewHolder(BusServicesList.ItemAdapter.ItemViewHolder holder, int position) {
+            BusServicePanel item = panelList.get(position);
+            holder.busNumber.setText(item.getBusNumber());
             if (item.getAT() != null) {
-                holder.unavailableText.setVisibility(View.INVISIBLE);
-                holder.AT1.setVisibility(View.VISIBLE);
-                holder.AT2.setVisibility(View.VISIBLE);
-                holder.AT3.setVisibility(View.VISIBLE);
-                holder.MINS.setVisibility(View.VISIBLE);
-                holder.NOW.setVisibility(View.INVISIBLE);
                 if (item.getAT()[0].equals("0")) {
+                    holder.NOW.setVisibility(View.VISIBLE);
                     holder.AT1.setVisibility(View.INVISIBLE);
                     holder.MINS.setVisibility(View.INVISIBLE);
-                    holder.NOW.setVisibility(View.VISIBLE);
                 }
-                Log.d("item.getAT()2",Arrays.toString(item.getAT()));
                 holder.AT1.setText(item.getAT()[0]);
                 holder.AT2.setText(item.getAT()[1]);
                 holder.AT3.setText(item.getAT()[2]);
@@ -144,6 +137,7 @@ public class BusStopsList extends Fragment {
                 holder.AT1.setVisibility(View.INVISIBLE);
                 holder.AT2.setVisibility(View.INVISIBLE);
                 holder.AT3.setVisibility(View.INVISIBLE);
+                holder.NOW.setVisibility(View.INVISIBLE);
                 holder.MINS.setVisibility(View.INVISIBLE);
             }
         }
@@ -154,18 +148,16 @@ public class BusStopsList extends Fragment {
         }
         // contains the reference of views (UI) of a single item in recyclerview
         public class ItemViewHolder extends RecyclerView.ViewHolder {
-            TextView busStopName, busStopCode, streetName, AT1, AT2, AT3, MINS, NOW, unavailableText;
+            TextView busNumber, AT1, AT2, AT3, MINS, NOW, unavailableText;
             public ItemViewHolder(View itemView) {
                 super(itemView);
-                busStopName = itemView.findViewById(R.id.BusStopName);
-                busStopCode = itemView.findViewById(R.id.BusStopCode);
-                streetName = itemView.findViewById(R.id.RoadName);
-                AT1 = itemView.findViewById(R.id.AT1b);
-                AT2 = itemView.findViewById(R.id.AT2b);
-                AT3 = itemView.findViewById(R.id.AT3b);
+                busNumber = itemView.findViewById(R.id.BusNumber);
+                AT1 = itemView.findViewById(R.id.AT1a);
+                AT2 = itemView.findViewById(R.id.AT2a);
+                AT3 = itemView.findViewById(R.id.AT3a);
                 MINS = itemView.findViewById(R.id.MINS);
-                NOW = itemView.findViewById(R.id.NOWb);
-                unavailableText = itemView.findViewById(R.id.UnavailableTextb);
+                NOW = itemView.findViewById(R.id.NOWa);
+                unavailableText = itemView.findViewById(R.id.UnavailableTexta);
                 itemView.setOnClickListener(v -> {
                     if (listener != null) {
                         listener.onItemClick(getAdapterPosition());
@@ -176,9 +168,9 @@ public class BusStopsList extends Fragment {
     }
 
     private void onPanelClick(int position) { // move to BusStopsList
-        Fragment selectedFragment = new BusServicesList();
+        Fragment selectedFragment = new BusStopsList();
         Bundle bundle = new Bundle();
-        bundle.putString("value", fullPanelList.get(position).getBusStopCode());
+        bundle.putString("value", fullPanelList.get(position).getBusNumber());
         selectedFragment.setArguments(bundle);
         getActivity()
                 .getSupportFragmentManager()
@@ -192,12 +184,10 @@ public class BusStopsList extends Fragment {
         fragmentManager
                 .beginTransaction()
                 .setCustomAnimations(
-                        R.anim.slide_in_left,  // Enter animation for the fragment being revealed
-                        R.anim.slide_out_right // Exit animation for the current fragment
-                )
-                .commit();
+                R.anim.slide_in_left,  // Enter animation for the fragment being revealed
+                R.anim.slide_out_right // Exit animation for the current fragment
+        )
+        .commit();
         fragmentManager.popBackStack("BusTimes", FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 }
-
-

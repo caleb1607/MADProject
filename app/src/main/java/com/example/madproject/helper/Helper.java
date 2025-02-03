@@ -1,21 +1,14 @@
 package com.example.madproject.helper;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.example.madproject.datasets.BusStopsComplete;
-import com.example.madproject.helper.BusArrival.BusArrivalApi;
-import com.example.madproject.helper.BusArrival.BusArrivalResponse;
-import com.example.madproject.helper.BusArrival.RetrofitClient;
 
 import java.time.Duration;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Response;
 
 public class Helper {
     private static List<BusStopsComplete> busStopsList;
@@ -38,43 +31,6 @@ public class Helper {
         public double getLatitude() { return busStopInfo.getLatitude(); }
         public double getLongitude() { return busStopInfo.getLongitude(); }
     }
-
-    public static String[] fetchBusArrivals(String busStopCode, String busNumber) {
-        try {
-            BusArrivalApi apiService = RetrofitClient.getApiService();
-            Call<BusArrivalResponse> call = apiService.getBusArrivals(busStopCode);
-            Response<BusArrivalResponse> response = call.execute(); // Synchronous call
-
-            if (response.isSuccessful() && response.body() != null && !response.body().Services.isEmpty()) {
-                for (BusArrivalResponse.Service serviceData : response.body().Services) {
-                    if (serviceData.ServiceNo.equals(busNumber)) {
-                        if (serviceData.NextBus.EstimatedArrival != null) {
-                            String[] arrivals = new String[3];
-
-                            arrivals[0] = ISOToMinutes(serviceData.NextBus.EstimatedArrival);
-                            arrivals[1] = (serviceData.NextBus2.EstimatedArrival != null) ? ISOToMinutes(serviceData.NextBus2.EstimatedArrival) : null;
-                            arrivals[2] = (serviceData.NextBus3.EstimatedArrival != null) ? ISOToMinutes(serviceData.NextBus3.EstimatedArrival) : null;
-
-                            Log.d("no error", "");
-                            return arrivals;
-                        } else {
-                            Log.d("error1", "");
-                            return null;
-                        }
-                    }
-                }
-            } else {
-                Log.d("error2", "");
-                return null;
-            }
-        } catch (Exception e) {
-            Log.e("error3", e.toString());
-            return null;
-        }
-        Log.d("error4", "");
-        return null;
-    }
-
     public static String ISOToMinutes(String timestamp) {
 
         if (timestamp == null || timestamp.trim().isEmpty()) {

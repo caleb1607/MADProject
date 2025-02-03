@@ -1,9 +1,9 @@
-package com.example.madproject.ui.misc;
+package com.example.madproject.pages.misc;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.madproject.R;
-import com.example.madproject.ui.main;
+import com.example.madproject.pages.main;
 
 import android.content.Intent;
 import android.os.Bundle;

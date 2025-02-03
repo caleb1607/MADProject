@@ -1,6 +1,4 @@
-package com.example.madproject.helper.BusArrival;
-
-import com.example.madproject.helper.BusArrival.BusArrivalApi;
+package com.example.madproject.helper.API.BusArrivals;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
