@@ -224,11 +224,11 @@ public class BusStopsList extends Fragment {
         String busStopCode = fullPanelList.get(position).getBusStopCode();
         String busService = this.busService;
         if (!fullPanelList.get(position).getIsBookmarked()) {
-
             // add bookmark
-        } else {
 
+        } else {
             // delete bookmark
+
         }
         fullPanelList.get(position).toggleIsBookmarked();
         adapter.notifyDataSetChanged();
