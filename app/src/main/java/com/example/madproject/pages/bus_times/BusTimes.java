@@ -27,6 +27,7 @@ import com.example.madproject.R;
 import com.example.madproject.datasets.BusStopsComplete;
 import com.example.madproject.helper.APIReader;
 import com.example.madproject.helper.JSONReader;
+import com.example.madproject.pages.travel_routes.TRSearch;
 
 public class BusTimes extends Fragment {
 
@@ -106,7 +107,14 @@ public class BusTimes extends Fragment {
         adapter.notifyDataSetChanged();
     }
     private View.OnClickListener onViewMap = view -> {
-        Log.d("the key", APIReader.getAPIKey());
+        getParentFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(
+                        R.anim.fade_in,
+                        R.anim.fade_out
+                )
+                .replace(R.id.fragment_container, new BTMap())
+                .commit();
     };
     private View.OnClickListener toggleBusServicesFilter = view -> {
         includeBusServices = true;
@@ -219,7 +227,7 @@ public class BusTimes extends Fragment {
                         R.anim.slide_in_left,   // Pop enter animation (when fragment is re-added)
                         R.anim.slide_out_right  // Pop exit animation (when fragment is removed)
                 )
-                .replace(R.id.MapFragmentContainer, selectedFragment)
+                .replace(R.id.fragment_container, selectedFragment)
                 .addToBackStack("BusTimes") // allows for backing
                 .commit();
     }

@@ -19,7 +19,7 @@ public class BTMap extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_busserviceslist, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_btmap, container, false);
         return rootView;
     }
 }

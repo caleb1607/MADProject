@@ -7,12 +7,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 
-public class Bookmark extends SQLiteOpenHelper {
+public class BusTimesBookmarksDB extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "bookmark.db";
     private static final int SCHEMA_VERSION = 1;
 
-    public Bookmark(Context context) {
+    public BusTimesBookmarksDB(Context context) {
         super(context, DATABASE_NAME,null,SCHEMA_VERSION);
     }
 

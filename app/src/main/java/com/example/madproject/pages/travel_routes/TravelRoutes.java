@@ -2,9 +2,12 @@ package com.example.madproject.pages.travel_routes;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +18,8 @@ import android.widget.TextView;
 
 import com.example.madproject.MapView;
 import com.example.madproject.R;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
 
 public class TravelRoutes extends Fragment {
 
@@ -64,6 +69,7 @@ public class TravelRoutes extends Fragment {
                 toData.savedQuery = savedQuery;
             }
             updateView();
+            updateMap();
             checkForCompletion();
         });
     }
@@ -92,6 +98,65 @@ public class TravelRoutes extends Fragment {
             toText.setTextColor(nyoomBlue);
         }
     }
+    private void updateMap() {
+        FragmentManager fragmentManager = getChildFragmentManager(); // Or getChildFragmentManager() if inside another fragment
+        MapView mapView = (MapView) fragmentManager.findFragmentById(R.id.MapFragmentContainer);
+        // coords manipulation
+        Double fromLat = null;
+        Double fromLon = null;
+        Double toLat = null;
+        Double toLon = null;
+        if (fromData.getLat() != null) {
+            fromLat = Double.parseDouble(fromData.getLat());
+            fromLon = Double.parseDouble(fromData.getLon());
+        }
+        if (toData.getLat() != null) {
+            toLat = Double.parseDouble(toData.getLat());
+            toLon = Double.parseDouble(toData.getLon());
+        }
+        // place markers
+//        float[] hsv = new float[3];
+//        Color.colorToHSV(ContextCompat.getColor(getContext(), R.color.nyoomYellow), hsv);
+//        float nyoomYellow = hsv[0];
+//        Color.colorToHSV(ContextCompat.getColor(getContext(), R.color.nyoomBlue), hsv);
+//        float nyoomBlue = hsv[0];
+        if (fromLat != null) {
+            mapView.addMarker(
+                    new LatLng(fromLat, fromLon),
+                    fromData.getName(),
+                    BitmapDescriptorFactory.HUE_YELLOW
+            );
+        }
+        if (toLat != null) {
+            mapView.addMarker(
+                    new LatLng(toLat, toLon),
+                    toData.getName(),
+                    BitmapDescriptorFactory.HUE_AZURE
+            );
+        }
+        // position camera
+        if (fromData.getLat() != null && toData.getLat() != null) { // both selected // mid point
+            mapView.moveCamera(new LatLng(
+                    (fromLat + toLat)/2,
+                    (fromLon + toLon)/2
+                    ), 11f
+                    );
+        } else if (fromData.getLat() != null && toData.getLat() == null) { // only FROM coords
+            Log.d("Double.toString(fromLat)", Double.toString(fromLat));
+            Log.d("Double.toString(fromLon)", Double.toString(fromLon));
+            mapView.moveCamera(new LatLng(
+                    fromLat,
+                    fromLon
+                    ), 13f
+                    );
+        } else if (fromData.getLat() == null && toData.getLat() != null) { // only TO coords
+            mapView.moveCamera(new LatLng(
+                    toLat,
+                    toLon
+                    ), 13f
+                    );
+        }
+    }
     private void checkForCompletion() {
         Button findRouteButton = rootView.findViewById(R.id.FindRouteButton);
         if (!fromData.getName().equals("") && !toData.getName().equals("")) { // both filled
@@ -113,10 +178,10 @@ public class TravelRoutes extends Fragment {
         getParentFragmentManager()
                 .beginTransaction()
                 .setCustomAnimations(
-                        R.anim.slidefade_in_right,  // Enter animation
-                        R.anim.slidefade_out_left,  // Exit animation
-                        R.anim.slidefade_in_left,   // Pop enter animation (when fragment is re-added)
-                        R.anim.slidefade_out_right  // Pop exit animation (when fragment is removed)
+                        R.anim.slidefade_in_right,
+                        R.anim.slidefade_out_left,
+                        R.anim.slidefade_in_left,
+                        R.anim.slidefade_out_right
                 )
                 .replace(R.id.fragment_container, selectedFragment)
                 .addToBackStack("TravelRoutes")

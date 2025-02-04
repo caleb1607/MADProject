@@ -80,11 +80,7 @@ public class BusServicesList extends Fragment {
             try {
                 for (int i = 0; i < fullPanelList.size(); i++) {
                     String[] arrivals = futures.get(i).get(); // Blocking call, waits for result
-                    if (arrivals != null) {
-                        fullPanelList.get(i).setAT(arrivals);
-                    } else {
-                        fullPanelList.get(i).setAT(null);
-                    }
+                    fullPanelList.get(i).setAT(arrivals);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -93,7 +89,7 @@ public class BusServicesList extends Fragment {
         // Shutdown executor to prevent memory leaks
         executor.shutdown();
         // adapter setup
-        adapter = new ItemAdapter(fullPanelList, position -> onPanelClick(position));
+        adapter = new ItemAdapter(fullPanelList, position -> onPanelClick(position), position -> onBookmarkClick(position));
         busServicePanels.setAdapter(adapter);
         return rootView;
     }
@@ -101,17 +97,25 @@ public class BusServicesList extends Fragment {
     // adapter for recycler view
     public static class ItemAdapter extends RecyclerView.Adapter<BusServicesList.ItemAdapter.ItemViewHolder> {
         private List<BusServicePanel> panelList;
-        private BusServicesList.ItemAdapter.OnItemClickListener listener;
+        private BusServicesList.ItemAdapter.OnItemClickListener clickListener;
+        private BusServicesList.ItemAdapter.OnItemClickListener bookmarkClickListener;
 
-        public ItemAdapter(List<BusServicePanel> panelList, BusServicesList.ItemAdapter.OnItemClickListener listener) {
+        public ItemAdapter(
+                List<BusServicePanel> panelList,
+                BusServicesList.ItemAdapter.OnItemClickListener clickListener,
+                BusServicesList.ItemAdapter.OnItemClickListener bookmarkClickListener
+        ) {
             // constructor
             this.panelList = panelList;
-            this.listener = listener;
+            this.clickListener = clickListener;
+            this.bookmarkClickListener = bookmarkClickListener;
         }
         public interface OnItemClickListener {
             void onItemClick(int position);
         }
-
+        public interface OnBookmarkClickListener {
+            void onItemClick(int position);
+        }
         // changes layout view to our version
         @Override
         public BusServicesList.ItemAdapter.ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -148,7 +152,7 @@ public class BusServicesList extends Fragment {
         }
         // contains the reference of views (UI) of a single item in recyclerview
         public class ItemViewHolder extends RecyclerView.ViewHolder {
-            TextView busNumber, AT1, AT2, AT3, MINS, NOW, unavailableText;
+            TextView busNumber, AT1, AT2, AT3, MINS, NOW, unavailableText, bookmarkButton;
             public ItemViewHolder(View itemView) {
                 super(itemView);
                 busNumber = itemView.findViewById(R.id.BusNumber);
@@ -159,8 +163,14 @@ public class BusServicesList extends Fragment {
                 NOW = itemView.findViewById(R.id.NOWa);
                 unavailableText = itemView.findViewById(R.id.UnavailableTexta);
                 itemView.setOnClickListener(v -> {
-                    if (listener != null) {
-                        listener.onItemClick(getAdapterPosition());
+                    if (clickListener != null) {
+                        clickListener.onItemClick(getAdapterPosition());
+                    }
+                });
+                bookmarkButton = itemView.findViewById(R.id.BookmarkButton);
+                bookmarkButton.setOnClickListener(v -> {
+                    if (bookmarkClickListener != null) {
+                        bookmarkClickListener.onItemClick(getAdapterPosition());
                     }
                 });
             }
@@ -175,9 +185,12 @@ public class BusServicesList extends Fragment {
         getActivity()
                 .getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.MapFragmentContainer, selectedFragment)
+                .replace(R.id.fragment_container, selectedFragment)
                 .addToBackStack(null) // allows for backing
                 .commit();
+    }
+    private void onBookmarkClick(int position) {
+        Log.d("bookmarked pos", Integer.toString(position));
     }
     private void goBack() {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();

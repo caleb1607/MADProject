@@ -47,7 +47,7 @@ public class BusStopsList extends Fragment {
         // views setup
         RecyclerView busStopPanels = rootView.findViewById(R.id.BusStopsRV);
         busStopPanels.setLayoutManager(new GridLayoutManager(getContext(), 1));
-        Button backButton = rootView.findViewById(R.id.ReturnButton);
+        Button backButton = rootView.findViewById(R.id.ReturnButton3);
         backButton.setOnClickListener(view -> { goBack(); });
         // get input params
         Bundle bundle = getArguments();
@@ -184,7 +184,7 @@ public class BusStopsList extends Fragment {
         getActivity()
                 .getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.MapFragmentContainer, selectedFragment)
+                .replace(R.id.fragment_container, selectedFragment)
                 .addToBackStack(null) // allows for backing
                 .commit();
     }
