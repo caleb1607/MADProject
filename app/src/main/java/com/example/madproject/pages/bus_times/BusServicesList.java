@@ -175,7 +175,7 @@ public class BusServicesList extends Fragment {
         getActivity()
                 .getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_container, selectedFragment)
+                .replace(R.id.MapFragmentContainer, selectedFragment)
                 .addToBackStack(null) // allows for backing
                 .commit();
     }

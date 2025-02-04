@@ -219,7 +219,7 @@ public class BusTimes extends Fragment {
                         R.anim.slide_in_left,   // Pop enter animation (when fragment is re-added)
                         R.anim.slide_out_right  // Pop exit animation (when fragment is removed)
                 )
-                .replace(R.id.fragment_container, selectedFragment)
+                .replace(R.id.MapFragmentContainer, selectedFragment)
                 .addToBackStack("BusTimes") // allows for backing
                 .commit();
     }

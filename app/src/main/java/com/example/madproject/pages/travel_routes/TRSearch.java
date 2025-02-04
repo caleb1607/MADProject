@@ -56,19 +56,24 @@ public class TRSearch extends Fragment {
         searchResults.setLayoutManager(new LinearLayoutManager(getContext()));
         Button returnButton = rootView.findViewById(R.id.ReturnButton);
         returnButton.setOnClickListener(view -> transaction(-1));
+        EditText TRSearchBar = rootView.findViewById(R.id.TRSearchBar);
         // adapter
-        adapter = new TRSearch.ItemAdapter(searchResultList, position -> {
-            transaction(position);
-        });
+        adapter = new TRSearch.ItemAdapter(searchResultList, this::transaction);
         searchResults.setAdapter(adapter);
         // receive bundle
         if (getArguments() != null) {
             searchbarType = getArguments().getString("searchbarType");
+            query = getArguments().getString("savedQuery");
+            if (query != null) {
+                onSearch();
+                TRSearchBar.setText(query);
+                adapter.notifyDataSetChanged();
+            }
         }
+        TRSearchBar.requestFocus();
         return rootView;
     }
     public void onSearch() {
-        Log.d("onSearch", "");
         searchResultList.clear();
         if (query.length() >= 2) {
             OnemapSearchApi onemapSearchApi = OnemapSearchClient.getApiService();
@@ -82,7 +87,8 @@ public class TRSearch extends Fragment {
                                 searchResultList.add(new LocationData(
                                     Helper.TitleCase(result.SEARCHVAL),
                                     result.LATITUDE,
-                                    result.LONGITUDE
+                                    result.LONGITUDE,
+                                        ""
                                 ));
                             }
                             adapter.notifyDataSetChanged();
@@ -170,14 +176,13 @@ public class TRSearch extends Fragment {
         Bundle result = new Bundle();
         if (position != -1) {
             result.putString("searchbarType", searchbarType);
+            result.putString("savedQuery", query);
             result.putString("name", searchResultList.get(position).getName());
             result.putString("lat", searchResultList.get(position).getLat());
             result.putString("lon", searchResultList.get(position).getLon());
         } else {
             result.putString("searchbarType", searchbarType);
-            result.putString("name", "");
-            result.putString("lat", null);
-            result.putString("lon", null);
+            result.putString("savedQuery", query);
         }
         getParentFragmentManager().setFragmentResult("requestKey", result);
         getParentFragmentManager().popBackStack(); // Go back to FragmentA

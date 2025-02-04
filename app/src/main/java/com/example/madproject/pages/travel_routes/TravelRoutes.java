@@ -3,6 +3,7 @@ package com.example.madproject.pages.travel_routes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -12,25 +13,30 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.madproject.MapView;
 import com.example.madproject.R;
 
 public class TravelRoutes extends Fragment {
 
     View rootView;
-    LocationData fromData = new LocationData("", null, null);
-    LocationData toData = new LocationData("", null, null);
+    LocationData fromData = new LocationData("", null, null, "");
+    LocationData toData = new LocationData("", null, null, "");
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_travelroutes, container, false);
+        // onclick listeners
         Button fromButton = rootView.findViewById(R.id.TRFromButton);
         fromButton.setOnClickListener(view -> {onSearch("from");});
         Button toButton = rootView.findViewById(R.id.TRToButton);
         toButton.setOnClickListener(view -> {onSearch("to");});
         Button findRouteButton = rootView.findViewById(R.id.FindRouteButton);
         findRouteButton.setOnClickListener(view -> onFindRoute());
+        // map fragment
+        loadMapFragment(new MapView());
+        // update data & views
         unloadData();
         return rootView;
     }
@@ -41,16 +47,21 @@ public class TravelRoutes extends Fragment {
             String name = bundle.getString("name");
             String lat = bundle.getString("lat");
             String lon = bundle.getString("lon");
-            Log.d("searchbarType",searchbarType);
-            Log.d("name",name);
+            String savedQuery = bundle.getString("savedQuery");
             if (searchbarType.equals("from")) {
-                fromData.name = name;
-                fromData.lat = lat;
-                fromData.lon = lon;
+                if (name != null) {
+                    fromData.name = name;
+                    fromData.lat = lat;
+                    fromData.lon = lon;
+                }
+                fromData.savedQuery = savedQuery;
             } else {
-                toData.name = name;
-                toData.lat = lat;
-                toData.lon = lon;
+                if (name != null) {
+                    toData.name = name;
+                    toData.lat = lat;
+                    toData.lon = lon;
+                }
+                toData.savedQuery = savedQuery;
             }
             updateView();
             checkForCompletion();
@@ -93,6 +104,9 @@ public class TravelRoutes extends Fragment {
         Fragment selectedFragment = new TRSearch();
 
         Bundle bundle = new Bundle();
+        String savedQuery = searchbarType.equals("from") ? fromData.getSavedQuery() : toData.getSavedQuery();
+        Log.d("passing savedQuery", savedQuery);
+        bundle.putString("savedQuery", savedQuery);
         bundle.putString("searchbarType", searchbarType);
         selectedFragment.setArguments(bundle);
 
@@ -122,6 +136,12 @@ public class TravelRoutes extends Fragment {
                 )*/
                 .replace(R.id.fragment_container, selectedFragment)
                 .addToBackStack("TravelRoutes")
+                .commit();
+    }
+    private void loadMapFragment(Fragment fragment) {
+        FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
+        fragmentTransaction
+                .replace(R.id.MapFragmentContainer, fragment)
                 .commit();
     }
 }
