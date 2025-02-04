@@ -37,7 +37,7 @@ public class BusTimes extends Fragment {
     EditText searchBar;
     String query = "";
     // variables
-    List<BSSearchResultItem> searchResultList = new ArrayList<>();
+    List<BTSearchResultItem> searchResultList = new ArrayList<>();
     ItemAdapter adapter = new ItemAdapter(searchResultList, position -> {
         transaction(searchResultList.get(position).getType(), searchResultList.get(position).getValue());
     });
@@ -76,7 +76,7 @@ public class BusTimes extends Fragment {
             if (includeBusServices) {
                 for (String item : busServicesList) {
                     if (item.toLowerCase().trim().contains(query.toLowerCase().trim())) {
-                        searchResultList.add(new BSSearchResultItem(
+                        searchResultList.add(new BTSearchResultItem(
                                 "busService",
                                 item,
                                 "Bus " + item,
@@ -92,7 +92,7 @@ public class BusTimes extends Fragment {
                             item.getBusStopCode().toLowerCase().trim().contains(query.toLowerCase().trim())
                                     || item.getDescription().toLowerCase().trim().contains(query.toLowerCase().trim())
                     ) {
-                        searchResultList.add(new BSSearchResultItem(
+                        searchResultList.add(new BTSearchResultItem(
                                 "busStop",
                                 item.getBusStopCode(),
                                 item.getDescription(),
@@ -153,10 +153,10 @@ public class BusTimes extends Fragment {
     }
 
     public static class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder> {
-        private List<BSSearchResultItem> itemList;
+        private List<BTSearchResultItem> itemList;
         private OnItemClickListener listener;
 
-        public ItemAdapter(List<BSSearchResultItem> itemList, OnItemClickListener listener) {
+        public ItemAdapter(List<BTSearchResultItem> itemList, OnItemClickListener listener) {
 
             this.itemList = itemList;
             this.listener = listener;
@@ -173,7 +173,7 @@ public class BusTimes extends Fragment {
 
         @Override
         public void onBindViewHolder(ItemViewHolder holder, int position) {
-            BSSearchResultItem item = itemList.get(position);
+            BTSearchResultItem item = itemList.get(position);
             holder.header.setText(item.getHeader());
             holder.subheader1.setText(item.getSubheader1());
             holder.subheader2.setText(item.getSubheader2());

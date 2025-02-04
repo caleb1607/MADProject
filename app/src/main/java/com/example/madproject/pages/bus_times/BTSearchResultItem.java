@@ -1,13 +1,13 @@
 package com.example.madproject.pages.bus_times;
 
-public class BSSearchResultItem {
+public class BTSearchResultItem {
     private String type;
     private String value;
     private String header;
     private String subheader1;
     private String subheader2;
 
-    public BSSearchResultItem(String type, String value, String header, String subheader1, String subheader2) {
+    public BTSearchResultItem(String type, String value, String header, String subheader1, String subheader2) {
         this.type = type;
         this.value = value;
         this.header = header;
