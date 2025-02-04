@@ -79,7 +79,7 @@ public class BusStopsList extends Fragment {
                             busStopInfo.getDescription(),
                             busStopData.getBusStopCode(),
                             busStopInfo.getRoadName(),
-                            new String[]{"-", "-", "-"},
+                            new String[]{" ", " ", " "},
                             false
                     ));
                 }

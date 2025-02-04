@@ -79,7 +79,7 @@ public class BusServicesList extends Fragment {
                     futures.add(future);
                     fullPanelList.add(new BusServicePanel(
                             busService,
-                            new String[]{"-", "-", "-"},
+                            new String[]{" ", " ", " "},
                             false
                     ));
                 }
