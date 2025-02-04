@@ -1,9 +1,11 @@
 package com.example.madproject.pages.bus_times;
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -16,11 +18,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.madproject.R;
 import com.example.madproject.datasets.BusStopsMap;
 import com.example.madproject.helper.APIReader;
+import com.example.madproject.helper.BusTimesBookmarksDB;
 import com.example.madproject.helper.Helper;
 import com.example.madproject.helper.JSONReader;
 
@@ -34,6 +38,7 @@ import java.util.concurrent.Future;
 
 public class BusStopsList extends Fragment {
 
+    BusTimesBookmarksDB busTimesBookmarksDB;
     String busService; // bus stop code of bus stop
     List<BusStopPanel> fullPanelList = new ArrayList<>(); // list of panel data
     ItemAdapter adapter;
@@ -49,6 +54,8 @@ public class BusStopsList extends Fragment {
         busStopPanels.setLayoutManager(new GridLayoutManager(getContext(), 1));
         Button backButton = rootView.findViewById(R.id.ReturnButton3);
         backButton.setOnClickListener(view -> { goBack(); });
+        // class
+        busTimesBookmarksDB = new BusTimesBookmarksDB(getContext());
         // get input params
         Bundle bundle = getArguments();
         busService = bundle.getString("value");
@@ -92,7 +99,7 @@ public class BusStopsList extends Fragment {
         // Shutdown executor to prevent memory leaks
         executor.shutdown();
         // adapter setup
-        adapter = new ItemAdapter(fullPanelList, position -> onPanelClick(position));
+        adapter = new ItemAdapter(fullPanelList, position -> onPanelClick(position), position -> onBookmarkClick(position));
         busStopPanels.setAdapter(adapter);
         return rootView;
     }
@@ -100,12 +107,19 @@ public class BusStopsList extends Fragment {
     // adapter for recycler view
     public static class ItemAdapter extends RecyclerView.Adapter<BusStopsList.ItemAdapter.ItemViewHolder> {
         private List<BusStopPanel> panelList;
-        private BusStopsList.ItemAdapter.OnItemClickListener listener;
+        private BusServicesList.ItemAdapter.OnItemClickListener clickListener;
+        private BusServicesList.ItemAdapter.OnItemClickListener bookmarkClickListener;
 
-        public ItemAdapter(List<BusStopPanel> panelList, BusStopsList.ItemAdapter.OnItemClickListener listener) {
+        public ItemAdapter(
+                List<BusStopPanel> panelList,
+                BusServicesList.ItemAdapter.OnItemClickListener clickListener,
+                BusServicesList.ItemAdapter.OnItemClickListener bookmarkClickListener
+        ) {
             // constructor
             this.panelList = panelList;
-            this.listener = listener;
+            this.clickListener = clickListener;
+            this.bookmarkClickListener = bookmarkClickListener;
+
         }
         public interface OnItemClickListener {
             void onItemClick(int position);
@@ -136,7 +150,6 @@ public class BusStopsList extends Fragment {
                     holder.MINS.setVisibility(View.INVISIBLE);
                     holder.NOW.setVisibility(View.VISIBLE);
                 }
-                Log.d("item.getAT()2",Arrays.toString(item.getAT()));
                 holder.AT1.setText(item.getAT()[0]);
                 holder.AT2.setText(item.getAT()[1]);
                 holder.AT3.setText(item.getAT()[2]);
@@ -147,6 +160,15 @@ public class BusStopsList extends Fragment {
                 holder.AT3.setVisibility(View.INVISIBLE);
                 holder.MINS.setVisibility(View.INVISIBLE);
             }
+            if (!item.getIsBookmarked()) {
+                holder.bookmarkIcon.setImageTintList(ColorStateList.valueOf(
+                        ContextCompat.getColor(holder.itemView.getContext(), R.color.darkGray)
+                ));
+            } else {
+                holder.bookmarkIcon.setImageTintList(ColorStateList.valueOf(
+                        ContextCompat.getColor(holder.itemView.getContext(), R.color.nyoomLightYellow)
+                ));
+            }
         }
         // overrides size of recyclerview
         @Override
@@ -156,6 +178,8 @@ public class BusStopsList extends Fragment {
         // contains the reference of views (UI) of a single item in recyclerview
         public class ItemViewHolder extends RecyclerView.ViewHolder {
             TextView busStopName, busStopCode, streetName, AT1, AT2, AT3, MINS, NOW, unavailableText;
+            Button bookmarkButton;
+            ImageView bookmarkIcon;
             public ItemViewHolder(View itemView) {
                 super(itemView);
                 busStopName = itemView.findViewById(R.id.BusStopName);
@@ -168,8 +192,15 @@ public class BusStopsList extends Fragment {
                 NOW = itemView.findViewById(R.id.NOWb);
                 unavailableText = itemView.findViewById(R.id.UnavailableTextb);
                 itemView.setOnClickListener(v -> {
-                    if (listener != null) {
-                        listener.onItemClick(getAdapterPosition());
+                    if (clickListener != null) {
+                        clickListener.onItemClick(getAdapterPosition());
+                    }
+                });
+                bookmarkIcon = itemView.findViewById(R.id.BookmarkIcon2);
+                bookmarkButton = itemView.findViewById(R.id.BookmarkButton2);
+                bookmarkButton.setOnClickListener(v -> {
+                    if (bookmarkClickListener != null) {
+                        bookmarkClickListener.onItemClick(getAdapterPosition());
                     }
                 });
             }
@@ -187,6 +218,20 @@ public class BusStopsList extends Fragment {
                 .replace(R.id.fragment_container, selectedFragment)
                 .addToBackStack(null) // allows for backing
                 .commit();
+    }
+    private void onBookmarkClick(int position) {
+        String busStopName = fullPanelList.get(position).getBusStopName();
+        String busStopCode = fullPanelList.get(position).getBusStopCode();
+        String busService = this.busService;
+        if (!fullPanelList.get(position).getIsBookmarked()) {
+
+            // add bookmark
+        } else {
+
+            // delete bookmark
+        }
+        fullPanelList.get(position).toggleIsBookmarked();
+        adapter.notifyDataSetChanged();
     }
     private void goBack() {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();

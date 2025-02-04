@@ -1,9 +1,11 @@
 package com.example.madproject.pages.bus_times;
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -16,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.madproject.R;
@@ -26,6 +29,7 @@ import com.example.madproject.helper.Helper;
 import com.example.madproject.helper.JSONReader;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -34,7 +38,8 @@ import java.util.concurrent.Future;
 public class BusServicesList extends Fragment {
 
     BusTimesBookmarksDB busTimesBookmarksDB;
-    String busStopCode; // bus stop code of bus stop
+    String busStopCode;
+    String busStopName;
     List<BusServicePanel> fullPanelList = new ArrayList<>(); // list of panel data
     ItemAdapter adapter;
 
@@ -57,7 +62,8 @@ public class BusServicesList extends Fragment {
         // set title text
         Helper.GetBusStopInfo busStopInfo = new Helper.GetBusStopInfo(getContext(), busStopCode);
         TextView busStopNameText = rootView.findViewById(R.id.BusStopNameText);
-        busStopNameText.setText(busStopInfo.getDescription());
+        busStopName = busStopInfo.getDescription();
+        busStopNameText.setText(busStopName);
         Log.d("Bundle received:", busStopCode);
         // Read from datasets
         List<BusServicesAtStop> busServicesAtStopList = JSONReader.bus_services_at_stop(getContext());
@@ -128,11 +134,18 @@ public class BusServicesList extends Fragment {
             BusServicePanel item = panelList.get(position);
             holder.busNumber.setText(item.getBusNumber());
             if (item.getAT() != null) {
+                holder.unavailableText.setVisibility(View.INVISIBLE);
+                holder.AT1.setVisibility(View.VISIBLE);
+                holder.AT2.setVisibility(View.VISIBLE);
+                holder.AT3.setVisibility(View.VISIBLE);
+                holder.MINS.setVisibility(View.VISIBLE);
+                holder.NOW.setVisibility(View.INVISIBLE);
                 if (item.getAT()[0].equals("0")) {
-                    holder.NOW.setVisibility(View.VISIBLE);
                     holder.AT1.setVisibility(View.INVISIBLE);
                     holder.MINS.setVisibility(View.INVISIBLE);
+                    holder.NOW.setVisibility(View.VISIBLE);
                 }
+                Log.d("item.getAT()2", Arrays.toString(item.getAT()));
                 holder.AT1.setText(item.getAT()[0]);
                 holder.AT2.setText(item.getAT()[1]);
                 holder.AT3.setText(item.getAT()[2]);
@@ -141,8 +154,16 @@ public class BusServicesList extends Fragment {
                 holder.AT1.setVisibility(View.INVISIBLE);
                 holder.AT2.setVisibility(View.INVISIBLE);
                 holder.AT3.setVisibility(View.INVISIBLE);
-                holder.NOW.setVisibility(View.INVISIBLE);
                 holder.MINS.setVisibility(View.INVISIBLE);
+            }
+            if (!item.getIsBookmarked()) {
+                holder.bookmarkIcon.setImageTintList(ColorStateList.valueOf(
+                        ContextCompat.getColor(holder.itemView.getContext(), R.color.darkGray)
+                ));
+            } else {
+                holder.bookmarkIcon.setImageTintList(ColorStateList.valueOf(
+                        ContextCompat.getColor(holder.itemView.getContext(), R.color.nyoomLightYellow)
+                ));
             }
         }
         // overrides size of recyclerview
@@ -152,7 +173,9 @@ public class BusServicesList extends Fragment {
         }
         // contains the reference of views (UI) of a single item in recyclerview
         public class ItemViewHolder extends RecyclerView.ViewHolder {
-            TextView busNumber, AT1, AT2, AT3, MINS, NOW, unavailableText, bookmarkButton;
+            TextView busNumber, AT1, AT2, AT3, MINS, NOW, unavailableText;
+            Button bookmarkButton;
+            ImageView bookmarkIcon;
             public ItemViewHolder(View itemView) {
                 super(itemView);
                 busNumber = itemView.findViewById(R.id.BusNumber);
@@ -167,6 +190,7 @@ public class BusServicesList extends Fragment {
                         clickListener.onItemClick(getAdapterPosition());
                     }
                 });
+                bookmarkIcon = itemView.findViewById(R.id.BookmarkIcon);
                 bookmarkButton = itemView.findViewById(R.id.BookmarkButton);
                 bookmarkButton.setOnClickListener(v -> {
                     if (bookmarkClickListener != null) {
@@ -190,7 +214,18 @@ public class BusServicesList extends Fragment {
                 .commit();
     }
     private void onBookmarkClick(int position) {
-        Log.d("bookmarked pos", Integer.toString(position));
+        String busStopName = this.busStopName;
+        String busStopCode = this.busStopCode;
+        String busService = fullPanelList.get(position).getBusNumber();
+        if (!fullPanelList.get(position).getIsBookmarked()) {
+            // add bookmark
+
+        } else {
+            // delete bookmark
+
+        }
+        fullPanelList.get(position).toggleIsBookmarked();
+        adapter.notifyDataSetChanged();
     }
     private void goBack() {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();

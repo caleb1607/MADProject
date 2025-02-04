@@ -17,7 +17,7 @@ public class BusStopPanel {
     public void setAT(String[] AT) {
         this.AT = AT;
     }
-    public void setIsBookmarked(boolean isBookmarked) { this.isBookmarked = isBookmarked; }
+    public void toggleIsBookmarked() { isBookmarked = !isBookmarked; }
     public String getBusStopName() { return busStopName; }
     public String getBusStopCode() { return busStopCode; }
     public String getStreetName() { return streetName; }
