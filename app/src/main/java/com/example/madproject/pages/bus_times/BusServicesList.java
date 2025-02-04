@@ -218,7 +218,7 @@ public class BusServicesList extends Fragment {
         String busStopCode = this.busStopCode;
         String busService = fullPanelList.get(position).getBusNumber();
         if (!fullPanelList.get(position).getIsBookmarked()) {
-            // add bookmark
+            // add a bookmark
 
         } else {
             // delete bookmark
