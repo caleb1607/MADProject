@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.example.madproject.R;
 import com.example.madproject.datasets.BusServicesAtStop;
 import com.example.madproject.helper.APIReader;
+import com.example.madproject.helper.BusTimesBookmarksDB;
 import com.example.madproject.helper.Helper;
 import com.example.madproject.helper.JSONReader;
 
@@ -32,6 +33,7 @@ import java.util.concurrent.Future;
 
 public class BusServicesList extends Fragment {
 
+    BusTimesBookmarksDB busTimesBookmarksDB;
     String busStopCode; // bus stop code of bus stop
     List<BusServicePanel> fullPanelList = new ArrayList<>(); // list of panel data
     ItemAdapter adapter;
@@ -47,7 +49,8 @@ public class BusServicesList extends Fragment {
         busServicePanels.setLayoutManager(new GridLayoutManager(getContext(), 2));
         Button backButton = rootView.findViewById(R.id.ReturnButton2);
         backButton.setOnClickListener(view -> { goBack(); });
-        //backButton.
+        // class
+        busTimesBookmarksDB = new BusTimesBookmarksDB(getContext());
         // get input params
         Bundle bundle = getArguments();
         busStopCode = bundle.getString("value");
@@ -111,9 +114,6 @@ public class BusServicesList extends Fragment {
             this.bookmarkClickListener = bookmarkClickListener;
         }
         public interface OnItemClickListener {
-            void onItemClick(int position);
-        }
-        public interface OnBookmarkClickListener {
             void onItemClick(int position);
         }
         // changes layout view to our version
