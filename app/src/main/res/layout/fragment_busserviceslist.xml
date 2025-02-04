@@ -24,10 +24,10 @@
 
             <Button
                 android:id="@+id/ReturnButton2"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_gravity="center_vertical"
-                android:background="@drawable/slide_arrow_left"
+                android:background="@drawable/arrow_left_thin"
                 android:text="@string/blank"
                 app:backgroundTint="@color/white" />
 

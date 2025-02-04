@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -53,9 +54,11 @@ public class TRSearch extends Fragment {
         TRSearchBar.addTextChangedListener(SearchBarTextWatcher());
         RecyclerView searchResults = rootView.findViewById(R.id.TravelRoutesRV);
         searchResults.setLayoutManager(new LinearLayoutManager(getContext()));
+        Button returnButton = rootView.findViewById(R.id.ReturnButton);
+        returnButton.setOnClickListener(view -> transaction(-1));
         // adapter
         adapter = new TRSearch.ItemAdapter(searchResultList, position -> {
-            transaction(position, searchbarType);
+            transaction(position);
         });
         searchResults.setAdapter(adapter);
         // receive bundle
@@ -163,13 +166,19 @@ public class TRSearch extends Fragment {
         }
     }
 
-    private void transaction(int position, String searchbarType) {
+    private void transaction(int position) {
         Bundle result = new Bundle();
-        result.putString("searchbarType", searchbarType);
-        result.putString("name", searchResultList.get(position).getName());
-        result.putString("lat", searchResultList.get(position).getLat());
-        result.putString("lon", searchResultList.get(position).getLon());
-
+        if (position != -1) {
+            result.putString("searchbarType", searchbarType);
+            result.putString("name", searchResultList.get(position).getName());
+            result.putString("lat", searchResultList.get(position).getLat());
+            result.putString("lon", searchResultList.get(position).getLon());
+        } else {
+            result.putString("searchbarType", searchbarType);
+            result.putString("name", "");
+            result.putString("lat", null);
+            result.putString("lon", null);
+        }
         getParentFragmentManager().setFragmentResult("requestKey", result);
         getParentFragmentManager().popBackStack(); // Go back to FragmentA
     }

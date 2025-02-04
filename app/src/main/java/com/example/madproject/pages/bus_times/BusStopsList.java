@@ -47,7 +47,7 @@ public class BusStopsList extends Fragment {
         // views setup
         RecyclerView busStopPanels = rootView.findViewById(R.id.BusStopsRV);
         busStopPanels.setLayoutManager(new GridLayoutManager(getContext(), 1));
-        Button backButton = rootView.findViewById(R.id.ReturnButton1);
+        Button backButton = rootView.findViewById(R.id.ReturnButton);
         backButton.setOnClickListener(view -> { goBack(); });
         // get input params
         Bundle bundle = getArguments();

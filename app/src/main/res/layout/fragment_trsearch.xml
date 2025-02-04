@@ -14,34 +14,65 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="16dp" />
+            android:layout_height="8dp" />
 
-        <FrameLayout
-            android:layout_width="360dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/round_box"
-            android:backgroundTint="@color/backgroundPanel"
-            android:orientation="vertical">
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
 
-            <EditText
-                android:id="@+id/TRSearchBar"
+            <Space
+                android:layout_width="12dp"
+                android:layout_height="match_parent" />
+
+            <Button
+                android:id="@+id/ReturnButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/arrow_left_thin"
+                android:text="@string/blank"
+                app:backgroundTint="@color/white" />
+
+            <Space
+                android:layout_width="12dp"
+                android:layout_height="match_parent" />
+
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="#000000"
-                android:backgroundTint="#00FFFFFF"
-                android:fontFamily="sans-serif-medium"
-                android:hint="Search for Location..."
-                android:inputType="text"
-                android:paddingLeft="16dp"
-                android:paddingTop="12dp"
-                android:paddingBottom="12dp"
-                android:textColor="#FFFFFF"
-                android:textColorHint="@color/hintGray"
-                android:textSize="15sp" />
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@drawable/round_box"
+                android:backgroundTint="@color/backgroundPanel"
+                android:orientation="vertical">
 
-        </FrameLayout>
+                <EditText
+                    android:id="@+id/TRSearchBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:background="#000000"
+                    android:backgroundTint="#00FFFFFF"
+                    android:fontFamily="sans-serif-medium"
+                    android:hint="Search for Location..."
+                    android:inputType="text"
+                    android:paddingLeft="16dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:textColor="#FFFFFF"
+                    android:textColorHint="@color/hintGray"
+                    android:textSize="15sp" />
+
+            </FrameLayout>
+
+            <Space
+                android:layout_width="16dp"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
 
         <Space
             android:layout_width="match_parent"
@@ -49,7 +80,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/TravelRoutesRV"
-            android:layout_width="360dp"
+            android:layout_width="372dp"
             android:layout_height="match_parent"
             android:layout_gravity="center" />
 
