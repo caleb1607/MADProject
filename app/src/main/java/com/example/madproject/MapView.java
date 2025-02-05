@@ -11,6 +11,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,12 +23,16 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class MapView extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private List<MarkerOptions> markerQueue = new ArrayList<>();
     private List<CameraUpdate> cameraQueue = new ArrayList<>();
+    private List<Consumer<Marker>> markerOnClickListenerQueue = new ArrayList<>();
+    private List<Consumer<LatLng>> mapOnClickListenerQueue = new ArrayList<>();
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -44,7 +49,7 @@ public class MapView extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         Log.d("MapView", "GoogleMap is ready!");
-        if (markerQueue.isEmpty()) {
+        if (cameraQueue.isEmpty()) {
             // set position to world spawn
             moveCamera(new LatLng(1.3832, 103.819105), 11f);
         }
@@ -56,6 +61,14 @@ public class MapView extends Fragment implements OnMapReadyCallback {
             mMap.moveCamera(cameraUpdate);
         }
         cameraQueue.clear();
+        for (Consumer<Marker> markerConsumer : markerOnClickListenerQueue) {
+            setMarkerOnClickListener(markerConsumer);
+        }
+        markerOnClickListenerQueue.clear();
+        for (Consumer<LatLng> mapConsumer : mapOnClickListenerQueue) {
+            setMapOnClickListener(mapConsumer);
+        }
+        mapOnClickListenerQueue.clear();
     }
 
     public void addMarker(LatLng coords, String title, float colour) {
@@ -74,9 +87,26 @@ public class MapView extends Fragment implements OnMapReadyCallback {
         if (mMap == null) {
             cameraQueue.add(cameraUpdate);
         } else {
-            Log.d("moving u to lat", Double.toString(coords.latitude));
-            Log.d("moving u to lon", Double.toString(coords.longitude));
             mMap.moveCamera(cameraUpdate);
+        }
+    }
+    public void setMarkerOnClickListener(Consumer<Marker> consumer) {
+        if (mMap == null) {
+            markerOnClickListenerQueue.add(consumer);
+        } else {
+            mMap.setOnMarkerClickListener(marker -> {
+                consumer.accept(marker);
+                return true;
+            });
+        }
+    }
+    public void setMapOnClickListener(Consumer<LatLng> consumer) {
+        if (mMap == null) {
+            mapOnClickListenerQueue.add(consumer);
+        } else {
+            mMap.setOnMapClickListener(position -> {
+                consumer.accept(position);
+            });
         }
     }
 }

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.res.ColorStateList;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -32,6 +33,7 @@ import com.example.madproject.pages.travel_routes.TRSearch;
 public class BusTimes extends Fragment {
 
     // widgets
+    View rootView;
     Button viewMapButton;
     Button busServicesButton;
     Button busStopsButton;
@@ -52,7 +54,7 @@ public class BusTimes extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_busarrivaltimes, container, false);
+        rootView = inflater.inflate(R.layout.fragment_busarrivaltimes, container, false);
         // views setup
         viewMapButton = rootView.findViewById(R.id.ViewMapButton);
         viewMapButton.setOnClickListener(onViewMap);
@@ -73,7 +75,8 @@ public class BusTimes extends Fragment {
 
     public void onSearch() {
         searchResultList.clear();
-        if (query != "") {
+        Log.d("query", query);
+        if (!query.equals("")) {
             if (includeBusServices) {
                 for (String item : busServicesList) {
                     if (item.toLowerCase().trim().contains(query.toLowerCase().trim())) {
@@ -110,39 +113,44 @@ public class BusTimes extends Fragment {
         getParentFragmentManager()
                 .beginTransaction()
                 .setCustomAnimations(
-                        R.anim.fade_in,
-                        R.anim.fade_out
+                        R.anim.slidefade_in_right,
+                        R.anim.slidefade_out_left,
+                        R.anim.slidefade_in_left,
+                        R.anim.slidefade_out_right
                 )
+                .addToBackStack("BusTimes")
                 .replace(R.id.fragment_container, new BTMap())
                 .commit();
     };
     private View.OnClickListener toggleBusServicesFilter = view -> {
         includeBusServices = true;
-        busServicesButton.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.white)));
-        busServicesButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.buttonPanel)));
+        busServicesButton.setAlpha(1f);
+        busServicesButton.setTypeface(null, Typeface.BOLD);
         if (includeBusStops) { // true
             includeBusStops = false;
-            busStopsButton.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.hintGray)));
-            busStopsButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.buttonPanelPressed)));
+            busStopsButton.setAlpha(0.4f);
+            busStopsButton.setTypeface(null, Typeface.NORMAL);
         } else { // false
             includeBusStops = true;
-            busStopsButton.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.white)));
-            busStopsButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.buttonPanel)));
+            busStopsButton.setAlpha(0.8f);
+            busServicesButton.setAlpha(0.8f);
+            busServicesButton.setTypeface(null, Typeface.NORMAL);
         }
         onSearch();
     };
     private View.OnClickListener toggleBusStopsFilter = view -> {
         includeBusStops = true;
-        busStopsButton.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.white)));
-        busStopsButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.buttonPanel)));
+        busStopsButton.setAlpha(1f);
+        busStopsButton.setTypeface(null, Typeface.BOLD);
         if (includeBusServices) { // true
             includeBusServices = false;
-            busServicesButton.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.hintGray)));
-            busServicesButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.buttonPanelPressed)));
+            busServicesButton.setAlpha(0.4f);
+            busServicesButton.setTypeface(null, Typeface.NORMAL);
         } else { // false
             includeBusServices = true;
-            busServicesButton.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.white)));
-            busServicesButton.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.buttonPanel)));
+            busServicesButton.setAlpha(0.8f);
+            busStopsButton.setAlpha(0.8f);
+            busStopsButton.setTypeface(null, Typeface.NORMAL);
         }
         onSearch();
     };
@@ -222,11 +230,12 @@ public class BusTimes extends Fragment {
                 .getSupportFragmentManager()
                 .beginTransaction()
                 .setCustomAnimations(
-                        R.anim.slide_in_right,  // Enter animation
-                        R.anim.slide_out_left,  // Exit animation
+                        R.anim.fade_in,  // Enter animation
+                        R.anim.fade_out,  // Exit animation
                         R.anim.slide_in_left,   // Pop enter animation (when fragment is re-added)
                         R.anim.slide_out_right  // Pop exit animation (when fragment is removed)
                 )
+                .addSharedElement(rootView.findViewById(R.id.HHELLOOO), "sex")
                 .replace(R.id.fragment_container, selectedFragment)
                 .addToBackStack("BusTimes") // allows for backing
                 .commit();

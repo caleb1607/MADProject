@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         app:backgroundTint="@color/navBarPanel"
         app:elevation="20dp"
-        app:itemIconTint="#FFFFFF"
+        app:itemIconTint="@null"
         app:itemTextAppearanceActive="@style/itemTextAppearanceActive"
         app:itemTextAppearanceInactive="@style/itemTextAppearanceInactive"
         app:itemTextColor="#FFFFFF"

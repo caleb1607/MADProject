@@ -4,5 +4,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/mainBackground"
-    tools:context=".pages.travel_routes.TRSearch"/>
+    tools:context=".pages.travel_routes.TRSearch">
+
+    <FrameLayout
+        android:id="@+id/MapFragmentContainer2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="4dp"
+        android:paddingTop="4dp"
+        android:paddingRight="4dp"
+        android:paddingBottom="4dp">
+
+        <Button
+            android:id="@+id/ReturnButton4"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/arrow_left_thin"
+            android:text="@string/blank"
+            app:backgroundTint="@color/black" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/BTMapBusTimesPanel"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_gravity="bottom"
+        android:background="#BC2B2B"
+        android:visibility="invisible">
+
+        <TextView
+            android:id="@+id/Test1Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView" />
+    </FrameLayout>
+
+</FrameLayout>

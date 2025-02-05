@@ -1,11 +1,15 @@
 package com.example.madproject.pages;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.example.madproject.R;
 import com.example.madproject.pages.bookmarks.Bookmarks;
@@ -20,16 +24,26 @@ public class main extends AppCompatActivity {
     int currentFragmentId;
     int fragmentPosition;
     BottomNavigationView bottomNavigationView;
+    Menu menu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // Set default fragment
+        // set default fragment
         loadFragment(new Bookmarks(), null);
         currentFragmentId = R.id.bookmarks;
         fragmentPosition = 0;
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        menu = bottomNavigationView.getMenu();
+        // set the icon tint for each individual item
+        ColorStateList bookmarksColor = ContextCompat.getColorStateList(this, R.color.navbar_bookmarks_icon_tint);
+        ColorStateList busarrivaltimesColor = ContextCompat.getColorStateList(this, R.color.navbar_bustimes_icon_tint);
+        ColorStateList travelroutesColor = ContextCompat.getColorStateList(this, R.color.navbar_travelroutes_icon_tint);
+        ColorStateList settingsColor = ContextCompat.getColorStateList(this, R.color.navbar_settings_icon_tint);
+        Menu menu = bottomNavigationView.getMenu();
+        // default
+        bottomNavigationView.setItemTextColor(bookmarksColor);
+        bottomNavigationView.setItemIconTintList(bookmarksColor);
         // find navbar clicked item
         bottomNavigationView.setOnItemSelectedListener(item -> {
             Fragment selectedFragment = null;
@@ -41,22 +55,35 @@ public class main extends AppCompatActivity {
                     currentFragmentId = R.id.bookmarks;
                     animationGoesRight = (fragmentPosition < 0) ? true : false;
                     fragmentPosition = 0;
+                    // Apply the selected item colors (text and icon)
+                    bottomNavigationView.setItemTextColor(bookmarksColor);
+                    bottomNavigationView.setItemIconTintList(bookmarksColor);
                 } else if (itemID == R.id.busarrivaltimes) {
                     selectedFragment = new BusTimes();
                     currentFragmentId = R.id.busarrivaltimes;
                     animationGoesRight = (fragmentPosition < 1) ? true : false;
                     fragmentPosition = 1;
+                    // Apply the selected item colors (text and icon)
+                    bottomNavigationView.setItemTextColor(busarrivaltimesColor);
+                    bottomNavigationView.setItemIconTintList(busarrivaltimesColor);
                 } else if (itemID == R.id.travelroutes) {
                     selectedFragment = new TravelRoutes();
                     currentFragmentId = R.id.travelroutes;
                     animationGoesRight = (fragmentPosition < 2) ? true : false;
                     fragmentPosition = 2;
+                    // Apply the selected item colors (text and icon)
+                    bottomNavigationView.setItemTextColor(travelroutesColor);
+                    bottomNavigationView.setItemIconTintList(travelroutesColor);
                 } else if (itemID == R.id.settings) {
                     selectedFragment = new Settings();
                     currentFragmentId = R.id.settings;
                     animationGoesRight = (fragmentPosition < 3) ? true : false;
                     fragmentPosition = 3;
+                    // Apply the selected item colors (text and icon)
+                    bottomNavigationView.setItemTextColor(settingsColor);
+                    bottomNavigationView.setItemIconTintList(settingsColor);
                 }
+
                 if (selectedFragment != null) {
                     loadFragment(selectedFragment, animationGoesRight);
                 }

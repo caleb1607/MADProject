@@ -30,9 +30,11 @@
                 android:layout_gravity="center_horizontal"
                 android:background="@color/transparent"
                 android:backgroundTint="@color/transparent"
-                android:fontFamily="sans-serif-medium"
+                android:fontFamily="@font/albertsans5_medium"
                 android:text="View Map"
-                android:textColor="#FFFFFF" />
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
 
         </FrameLayout>
 
@@ -71,11 +73,14 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="1"
+                android:alpha="0.8"
                 android:background="@drawable/round_button"
-                app:backgroundTint="@color/buttonPanel"
-                android:fontFamily="sans-serif-medium"
+                android:fontFamily="@font/albertsans5_medium"
                 android:text="Bus Services"
-                android:textColor="#FFFFFF" />
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                app:backgroundTint="@color/buttonPanel" />
 
             <Space
                 android:layout_width="10dp"
@@ -88,11 +93,14 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="1"
+                android:alpha="0.8"
                 android:background="@drawable/round_button"
-                app:backgroundTint="@color/buttonPanel"
-                android:fontFamily="sans-serif-medium"
+                android:fontFamily="@font/albertsans5_medium"
                 android:text="Bus Stops"
-                android:textColor="#FFFFFF" />
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                app:backgroundTint="@color/buttonPanel" />
 
         </LinearLayout>
 
@@ -111,5 +119,14 @@
             android:layout_height="16dp" />
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/HHELLOOO"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textColor="#CD2222"
+        android:textSize="30sp"
+        android:transitionName="sex" />
 
 </FrameLayout>

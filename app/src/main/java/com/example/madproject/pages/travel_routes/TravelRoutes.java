@@ -147,13 +147,13 @@ public class TravelRoutes extends Fragment {
             mapView.moveCamera(new LatLng(
                     fromLat,
                     fromLon
-                    ), 13f
+                    ), 16f
                     );
         } else if (fromData.getLat() == null && toData.getLat() != null) { // only TO coords
             mapView.moveCamera(new LatLng(
                     toLat,
                     toLon
-                    ), 13f
+                    ), 16f
                     );
         }
     }

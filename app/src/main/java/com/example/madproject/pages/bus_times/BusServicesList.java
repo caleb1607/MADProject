@@ -37,11 +37,13 @@ import java.util.concurrent.Future;
 
 public class BusServicesList extends Fragment {
 
+    RecyclerView busServicePanels;
     BusTimesBookmarksDB busTimesBookmarksDB;
     String busStopCode;
     String busStopName;
     List<BusServicePanel> fullPanelList = new ArrayList<>(); // list of panel data
     ItemAdapter adapter;
+    static TextView clickedTextView;
 
     @Nullable
     @Override
@@ -50,7 +52,7 @@ public class BusServicesList extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_busserviceslist, container, false);
         // views setup
-        RecyclerView busServicePanels = rootView.findViewById(R.id.BusServicesRV);
+        busServicePanels = rootView.findViewById(R.id.BusServicesRV);
         busServicePanels.setLayoutManager(new GridLayoutManager(getContext(), 2));
         Button backButton = rootView.findViewById(R.id.ReturnButton2);
         backButton.setOnClickListener(view -> { goBack(); });
@@ -187,6 +189,7 @@ public class BusServicesList extends Fragment {
                 unavailableText = itemView.findViewById(R.id.UnavailableTexta);
                 itemView.setOnClickListener(v -> {
                     if (clickListener != null) {
+                        clickedTextView = itemView.findViewById(R.id.BusNumber);
                         clickListener.onItemClick(getAdapterPosition());
                     }
                 });
@@ -203,6 +206,8 @@ public class BusServicesList extends Fragment {
 
     private void onPanelClick(int position) { // move to BusStopsList
         Fragment selectedFragment = new BusStopsList();
+        ItemAdapter.ItemViewHolder holder = (ItemAdapter.ItemViewHolder) busServicePanels.findViewHolderForAdapterPosition(position);
+        holder.busNumber.setTransitionName("BusServiceText");
         Bundle bundle = new Bundle();
         bundle.putString("value", fullPanelList.get(position).getBusNumber());
         selectedFragment.setArguments(bundle);
@@ -210,6 +215,7 @@ public class BusServicesList extends Fragment {
                 .getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, selectedFragment)
+                .addSharedElement(holder.busNumber, "BusServiceText")
                 .addToBackStack(null) // allows for backing
                 .commit();
     }

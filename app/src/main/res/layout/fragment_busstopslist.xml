@@ -53,7 +53,8 @@
                 android:fontFamily="@font/albertsans6_semibold"
                 android:text="XXX"
                 android:textColor="@color/white"
-                android:textSize="32sp" />
+                android:textSize="32sp"
+                android:transitionName="BusServiceText" />
 
             <TextView
                 android:id="@+id/ROUTE"
@@ -70,7 +71,18 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/BusStopsRV"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:transitionName="sex" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/HHELLOOO2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="TextView"
+        android:textColor="#CD2222"
+        android:textSize="30sp"
+        android:transitionName="sex" />
 
 </FrameLayout>

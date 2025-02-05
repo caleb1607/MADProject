@@ -45,7 +45,8 @@
                 android:fontFamily="@font/albertsans6_semibold"
                 android:text="Woodlands Int"
                 android:textColor="@color/white"
-                android:textSize="32sp" />
+                android:textSize="32sp"
+                android:transitionName="BusStopNameText" />
 
         </LinearLayout>
 

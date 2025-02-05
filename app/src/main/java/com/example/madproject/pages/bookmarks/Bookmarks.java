@@ -57,7 +57,7 @@ public class Bookmarks extends Fragment {
                     row.get(3),
                     row.get(1),
                     row.get(2),
-                    new String[]{"-", "-", "-"},
+                    new String[]{" ", " ", " "},
                     true
             ));
         }
