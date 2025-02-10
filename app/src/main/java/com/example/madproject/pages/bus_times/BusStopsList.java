@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.database.Cursor;
+import android.database.Cursor; // stupid dont use
 
 import android.os.Handler;
 import android.os.Looper;
@@ -38,8 +38,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import android.content.Context;
-import androidx.cursoradapter.widget.CursorAdapter;
+import android.content.Context; // dont use
+import androidx.cursoradapter.widget.CursorAdapter; // dont use
 
 public class BusStopsList extends Fragment {
 
@@ -48,10 +48,6 @@ public class BusStopsList extends Fragment {
     String busService; // bus stop code of bus stop
     List<BusStopPanel> fullPanelList = new ArrayList<>(); // list of panel data
     ItemAdapter adapter;
-
-
-
-
 
 
     @Nullable
@@ -253,11 +249,10 @@ public class BusStopsList extends Fragment {
         String busStopCode = fullPanelList.get(position).getBusStopCode();
         String busService = this.busService;
         if (!fullPanelList.get(position).getIsBookmarked()) {
-            // add bookmark
-
+            busTimesBookmarksDB.insert(busStopName, busStopCode, busService);
 
         } else {
-            // delete bookmark
+           busTimesBookmarksDB.deleteBookmarksbyBusStop(busStopName, busStopCode);
 
         }
         fullPanelList.get(position).toggleIsBookmarked();
