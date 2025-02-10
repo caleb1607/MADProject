@@ -78,7 +78,7 @@
                 android:paddingLeft="16dp"
                 android:paddingTop="12dp"
                 android:paddingBottom="12dp"
-                android:text="From..."
+                android:text="Starting Location"
                 android:textColor="@color/hintGray"
                 android:textSize="15sp" />
 
@@ -115,7 +115,7 @@
                 android:paddingLeft="16dp"
                 android:paddingTop="12dp"
                 android:paddingBottom="12dp"
-                android:text="To Where?"
+                android:text="Destination Location"
                 android:textColor="@color/hintGray"
                 android:textSize="15sp" />
 

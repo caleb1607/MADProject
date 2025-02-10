@@ -30,6 +30,8 @@ import com.example.madproject.helper.API.OnemapSearch.OnemapSearchResponse;
 import com.example.madproject.helper.APIReader;
 import com.example.madproject.helper.Helper;
 
+import org.w3c.dom.Text;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -41,6 +43,7 @@ public class TRSearch extends Fragment {
     // widgets
     EditText TRSearchBar;
     String searchbarType;
+    TextView startTyping;
     // variables
     static String query = "";
     List<LocationData> searchResultList = new ArrayList<>();
@@ -52,6 +55,7 @@ public class TRSearch extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_trsearch, container, false);
         // views setup
+        startTyping = rootView.findViewById(R.id.startTyping);
         TRSearchBar = rootView.findViewById(R.id.TRSearchBar);
         TRSearchBar.addTextChangedListener(SearchBarTextWatcher());
         RecyclerView searchResults = rootView.findViewById(R.id.TravelRoutesRV);
@@ -112,6 +116,12 @@ public class TRSearch extends Fragment {
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
                 query = charSequence.toString();
                 onSearch();
+                // Hide the placeholder text when the user starts typing
+                if (charSequence.length() > 0) {
+                    startTyping.setVisibility(View.GONE);  // Hide the TextView
+                } else {
+                    startTyping.setVisibility(View.VISIBLE);  // Show the TextView if the field is empty
+                }
             }
             @Override
             public void afterTextChanged(Editable editable) {}

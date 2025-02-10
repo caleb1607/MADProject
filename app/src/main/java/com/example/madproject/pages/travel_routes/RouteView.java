@@ -46,12 +46,33 @@ public class RouteView extends Fragment {
         webView.setWebViewClient(new WebViewClient());
 
         // Load the HTML content
-        String htmlContent = "<html><body>" +
-                "<img src=\"https://www.onemap.gov.sg/web-assets/images/logo/om_logo.png\" " +
-                "style=\"height:20px;width:20px;\"/> " +
-                "<a href=\"https://www.onemap.gov.sg/\" target=\"_blank\">OneMap</a> &copy; contributors | " +
-                "<a href=\"https://www.sla.gov.sg/\" target=\"_blank\">Singapore Land Authority</a>" +
-                "</body></html>";
+        String htmlContent = "<html>" +
+                "<head>" +
+                "<link rel='stylesheet' href='https://www.onemap.gov.sg/web-assets/libs/leaflet/leaflet.css' />" +
+                "<script src='https://www.onemap.gov.sg/web-assets/libs/leaflet/onemap-leaflet.js'></script>" +
+                "</head>" +
+                "<body>" +
+                "<h1>Default Map (XYZ)</h1>" +
+                "<div id='mapdiv' style='height:800px;'></div>" +
+                "<script>" +
+                "let sw = L.latLng(1.144, 103.535);" +
+                "let ne = L.latLng(1.494, 104.502);" +
+                "let bounds = L.latLngBounds(sw, ne);" +
+                "let map = L.map('mapdiv', {" +
+                "center: L.latLng(1.2868108, 103.8545349)," +
+                "zoom: 16" +
+                "});" +
+                "map.setMaxBounds(bounds);" +
+                "let basemap = L.tileLayer('https://www.onemap.gov.sg/maps/tiles/Default/{z}/{x}/{y}.png', {" +
+                "detectRetina: true," +
+                "maxZoom: 19," +
+                "minZoom: 11," +
+                "attribution: '<img src=\"https://www.onemap.gov.sg/web-assets/images/logo/om_logo.png\" style=\"height:20px;width:20px;\"/> &nbsp;<a href=\"https://www.onemap.gov.sg/\" target=\"_blank\" rel=\"noopener noreferrer\">OneMap</a> &copy; contributors &#124; <a href=\"https://www.sla.gov.sg/\" target=\"_blank\" rel=\"noopener noreferrer\">Singapore Land Authority</a>'" +
+                "});" +
+                "basemap.addTo(map);" +
+                "</script>" +
+                "</body>" +
+                "</html>";
 
         webView.loadData(htmlContent, "text/html", "UTF-8");
 
