@@ -22,12 +22,13 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/BOOKMARK_ICON"
                 android:layout_width="33dp"
                 android:layout_height="25dp"
                 android:layout_gravity="center_vertical"
                 android:paddingLeft="8dp"
-                android:src="@drawable/ic_bookmark" />
+                android:src="@drawable/ic_bookmark"
+                android:tint="@color/white" />
 
             <TextView
                 android:id="@+id/YOUR_BOOKMARKS"

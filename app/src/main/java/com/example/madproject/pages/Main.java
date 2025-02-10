@@ -22,15 +22,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class Main extends AppCompatActivity {
 
-    public void manageTheme() {
-        View rootView = findViewById(android.R.id.content);
-        if (ThemeManager.isDarkTheme()) {
-            rootView.setBackgroundColor(getResources().getColor(R.color.mainBackground));
-        } else { // light
-            rootView.setBackgroundColor(getResources().getColor(R.color.LmainBackground));
-        }
-    }
-
     int currentFragmentId;
     int fragmentPosition;
     BottomNavigationView bottomNavigationView;
@@ -39,23 +30,14 @@ public class Main extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // manage theme
-        manageTheme();
         // set default fragment
         loadFragment(new Bookmarks(), null);
         currentFragmentId = R.id.bookmarks;
         fragmentPosition = 0;
-        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView = findViewById(R.id.BottomNavigationView);
         menu = bottomNavigationView.getMenu();
-        // set the icon tint for each individual item
-        ColorStateList bookmarksColor = ContextCompat.getColorStateList(this, R.color.navbar_bookmarks_icon_tint);
-        ColorStateList busarrivaltimesColor = ContextCompat.getColorStateList(this, R.color.navbar_bustimes_icon_tint);
-        ColorStateList travelroutesColor = ContextCompat.getColorStateList(this, R.color.navbar_travelroutes_icon_tint);
-        ColorStateList settingsColor = ContextCompat.getColorStateList(this, R.color.navbar_settings_icon_tint);
-        Menu menu = bottomNavigationView.getMenu();
-        // default
-        bottomNavigationView.setItemTextColor(bookmarksColor);
-        bottomNavigationView.setItemIconTintList(bookmarksColor);
+        // manage theme
+        manageTheme();
         // find navbar clicked item
         bottomNavigationView.setOnItemSelectedListener(item -> {
             Fragment selectedFragment = null;
@@ -67,34 +49,23 @@ public class Main extends AppCompatActivity {
                     currentFragmentId = R.id.bookmarks;
                     animationGoesRight = (fragmentPosition < 0) ? true : false;
                     fragmentPosition = 0;
-                    // Apply the selected item colors (text and icon)
-                    bottomNavigationView.setItemTextColor(bookmarksColor);
-                    bottomNavigationView.setItemIconTintList(bookmarksColor);
                 } else if (itemID == R.id.busarrivaltimes) {
                     selectedFragment = new BusTimes();
                     currentFragmentId = R.id.busarrivaltimes;
                     animationGoesRight = (fragmentPosition < 1) ? true : false;
                     fragmentPosition = 1;
-                    // Apply the selected item colors (text and icon)
-                    bottomNavigationView.setItemTextColor(busarrivaltimesColor);
-                    bottomNavigationView.setItemIconTintList(busarrivaltimesColor);
                 } else if (itemID == R.id.travelroutes) {
                     selectedFragment = new TravelRoutes();
                     currentFragmentId = R.id.travelroutes;
                     animationGoesRight = (fragmentPosition < 2) ? true : false;
                     fragmentPosition = 2;
-                    // Apply the selected item colors (text and icon)
-                    bottomNavigationView.setItemTextColor(travelroutesColor);
-                    bottomNavigationView.setItemIconTintList(travelroutesColor);
                 } else if (itemID == R.id.settings) {
                     selectedFragment = new Settings();
                     currentFragmentId = R.id.settings;
                     animationGoesRight = (fragmentPosition < 3) ? true : false;
                     fragmentPosition = 3;
-                    // Apply the selected item colors (text and icon)
-                    bottomNavigationView.setItemTextColor(settingsColor);
-                    bottomNavigationView.setItemIconTintList(settingsColor);
                 }
+                updateNavbarColors();
 
                 if (selectedFragment != null) {
                     loadFragment(selectedFragment, animationGoesRight);
@@ -102,6 +73,54 @@ public class Main extends AppCompatActivity {
             }
             return true;
         });
+    }
+
+    public void manageTheme() {
+        View rootView = findViewById(android.R.id.content);
+        if (ThemeManager.isDarkTheme()) {
+            rootView.setBackgroundColor(getResources().getColor(R.color.mainBackground));
+            bottomNavigationView.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.navBarPanel));
+        } else { // light
+            rootView.setBackgroundColor(getResources().getColor(R.color.LmainBackground));
+            bottomNavigationView.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.LnavBarPanel));
+        }
+        // defaults
+        ColorStateList bookmarksColor = ThemeManager.isDarkTheme() ?
+                ContextCompat.getColorStateList(this, R.color.navbar_bookmarks_icon_tint) :
+                ContextCompat.getColorStateList(this, R.color.light_navbar_bookmarks_icon_tint);
+        bottomNavigationView.setItemTextColor(bookmarksColor);
+        bottomNavigationView.setItemIconTintList(bookmarksColor);
+        updateNavbarColors();
+    }
+
+    private void updateNavbarColors() {
+        // set the icon tint for each individual item
+        ColorStateList bookmarksColor = ThemeManager.isDarkTheme() ?
+                ContextCompat.getColorStateList(this, R.color.navbar_bookmarks_icon_tint) :
+                ContextCompat.getColorStateList(this, R.color.light_navbar_bookmarks_icon_tint);
+        ColorStateList busarrivaltimesColor = ThemeManager.isDarkTheme() ?
+                ContextCompat.getColorStateList(this, R.color.navbar_bustimes_icon_tint) :
+                ContextCompat.getColorStateList(this, R.color.light_navbar_bustimes_icon_tint);
+        ColorStateList travelroutesColor = ThemeManager.isDarkTheme() ?
+                ContextCompat.getColorStateList(this, R.color.navbar_travelroutes_icon_tint) :
+                ContextCompat.getColorStateList(this, R.color.light_navbar_travelroutes_icon_tint);
+        ColorStateList settingsColor = ThemeManager.isDarkTheme() ?
+                ContextCompat.getColorStateList(this, R.color.navbar_settings_icon_tint):
+                ContextCompat.getColorStateList(this, R.color.light_navbar_settings_icon_tint);
+        // set based on position
+        if (currentFragmentId == R.id.bookmarks) {
+            bottomNavigationView.setItemTextColor(bookmarksColor);
+            bottomNavigationView.setItemIconTintList(bookmarksColor);
+        } else if (currentFragmentId == R.id.busarrivaltimes) {
+            bottomNavigationView.setItemTextColor(busarrivaltimesColor);
+            bottomNavigationView.setItemIconTintList(busarrivaltimesColor);
+        } else if (currentFragmentId == R.id.travelroutes) {
+            bottomNavigationView.setItemTextColor(travelroutesColor);
+            bottomNavigationView.setItemIconTintList(travelroutesColor);
+        } else if (currentFragmentId == R.id.settings) {
+            bottomNavigationView.setItemTextColor(settingsColor);
+            bottomNavigationView.setItemIconTintList(settingsColor);
+        }
     }
 
     // Method to load fragments
