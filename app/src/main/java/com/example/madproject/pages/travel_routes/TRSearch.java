@@ -1,5 +1,6 @@
 package com.example.madproject.pages.travel_routes;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -7,8 +8,6 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextWatcher;
 import android.text.style.BackgroundColorSpan;
-import android.transition.Transition;
-import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +18,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,6 +30,8 @@ import com.example.madproject.helper.API.OnemapSearch.OnemapSearchClient;
 import com.example.madproject.helper.API.OnemapSearch.OnemapSearchResponse;
 import com.example.madproject.helper.APIReader;
 import com.example.madproject.helper.Helper;
+import com.example.madproject.pages.bus_times.BusTimes;
+import com.example.madproject.pages.settings.ThemeManager;
 
 import org.w3c.dom.Text;
 
@@ -40,9 +43,12 @@ import java.util.List;
 
 public class TRSearch extends Fragment {
 
+    View rootView;
     // widgets
     EditText TRSearchBar;
     String searchbarType;
+    Button returnButton;
+    RecyclerView searchResultsRV;
     TextView startTyping;
     // variables
     static String query = "";
@@ -53,18 +59,19 @@ public class TRSearch extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_trsearch, container, false);
+        rootView = inflater.inflate(R.layout.fragment_trsearch, container, false);
         // views setup
         startTyping = rootView.findViewById(R.id.startTyping);
         TRSearchBar = rootView.findViewById(R.id.TRSearchBar);
         TRSearchBar.addTextChangedListener(SearchBarTextWatcher());
-        RecyclerView searchResults = rootView.findViewById(R.id.TravelRoutesRV);
-        searchResults.setLayoutManager(new LinearLayoutManager(getContext()));
-        Button returnButton = rootView.findViewById(R.id.ReturnButton);
+        searchResultsRV = rootView.findViewById(R.id.TravelRoutesRV);
+        searchResultsRV.setLayoutManager(new LinearLayoutManager(getContext()));
+        returnButton = rootView.findViewById(R.id.ReturnButton);
         returnButton.setOnClickListener(view -> transaction(-1));
-        // adapter
-        adapter = new TRSearch.ItemAdapter(searchResultList, this::transaction);
-        searchResults.setAdapter(adapter);
+        // manage theme
+        manageTheme();// adapter
+        adapter = new TRSearch.ItemAdapter(searchResultList, this::transaction, getContext());
+        searchResultsRV.setAdapter(adapter);
         // receive bundle
         if (getArguments() != null) {
             searchbarType = getArguments().getString("searchbarType");
@@ -77,6 +84,22 @@ public class TRSearch extends Fragment {
         }
         TRSearchBar.requestFocus();
         return rootView;
+    }
+    private void manageTheme() {
+        Button returnButton = rootView.findViewById(R.id.ReturnButton);
+        if (ThemeManager.isDarkTheme()) {
+            rootView.setBackgroundColor(getResources().getColor(R.color.mainBackground));
+            returnButton.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.white));
+            TRSearchBar.setTextColor(getResources().getColor(R.color.white));
+            TRSearchBar.setHintTextColor(getResources().getColor(R.color.hintGray));
+            TRSearchBar.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.backgroundPanel));
+        } else { // light
+            rootView.setBackgroundColor(getResources().getColor(R.color.LmainBackground));
+            returnButton.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.black));
+            TRSearchBar.setTextColor(getResources().getColor(R.color.black));
+            TRSearchBar.setHintTextColor(getResources().getColor(R.color.LhintGray));
+            TRSearchBar.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.LbackgroundPanel));
+        }
     }
     public void onSearch() {
         searchResultList.clear();
@@ -131,11 +154,12 @@ public class TRSearch extends Fragment {
     public static class ItemAdapter extends RecyclerView.Adapter<TRSearch.ItemAdapter.ItemViewHolder> {
         private List<LocationData> itemList;
         private TRSearch.ItemAdapter.OnItemClickListener listener;
+        private Context context;
 
-        public ItemAdapter(List<LocationData> itemList, TRSearch.ItemAdapter.OnItemClickListener listener) {
-
+        public ItemAdapter(List<LocationData> itemList, OnItemClickListener listener, Context context) {
             this.itemList = itemList;
             this.listener = listener;
+            this.context = context;
         }
         public interface OnItemClickListener {
             void onItemClick(int position);
@@ -163,6 +187,17 @@ public class TRSearch extends Fragment {
                 }
             }
             holder.searchResultText.setText(spannable);
+            manageThemeRV(holder);
+        }
+
+        private void manageThemeRV(TRSearch.ItemAdapter.ItemViewHolder holder) {
+            if (ThemeManager.isDarkTheme()) {
+                holder.searchResultText.setTextColor(ContextCompat.getColorStateList(context, R.color.nyoomYellow));
+                holder.TRSRCardView.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.backgroundPanel));
+            } else { // light
+                holder.searchResultText.setTextColor(ContextCompat.getColorStateList(context, R.color.LnyoomYellow));
+                holder.TRSRCardView.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.LbackgroundPanel));
+            }
         }
 
         @Override
@@ -172,9 +207,11 @@ public class TRSearch extends Fragment {
 
         public class ItemViewHolder extends RecyclerView.ViewHolder {
             TextView searchResultText;
+            CardView TRSRCardView;
             public ItemViewHolder(View itemView) {
                 super(itemView);
                 searchResultText = itemView.findViewById(R.id.SearchResultText);
+                TRSRCardView = itemView.findViewById(R.id.TRSRCardView);
                 itemView.setOnClickListener(v -> {
                     if (listener != null) {
                         listener.onItemClick(getAdapterPosition());

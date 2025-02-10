@@ -113,8 +113,8 @@ public class TravelRoutes extends Fragment {
     private void updateView() {
         TextView fromText = rootView.findViewById(R.id.FromText);
         TextView toText = rootView.findViewById(R.id.ToText);
-        int hintGray = getResources().getColor(R.color.hintGray);
-        int nyoomYellow = getResources().getColor(R.color.nyoomYellow);
+        int hintGray = getResources().getColor((ThemeManager.isDarkTheme()) ? R.color.hintGray : R.color.LhintGray);
+        int nyoomYellow = getResources().getColor((ThemeManager.isDarkTheme()) ? R.color.nyoomYellow : R.color.LnyoomYellow);
         int nyoomBlue = getResources().getColor(R.color.nyoomBlue);
         if (fromData.getName().equals("")) {
             // default
