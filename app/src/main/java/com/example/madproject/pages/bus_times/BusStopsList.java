@@ -49,8 +49,8 @@ public class BusStopsList extends Fragment {
     List<BusStopPanel> fullPanelList = new ArrayList<>(); // list of panel data
     ItemAdapter adapter;
 
-    private Cursor model = null;
-    private BusTimesBookmarksDB helper = null;
+
+
 
 
 
@@ -79,9 +79,6 @@ public class BusStopsList extends Fragment {
         // Read from datasets
         List<BusStopsMap> busStopsMapList = JSONReader.busstops_map(getContext());
 
-        helper = new BusTimesBookmarksDB(this);
-        model = helper.getAll();
-        adapter = new BookmarksDB(this, model, 0);
 
         // async
         ExecutorService executor = Executors.newFixedThreadPool(10); // Use a thread pool for efficiency
@@ -144,9 +141,7 @@ public class BusStopsList extends Fragment {
             void onItemClick(int position);
         }
 
-        protected void onDestroy(){
-            helper.close();
-        }
+
         // changes layout view to our version
         @Override
         public BusStopsList.ItemAdapter.ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -258,7 +253,7 @@ public class BusStopsList extends Fragment {
         String busStopCode = fullPanelList.get(position).getBusStopCode();
         String busService = this.busService;
         if (!fullPanelList.get(position).getIsBookmarked()) {
-
+            // add bookmark
 
 
         } else {
