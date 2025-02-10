@@ -9,17 +9,27 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuItem;
+import android.view.View;
 
 import com.example.madproject.R;
 import com.example.madproject.pages.bookmarks.Bookmarks;
 import com.example.madproject.pages.bus_times.BusTimes;
 import com.example.madproject.pages.settings.Settings;
+import com.example.madproject.pages.settings.ThemeManager;
 import com.example.madproject.pages.travel_routes.TRSearch;
 import com.example.madproject.pages.travel_routes.TravelRoutes;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class main extends AppCompatActivity {
+public class Main extends AppCompatActivity {
+
+    public void manageTheme() {
+        View rootView = findViewById(android.R.id.content);
+        if (ThemeManager.isDarkTheme()) {
+            rootView.setBackgroundColor(getResources().getColor(R.color.mainBackground));
+        } else { // light
+            rootView.setBackgroundColor(getResources().getColor(R.color.LmainBackground));
+        }
+    }
 
     int currentFragmentId;
     int fragmentPosition;
@@ -29,6 +39,8 @@ public class main extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // manage theme
+        manageTheme();
         // set default fragment
         loadFragment(new Bookmarks(), null);
         currentFragmentId = R.id.bookmarks;

@@ -3,7 +3,7 @@ package com.example.madproject.pages.misc;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.madproject.R;
-import com.example.madproject.pages.main;
+import com.example.madproject.pages.Main;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -30,7 +30,7 @@ public class Login extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     };
     private View.OnClickListener onLogin = view -> {
-        Intent login = new Intent(Login.this, main.class);
+        Intent login = new Intent(Login.this, Main.class);
         startActivity(login);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         finish();

@@ -1,20 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="buttonPanel">#26282D</color>
-    <color name="backgroundPanel">#1F2023</color>
-    <color name="mainBackground">#1A1B1F</color>
+
+
+    <!--UNIVERSAL-->
+
+
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
     <color name="nyoomGreen">#69B765</color>
     <color name="nyoomBlue">#197FAF</color>
     <color name="nyoomYellow">#F2B938</color>
     <color name="nyoomLightGreen">#C9E5C8</color>
     <color name="nyoomLightBlue">#B8E1F5</color>
     <color name="nyoomLightYellow">#FAE5B2</color>
-    <color name="navBarPanel">#1F2025</color>
+    <color name="nyoomDarkGreen">#1A371A</color>
+    <color name="nyoomDarkBlue">#0A3347</color>
+    <color name="nyoomDarkYellow">#4D3805</color>
     <color name="redError">#F44336</color>
     <color name="transparent">#00000000</color>
+
+
+    <!--DARK-->
+
+
+    <color name="buttonPanel">#26282D</color>
+    <color name="backgroundPanel">#1F2023</color>
+    <color name="mainBackground">#1A1B1F</color>
+    <color name="navBarPanel">#1F2025</color>
     <color name="hintGray">#9599A8</color>
-    <color name="darkGray" >#373942</color>
+    <color name="darkGray">#373942</color>
     <color name="buttonPanelPressed">#202125</color>
+
+
+    <!--LIGHT-->
+
+
+    <color name="LbuttonPanel">#D9D7D2</color>
+    <color name="LbackgroundPanel">#E0DFDC</color>
+    <color name="LmainBackground">#E5E4E0</color>
+    <color name="LnavBarPanel">#E0DFDA</color>
+    <color name="LhintGray">#6A6657</color>
+    <color name="LdarkGray">#C8C6BD</color>
+    <color name="LbuttonPanelPressed">#DFDEDA</color>
 </resources>

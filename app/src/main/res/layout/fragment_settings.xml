@@ -143,6 +143,18 @@
             android:textColor="#FFFFFF" />
 
         <Button
+            android:id="@+id/ToggleThemeButton"
+            android:layout_width="275dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/buttonPanel"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="Toggle Theme"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF" />
+
+        <Button
             android:id="@+id/DeleteAccountButton"
             android:layout_width="275dp"
             android:layout_height="wrap_content"

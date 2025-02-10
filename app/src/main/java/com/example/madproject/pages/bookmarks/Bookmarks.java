@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.madproject.R;
 import com.example.madproject.helper.APIReader;
+import com.example.madproject.pages.settings.ThemeManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,6 +28,15 @@ import java.util.concurrent.Future;
 
 public class Bookmarks extends Fragment {
 
+    private void manageTheme() {
+        if (ThemeManager.isDarkTheme()) {
+            rootView.setBackgroundColor(getResources().getColor(R.color.mainBackground));
+        } else { // light
+            rootView.setBackgroundColor(getResources().getColor(R.color.LmainBackground));
+        }
+    }
+
+    View rootView;
     List<BookmarkPanel> fullPanelList = new ArrayList<>(); // list of panel data
     Bookmarks.ItemAdapter adapter;
     @Nullable
@@ -34,7 +44,9 @@ public class Bookmarks extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_bookmarks, container, false);
+        rootView = inflater.inflate(R.layout.fragment_bookmarks, container, false);
+        // manage theme
+        manageTheme();
         // views setup
         RecyclerView bookmarksPanels = rootView.findViewById(R.id.BookmarksRV);
         bookmarksPanels.setLayoutManager(new GridLayoutManager(getContext(), 2));
