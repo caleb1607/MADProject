@@ -5,6 +5,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import java.util.List;
+import java.util.ArrayList;
+
 
 
 public class BusTimesBookmarksDB extends SQLiteOpenHelper {
@@ -13,7 +16,7 @@ public class BusTimesBookmarksDB extends SQLiteOpenHelper {
     private static final int SCHEMA_VERSION = 1;
 
     public BusTimesBookmarksDB(Context context) {
-        super(context, DATABASE_NAME,null,SCHEMA_VERSION);
+        super(context, DATABASE_NAME, null, SCHEMA_VERSION);
     }
 
     @Override
@@ -38,7 +41,7 @@ public class BusTimesBookmarksDB extends SQLiteOpenHelper {
     }
 
 
-    public Cursor getAllByBusStopName(String busStopName){
+    public Cursor getAllByBusStopName(String busStopName) {
         SQLiteDatabase db = getReadableDatabase();
         return db.rawQuery(
                 "SELECT * FROM bookmarks WHERE bus_stop_name = ?",
@@ -46,7 +49,7 @@ public class BusTimesBookmarksDB extends SQLiteOpenHelper {
         );
     }
 
-    public Cursor getAllByBusStopCode(String busStopCode){
+    public Cursor getAllByBusStopCode(String busStopCode) {
         SQLiteDatabase db = getReadableDatabase();
         return db.rawQuery(
                 "SELECT * FROM bookmarks WHERE bus_stop_code = ?",
@@ -54,7 +57,7 @@ public class BusTimesBookmarksDB extends SQLiteOpenHelper {
         );
     }
 
-    public Cursor getAllByBusService(String busService){
+    public Cursor getAllByBusService(String busService) {
         SQLiteDatabase db = getReadableDatabase();
         return db.rawQuery(
                 "SELECT * FROM bookmarks WHERE bus_service = ?",
@@ -72,8 +75,7 @@ public class BusTimesBookmarksDB extends SQLiteOpenHelper {
 
         getWritableDatabase().insert("bookmarks", null, cv);
 
-}
-
+    }
 
 
     public void deleteBookmarkById(int id) {
@@ -81,6 +83,7 @@ public class BusTimesBookmarksDB extends SQLiteOpenHelper {
         db.delete("bookmarks", "_id=?", new String[]{String.valueOf(id)});
         db.close();
     }
+
     public void deleteBookmarkByName(String busStopName) {
         SQLiteDatabase db = getWritableDatabase();
         db.delete("bookmarks", "bus_stop_name=?", new String[]{String.valueOf(busStopName)});
@@ -93,7 +96,7 @@ public class BusTimesBookmarksDB extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void deleteBookmarksbyBusStop(String busStopName, String busStopCode){
+    public void deleteBookmarksbyBusStop(String busStopName, String busStopCode) {
         SQLiteDatabase db = getWritableDatabase();
         db.delete("bookmarks", "bus_stop_name=? AND bus_stop_code=?", new String[]{busStopCode, busStopName});
         db.close();
@@ -105,12 +108,11 @@ public class BusTimesBookmarksDB extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void deleteBookmarkAll(String busStopCode, String busStopName, String busStopService){
+    public void deleteBookmarkAll(String busStopCode, String busStopName, String busStopService) {
         SQLiteDatabase db = getWritableDatabase();
         db.delete("bookmarks", "bus_stop_name=? AND bus_stop_code=? AND bus_service=?", new String[]{busStopCode, busStopName, busStopService});
         db.close();
     }
-
 
 
     public String getBusStopName(Cursor c) {
@@ -124,6 +126,29 @@ public class BusTimesBookmarksDB extends SQLiteOpenHelper {
     public String getBusService(Cursor c) {
         return c.getString(c.getColumnIndexOrThrow("bus_service"));
     }
+
+
+    public List<List<String>> getAllBookmarks() {
+        List<List<String>> bookmarks = new ArrayList<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT _id, bus_stop_name, bus_stop_code, bus_service FROM bookmarks", null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                List<String> row = new ArrayList<>();
+                row.add(cursor.getString(0)); // ID
+                row.add(cursor.getString(1)); // Bus Stop Name
+                row.add(cursor.getString(2)); // Bus Stop Code
+                row.add(cursor.getString(3)); // Bus Service
+                bookmarks.add(row);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return bookmarks;
+    }
+
 }
 
 /* USE CASE EXAMPLE:
