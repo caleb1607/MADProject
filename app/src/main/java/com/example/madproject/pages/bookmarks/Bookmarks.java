@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.example.madproject.helper.BusTimesBookmarksDB;
+
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,6 +28,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+
 public class Bookmarks extends Fragment {
 
     private void manageTheme() {
@@ -38,64 +40,61 @@ public class Bookmarks extends Fragment {
     }
 
     View rootView;
-    List<BookmarkPanel> fullPanelList = new ArrayList<>(); // list of panel data
-    BusTimesBookmarksDB BusTimesBookmarks;
-    Bookmarks.ItemAdapter adapter;
+    static List<BookmarkPanel> fullPanelList = new ArrayList<>(); // list of panel data
+    BusTimesBookmarksDB busTimesBookmarks;
+    private boolean isDataLoaded = false;
+    static Bookmarks.ItemAdapter adapter;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_bookmarks, container, false);
-        // manage theme
         manageTheme();
-        // views setup
+
         RecyclerView bookmarksPanels = rootView.findViewById(R.id.BookmarksRV);
         bookmarksPanels.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        BusTimesBookmarks = new BusTimesBookmarksDB(getContext());
-        // read from SQLite
-         List<List<String>> sqlitedata = BusTimesBookmarks.getAllBookmarks();
-//        Arrays.asList( // THIS SHIT IS TEMPORARY
-////                Arrays.asList("1", "Woodgrove Pr Sch", "46971", "901"),
-////                Arrays.asList("2", "Woodlands Int", "46009", "911A"),
-////                Arrays.asList("3", "Blk 273B", "27459", "185")
-//        );
-        // async
-        // CONTINUE HHERE
-        ExecutorService executor = Executors.newFixedThreadPool(10); // Use a thread pool for efficiency
+        busTimesBookmarks = new BusTimesBookmarksDB(getContext());
+
+        // Clear any previous data to avoid duplication
+        fullPanelList.clear();
+
+        // Ensure bookmarks are only loaded once
+        loadBookmarks();
+
+        ExecutorService executor = Executors.newFixedThreadPool(10);
         List<Future<String[]>> futures = new ArrayList<>();
-        for (List<String> row : sqlitedata) {
+
+        for (BookmarkPanel panel : fullPanelList) {
             Future<String[]> future = executor.submit(() ->
-                    APIReader.fetchBusArrivals(row.get(2), row.get(3))
+                    APIReader.fetchBusArrivals(panel.getBusStopCode(), panel.getBusNumber())
             );
             futures.add(future);
-            fullPanelList.add(new BookmarkPanel(
-                    row.get(3),
-                    row.get(1),
-                    row.get(2),
-                    new String[]{" ", " ", " "},
-                    true
-            ));
         }
+
         new Handler(Looper.getMainLooper()).post(() -> {
             try {
                 for (int i = 0; i < fullPanelList.size(); i++) {
-                    String[] arrivals = futures.get(i).get(); // Blocking call, waits for result
+                    String[] arrivals = futures.get(i).get();
                     fullPanelList.get(i).setAT(arrivals);
-                    adapter.notifyItemChanged(i); // Update only the changed item
+                    adapter.notifyItemChanged(i);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
 
-        // Shutdown executor to prevent memory leaks
         executor.shutdown();
-        // adapter setup
+
+        // Setup adapter
         adapter = new Bookmarks.ItemAdapter(fullPanelList, position -> onPanelClick(position));
         bookmarksPanels.setAdapter(adapter);
+
         return rootView;
     }
+
+
+
     // adapter for recycler view
     public static class ItemAdapter extends RecyclerView.Adapter<Bookmarks.ItemAdapter.ItemViewHolder> {
         private List<BookmarkPanel> panelList;
@@ -109,6 +108,7 @@ public class Bookmarks extends Fragment {
         public interface OnItemClickListener {
             void onItemClick(int position);
         }
+
 
         // changes layout view to our version
         @Override
@@ -173,6 +173,49 @@ public class Bookmarks extends Fragment {
     }
 
     private void onPanelClick(int position) {
+        BookmarkPanel bookmark = fullPanelList.get(position);
 
+        Log.d("SQLite", "Deleting: " + bookmark.getBusStopName() + " (" + bookmark.getBusStopCode() + ")");
+
+        // Remove from SQLite
+        busTimesBookmarks.deleteBookmark(bookmark.getBusStopName(), bookmark.getBusStopCode(), bookmark.getBusNumber());
+
+        // Remove from the list and update UI
+        fullPanelList.remove(position);
+        adapter.notifyItemRemoved(position);
     }
+
+
+    private void loadBookmarks() {
+        // Only load the bookmarks if they haven't been loaded yet
+        if (!isDataLoaded) {
+            List<List<String>> sqlitedata = busTimesBookmarks.getAllBookmarks();
+
+            // Clear previous data if any (if you want to refresh the list)
+            fullPanelList.clear();
+
+            for (List<String> row : sqlitedata) {
+                // Log the data for debugging
+                Log.d("SQLite", "BusNumber: " + row.get(3) +
+                        ", BusStopName: " + row.get(1) +
+                        ", BusStopCode: " + row.get(2));
+
+                // Add data to the fullPanelList
+                fullPanelList.add(new BookmarkPanel(
+                        row.get(3),
+                        row.get(1),
+                        row.get(2),
+                        new String[]{" ", " ", " "},
+                        true
+                ));
+            }
+
+            // Set the flag to indicate that data has been loaded
+            isDataLoaded = true;
+        }
+    }
+
+
+
+
 }

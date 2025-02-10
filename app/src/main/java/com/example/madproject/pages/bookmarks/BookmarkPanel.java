@@ -21,4 +21,7 @@ public class BookmarkPanel {
     public String getBusStopCode() { return busStopCode; }
     public String[] getAT() { return AT; }
     public boolean getIsBookmarked() { return isBookmarked; }
+
+    public void toggleIsBookmarked() {
+    }
 }

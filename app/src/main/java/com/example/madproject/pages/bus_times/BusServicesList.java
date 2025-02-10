@@ -233,7 +233,7 @@ public class BusServicesList extends Fragment {
             busTimesBookmarksDB.insert(busStopName,busStopCode, busService);
 
         } else {
-            busTimesBookmarksDB.deleteBookmarkAll(busStopCode, busStopName, busService);
+            busTimesBookmarksDB.deleteBookmarkByService(busService);
 
         }
         fullPanelList.get(position).toggleIsBookmarked();

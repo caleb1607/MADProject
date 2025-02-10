@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 
@@ -90,6 +91,14 @@ public class BusTimesBookmarksDB extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void deleteBookmark(String busStopName, String busStopCode, String busService) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete("bookmarks", "bus_stop_name=? AND bus_stop_code=? AND bus_service=?", new String[]{busStopName, busStopCode, busService});
+
+        db.close();
+    }
+
+
     public void deleteBookmarkByCode(String busStopCode) {
         SQLiteDatabase db = getWritableDatabase();
         db.delete("bookmarks", "bus_stop_code=?", new String[]{String.valueOf(busStopCode)});
@@ -102,15 +111,16 @@ public class BusTimesBookmarksDB extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void deleteBookmarkByService(String busStopService) {
+
+    public void deleteBookmarkByService(String busService) {
         SQLiteDatabase db = getWritableDatabase();
-        db.delete("bookmarks", "bus_service=?", new String[]{String.valueOf(busStopService)});
+        db.delete("bookmarks", "bus_service=?", new String[]{String.valueOf(busService)});
         db.close();
     }
 
-    public void deleteBookmarkAll(String busStopCode, String busStopName, String busStopService) {
+    public void deleteBookmarkAll(String busStopCode, String busStopName, String busService) {
         SQLiteDatabase db = getWritableDatabase();
-        db.delete("bookmarks", "bus_stop_name=? AND bus_stop_code=? AND bus_service=?", new String[]{busStopCode, busStopName, busStopService});
+        db.delete("bookmarks", "bus_stop_name=? AND bus_stop_code=? AND bus_service=?", new String[]{busStopCode, busStopName, busService});
         db.close();
     }
 
@@ -146,6 +156,7 @@ public class BusTimesBookmarksDB extends SQLiteOpenHelper {
         }
         cursor.close();
         db.close();
+        Collections.reverse(bookmarks);
         return bookmarks;
     }
 
