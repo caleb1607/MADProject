@@ -16,15 +16,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.madproject.MapView;
 import com.example.madproject.R;
+import com.example.madproject.pages.settings.ThemeManager;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 
 public class TravelRoutes extends Fragment {
 
+    Button fromButton;
+    Button toButton;
+    Button findRouteButton;
     TextView sitText;
     View rootView;
     LocationData fromData = new LocationData("", null, null, "");
@@ -37,17 +43,44 @@ public class TravelRoutes extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_travelroutes, container, false);
         //ViewCompat.setTransitionName(sitText, "fatass");
         // onclick listeners
-        Button fromButton = rootView.findViewById(R.id.TRFromButton);
+        fromButton = rootView.findViewById(R.id.TRFromButton);
         fromButton.setOnClickListener(view -> {onSearch("from");});
-        Button toButton = rootView.findViewById(R.id.TRToButton);
+        toButton = rootView.findViewById(R.id.TRToButton);
         toButton.setOnClickListener(view -> {onSearch("to");});
-        Button findRouteButton = rootView.findViewById(R.id.FindRouteButton);
+        findRouteButton = rootView.findViewById(R.id.FindRouteButton);
         findRouteButton.setOnClickListener(view -> onFindRoute());
+        // manage theme
+        manageTheme();
         // map fragment
         loadMapFragment(new MapView());
         // update data & views
         unloadData();
         return rootView;
+    }
+    private void manageTheme() {
+        FrameLayout fromFL = rootView.findViewById(R.id.FromFL);
+        FrameLayout toFL = rootView.findViewById(R.id.ToFL);
+        TextView fromText = rootView.findViewById(R.id.FromText);
+        TextView toText = rootView.findViewById(R.id.ToText);
+        ImageView MARKER_ICON =  rootView.findViewById(R.id.MARKER_ICON);
+        TextView FIND_A_ROUTE = rootView.findViewById(R.id.FIND_A_ROUTE);
+        if (ThemeManager.isDarkTheme()) {
+            rootView.setBackgroundColor(getResources().getColor(R.color.mainBackground));
+            fromFL.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.backgroundPanel));
+            toFL.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.backgroundPanel));
+            fromText.setTextColor(getResources().getColor(R.color.hintGray));
+            toText.setTextColor(getResources().getColor(R.color.hintGray));
+            MARKER_ICON.setImageTintList(ContextCompat.getColorStateList(getContext(), R.color.white));
+            FIND_A_ROUTE.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+        } else { // light
+            rootView.setBackgroundColor(getResources().getColor(R.color.LmainBackground));
+            fromFL.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.LbackgroundPanel));
+            toFL.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.LbackgroundPanel));
+            fromText.setTextColor(getResources().getColor(R.color.LhintGray));
+            toText.setTextColor(getResources().getColor(R.color.LhintGray));
+            MARKER_ICON.setImageTintList(ContextCompat.getColorStateList(getContext(), R.color.black));
+            FIND_A_ROUTE.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
+        }
     }
     private void unloadData() {
         // get data

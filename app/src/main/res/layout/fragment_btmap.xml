@@ -10,7 +10,7 @@
         android:id="@+id/MapFragmentContainer2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
+        app:layout_constraintBottom_toTopOf="@id/BottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

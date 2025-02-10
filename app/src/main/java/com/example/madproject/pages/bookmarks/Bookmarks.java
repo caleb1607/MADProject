@@ -7,16 +7,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import com.example.madproject.helper.BusTimesBookmarksDB;
+
+import android.widget.ImageSwitcher;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.madproject.R;
 import com.example.madproject.helper.APIReader;
+import com.example.madproject.pages.settings.ThemeManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,23 +33,30 @@ import java.util.concurrent.Future;
 
 public class Bookmarks extends Fragment {
 
+    View rootView;
     List<BookmarkPanel> fullPanelList = new ArrayList<>(); // list of panel data
+    BusTimesBookmarksDB BusTimesBookmarks;
     Bookmarks.ItemAdapter adapter;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_bookmarks, container, false);
+        rootView = inflater.inflate(R.layout.fragment_bookmarks, container, false);
+        // manage theme
+        manageTheme();
         // views setup
         RecyclerView bookmarksPanels = rootView.findViewById(R.id.BookmarksRV);
         bookmarksPanels.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        BusTimesBookmarks = new BusTimesBookmarksDB(getContext());
         // read from SQLite
-        List<List<String>> sqlitedata = Arrays.asList( // THIS SHIT IS TEMPORARY
-                Arrays.asList("1", "Woodgrove Pr Sch", "46971", "901"),
-                Arrays.asList("2", "Woodlands Int", "46009", "911A"),
-                Arrays.asList("3", "Blk 273B", "27459", "185")
-        );
+         List<List<String>> sqlitedata = BusTimesBookmarks.getAllBookmarks();
+//        Arrays.asList( // THIS SHIT IS TEMPORARY
+////                Arrays.asList("1", "Woodgrove Pr Sch", "46971", "901"),
+////                Arrays.asList("2", "Woodlands Int", "46009", "911A"),
+////                Arrays.asList("3", "Blk 273B", "27459", "185")
+//        );
         // async
         // CONTINUE HHERE
         ExecutorService executor = Executors.newFixedThreadPool(10); // Use a thread pool for efficiency
@@ -80,6 +93,22 @@ public class Bookmarks extends Fragment {
         bookmarksPanels.setAdapter(adapter);
         return rootView;
     }
+
+    private void manageTheme() {
+        TextView YOUR_BOOKMARKS =  rootView.findViewById(R.id.YOUR_BOOKMARKS);
+        ImageView BOOKMARK_ICON = rootView.findViewById(R.id.BOOKMARK_ICON);
+        if (ThemeManager.isDarkTheme()) {
+            rootView.setBackgroundColor(getResources().getColor(R.color.mainBackground));
+            YOUR_BOOKMARKS.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+            BOOKMARK_ICON.setImageTintList(ContextCompat.getColorStateList(getContext(), R.color.white));
+        } else { // light
+            rootView.setBackgroundColor(getResources().getColor(R.color.LmainBackground));
+            YOUR_BOOKMARKS.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
+            BOOKMARK_ICON.setImageTintList(ContextCompat.getColorStateList(getContext(), R.color.black));
+
+        }
+    }
+
     // adapter for recycler view
     public static class ItemAdapter extends RecyclerView.Adapter<Bookmarks.ItemAdapter.ItemViewHolder> {
         private List<BookmarkPanel> panelList;
