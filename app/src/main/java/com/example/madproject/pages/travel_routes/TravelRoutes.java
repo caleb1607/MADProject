@@ -196,7 +196,7 @@ public class TravelRoutes extends Fragment {
         bundle.putString("lon1", fromData.getLon());
         bundle.putString("name1", fromData.getName());
         bundle.putString("lat2", toData.getLat());
-        bundle.putString("lat2", toData.getLon());
+        bundle.putString("lon2", toData.getLon());
         bundle.putString("name2", toData.getName());
         selectedFragment.setArguments(bundle);
 

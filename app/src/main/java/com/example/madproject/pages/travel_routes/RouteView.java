@@ -1,6 +1,7 @@
 package com.example.madproject.pages.travel_routes;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,8 @@ public class RouteView extends Fragment {
         String lat2 = getArguments().getString("lat2");
         String lon2 = getArguments().getString("lon2");
         String name2 = getArguments().getString("name2");
+        Log.d(name1.toString(), lat1.toString() + ", " + lon1.toString());
+        Log.d(name2.toString(), lat2.toString() + ", " + lon2.toString());
         return rootView;
     }
 }
