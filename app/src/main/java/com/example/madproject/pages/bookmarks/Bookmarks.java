@@ -1,15 +1,14 @@
 package com.example.madproject.pages.bookmarks;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.example.madproject.helper.BusTimesBookmarksDB;
 
-import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,10 +21,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.madproject.R;
 import com.example.madproject.helper.APIReader;
+import com.example.madproject.pages.bus_times.BusTimes;
 import com.example.madproject.pages.settings.ThemeManager;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -89,7 +88,7 @@ public class Bookmarks extends Fragment {
         // Shutdown executor to prevent memory leaks
         executor.shutdown();
         // adapter setup
-        adapter = new Bookmarks.ItemAdapter(fullPanelList, position -> onPanelClick(position));
+        adapter = new Bookmarks.ItemAdapter(fullPanelList, position -> onPanelClick(position), getContext());
         bookmarksPanels.setAdapter(adapter);
         return rootView;
     }
@@ -113,11 +112,13 @@ public class Bookmarks extends Fragment {
     public static class ItemAdapter extends RecyclerView.Adapter<Bookmarks.ItemAdapter.ItemViewHolder> {
         private List<BookmarkPanel> panelList;
         private Bookmarks.ItemAdapter.OnItemClickListener listener;
+        private Context context;
 
-        public ItemAdapter(List<BookmarkPanel> panelList, Bookmarks.ItemAdapter.OnItemClickListener listener) {
+        public ItemAdapter(List<BookmarkPanel> panelList, OnItemClickListener listener, Context context) {
             // constructor
             this.panelList = panelList;
             this.listener = listener;
+            this.context = context;
         }
         public interface OnItemClickListener {
             void onItemClick(int position);
@@ -157,6 +158,23 @@ public class Bookmarks extends Fragment {
                 holder.AT3.setVisibility(View.INVISIBLE);
                 holder.MINS.setVisibility(View.INVISIBLE);
             }
+            manageThemeRV(holder);
+        }
+
+        private void manageThemeRV(Bookmarks.ItemAdapter.ItemViewHolder holder) {
+            if (ThemeManager.isDarkTheme()) {
+                holder.BUS.setTextColor(ContextCompat.getColor(context, R.color.hintGray));
+                holder.busNumber.setTextColor(ContextCompat.getColor(context, R.color.nyoomYellow));
+                holder.busStopName.setTextColor(ContextCompat.getColor(context, R.color.nyoomLightYellow));
+                holder.RECTANGLE.setBackgroundColor(ContextCompat.getColor(context, R.color.darkGray));
+                holder.ARRIVING_IN.setTextColor(ContextCompat.getColor(context, R.color.hintGray));
+            } else { // light
+                holder.BUS.setTextColor(ContextCompat.getColor(context, R.color.LhintGray));
+                holder.busNumber.setTextColor(ContextCompat.getColor(context, R.color.LnyoomYellow));
+                holder.busStopName.setTextColor(ContextCompat.getColor(context, R.color.nyoomDarkYellow));
+                holder.RECTANGLE.setBackgroundColor(ContextCompat.getColor(context, R.color.LdarkGray));
+                holder.ARRIVING_IN.setTextColor(ContextCompat.getColor(context, R.color.LhintGray));
+            }
         }
         // overrides size of recyclerview
         @Override
@@ -165,7 +183,8 @@ public class Bookmarks extends Fragment {
         }
         // contains the reference of views (UI) of a single item in recyclerview
         public class ItemViewHolder extends RecyclerView.ViewHolder {
-            TextView busNumber, busStopName, AT1, AT2, AT3, MINS, NOW, unavailableText;
+            TextView busNumber, busStopName, AT1, AT2, AT3, MINS, NOW, unavailableText, BUS, ARRIVING_IN;
+            View RECTANGLE;
             public ItemViewHolder(View itemView) {
                 super(itemView);
                 busNumber = itemView.findViewById(R.id.BusNumber);
@@ -176,6 +195,9 @@ public class Bookmarks extends Fragment {
                 MINS = itemView.findViewById(R.id.MINS);
                 NOW = itemView.findViewById(R.id.NOWc);
                 unavailableText = itemView.findViewById(R.id.UnavailableTextc);
+                BUS = itemView.findViewById(R.id.BUS);
+                ARRIVING_IN = itemView.findViewById(R.id.ARRIVING_IN);
+                RECTANGLE = itemView.findViewById(R.id.RECTANGLE);
                 itemView.setOnClickListener(v -> {
                     if (listener != null) {
                         listener.onItemClick(getAdapterPosition());
