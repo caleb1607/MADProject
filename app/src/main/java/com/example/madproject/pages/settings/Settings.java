@@ -27,9 +27,17 @@ public class Settings extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_settings, container, false);
         Button toggleThemeButton = rootView.findViewById(R.id.ToggleThemeButton);
         toggleThemeButton.setOnClickListener(view -> toggleTheme());
+        // manage theme
+        manageTheme();
         return rootView;
     }
-
+    public void manageTheme() {
+        if (ThemeManager.isDarkTheme()) {
+            rootView.setBackgroundColor(getResources().getColor(R.color.mainBackground));
+        } else { // light
+            rootView.setBackgroundColor(getResources().getColor(R.color.LmainBackground));
+        }
+    }
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -38,6 +46,6 @@ public class Settings extends Fragment {
     }
     private void toggleTheme() {
         ThemeManager.toggleTheme(mainContext);
-        Log.d("dark theme: ", Boolean.toString(ThemeManager.isDarkTheme()));
+        manageTheme();
     }
 }

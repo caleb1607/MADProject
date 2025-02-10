@@ -24,7 +24,7 @@
             android:paddingRight="8dp">
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/MARKER_ICON"
                 android:layout_width="33dp"
                 android:layout_height="25dp"
                 android:layout_gravity="center_vertical"
@@ -52,6 +52,7 @@
             android:layout_height="4dp" />
 
         <FrameLayout
+            android:id="@+id/FromFL"
             android:layout_width="360dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -78,7 +79,7 @@
                 android:paddingLeft="16dp"
                 android:paddingTop="12dp"
                 android:paddingBottom="12dp"
-                android:text="From..."
+                android:text="Starting Location"
                 android:textColor="@color/hintGray"
                 android:textSize="15sp" />
 
@@ -89,6 +90,7 @@
             android:layout_height="12dp" />
 
         <FrameLayout
+            android:id="@+id/ToFL"
             android:layout_width="360dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -115,7 +117,7 @@
                 android:paddingLeft="16dp"
                 android:paddingTop="12dp"
                 android:paddingBottom="12dp"
-                android:text="To Where?"
+                android:text="Destination Location"
                 android:textColor="@color/hintGray"
                 android:textSize="15sp" />
 
@@ -133,7 +135,7 @@
                 android:id="@+id/MapFragmentContainer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
+                app:layout_constraintBottom_toTopOf="@id/BottomNavigationView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">

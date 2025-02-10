@@ -9,7 +9,6 @@
     <color name="white">#FFFFFF</color>
     <color name="nyoomGreen">#69B765</color>
     <color name="nyoomBlue">#197FAF</color>
-    <color name="nyoomYellow">#F2B938</color>
     <color name="nyoomLightGreen">#C9E5C8</color>
     <color name="nyoomLightBlue">#B8E1F5</color>
     <color name="nyoomLightYellow">#FAE5B2</color>
@@ -23,6 +22,7 @@
     <!--DARK-->
 
 
+    <color name="nyoomYellow">#F2B938</color>
     <color name="buttonPanel">#26282D</color>
     <color name="backgroundPanel">#1F2023</color>
     <color name="mainBackground">#1A1B1F</color>
@@ -35,6 +35,7 @@
     <!--LIGHT-->
 
 
+    <color name="LnyoomYellow">#AF8320</color>
     <color name="LbuttonPanel">#D9D7D2</color>
     <color name="LbackgroundPanel">#E0DFDC</color>
     <color name="LmainBackground">#E5E4E0</color>
