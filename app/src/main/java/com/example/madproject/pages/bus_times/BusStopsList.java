@@ -174,21 +174,21 @@ public class BusStopsList extends Fragment {
                 holder.MINS.setVisibility(View.INVISIBLE);
             }
             if (!item.getIsBookmarked()) {
-//                holder.bookmarkIcon.setImageTintList(ColorStateList.valueOf(
-//                        ContextCompat.getColor(holder.itemView.getContext(), R.color.darkGray)
-//                ));
+                holder.bookmarkIcon.setImageTintList(ColorStateList.valueOf(
+                        ContextCompat.getColor(holder.itemView.getContext(), R.color.darkGray)
+                ));
             } else {
-                int cx = holder.enabledBookmarkIcon.getWidth() / 2; // Center horizontally
-                int cy = 0; // Start from the top edge
-                float startRadius = 0f;
-                float endRadius = (float) Math.hypot(holder.enabledBookmarkIcon.getWidth(), holder.enabledBookmarkIcon.getHeight());
-                Animator revealAnim = ViewAnimationUtils.createCircularReveal(holder.enabledBookmarkIcon, cx, cy, startRadius, endRadius);
-                holder.enabledBookmarkIcon.setVisibility(View.VISIBLE);
-                revealAnim.setDuration(500);
-                revealAnim.start();
-//                holder.bookmarkIcon.setImageTintList(ColorStateList.valueOf(
-//                        ContextCompat.getColor(holder.itemView.getContext(), R.color.nyoomLightYellow)
-//                ));
+//                int cx = holder.enabledBookmarkIcon.getWidth() / 2; // Center horizontally
+//                int cy = 0; // Start from the top edge
+//                float startRadius = 0f;
+//                float endRadius = (float) Math.hypot(holder.enabledBookmarkIcon.getWidth(), holder.enabledBookmarkIcon.getHeight());
+//                Animator revealAnim = ViewAnimationUtils.createCircularReveal(holder.enabledBookmarkIcon, cx, cy, startRadius, endRadius);
+//                holder.enabledBookmarkIcon.setVisibility(View.VISIBLE);
+//                revealAnim.setDuration(500);
+//                revealAnim.start();
+                holder.bookmarkIcon.setImageTintList(ColorStateList.valueOf(
+                        ContextCompat.getColor(holder.itemView.getContext(), R.color.nyoomLightYellow)
+                ));
             }
         }
         // overrides size of recyclerview
