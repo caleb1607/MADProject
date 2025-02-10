@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import com.example.madproject.helper.BusTimesBookmarksDB;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -38,6 +39,7 @@ public class Bookmarks extends Fragment {
 
     View rootView;
     List<BookmarkPanel> fullPanelList = new ArrayList<>(); // list of panel data
+    BusTimesBookmarksDB BusTimesBookmarks;
     Bookmarks.ItemAdapter adapter;
     @Nullable
     @Override
@@ -50,12 +52,14 @@ public class Bookmarks extends Fragment {
         // views setup
         RecyclerView bookmarksPanels = rootView.findViewById(R.id.BookmarksRV);
         bookmarksPanels.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        BusTimesBookmarks = new BusTimesBookmarksDB(getContext());
         // read from SQLite
-        List<List<String>> sqlitedata = Arrays.asList( // THIS SHIT IS TEMPORARY
-                Arrays.asList("1", "Woodgrove Pr Sch", "46971", "901"),
-                Arrays.asList("2", "Woodlands Int", "46009", "911A"),
-                Arrays.asList("3", "Blk 273B", "27459", "185")
-        );
+         List<List<String>> sqlitedata = BusTimesBookmarks.getAllBookmarks();
+//        Arrays.asList( // THIS SHIT IS TEMPORARY
+////                Arrays.asList("1", "Woodgrove Pr Sch", "46971", "901"),
+////                Arrays.asList("2", "Woodlands Int", "46009", "911A"),
+////                Arrays.asList("3", "Blk 273B", "27459", "185")
+//        );
         // async
         // CONTINUE HHERE
         ExecutorService executor = Executors.newFixedThreadPool(10); // Use a thread pool for efficiency
