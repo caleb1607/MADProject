@@ -1,10 +1,12 @@
 package com.example.madproject.pages.bus_times;
 
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -15,7 +17,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +33,6 @@ import com.example.madproject.helper.JSONReader;
 import com.example.madproject.pages.settings.ThemeManager;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -110,7 +110,10 @@ public class BusServicesList extends Fragment {
         // Shutdown executor to prevent memory leaks
         executor.shutdown();
         // adapter setup
-        adapter = new ItemAdapter(fullPanelList, position -> onPanelClick(position), position -> onBookmarkClick(position));
+        adapter = new ItemAdapter(fullPanelList,
+                position -> onPanelClick(position),
+                position -> onBookmarkClick(position),
+                getContext());
         busServicePanelsRV.setAdapter(adapter);
         return rootView;
     }
@@ -132,16 +135,18 @@ public class BusServicesList extends Fragment {
         private List<BusServicePanel> panelList;
         private BusServicesList.ItemAdapter.OnItemClickListener clickListener;
         private BusServicesList.ItemAdapter.OnItemClickListener bookmarkClickListener;
+        private Context context;
 
         public ItemAdapter(
                 List<BusServicePanel> panelList,
-                BusServicesList.ItemAdapter.OnItemClickListener clickListener,
-                BusServicesList.ItemAdapter.OnItemClickListener bookmarkClickListener
-        ) {
+                OnItemClickListener clickListener,
+                OnItemClickListener bookmarkClickListener,
+                Context context) {
             // constructor
             this.panelList = panelList;
             this.clickListener = clickListener;
             this.bookmarkClickListener = bookmarkClickListener;
+            this.context = context;
         }
         public interface OnItemClickListener {
             void onItemClick(int position);
@@ -188,6 +193,23 @@ public class BusServicesList extends Fragment {
                         ContextCompat.getColor(holder.itemView.getContext(), R.color.nyoomLightYellow)
                 ));
             }
+            manageThemeRV(holder);
+        }
+
+        private void manageThemeRV(BusServicesList.ItemAdapter.ItemViewHolder holder) {
+            if (ThemeManager.isDarkTheme()) {
+                holder.BSVPCardView.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.backgroundPanel));
+                holder.BUS.setTextColor(ContextCompat.getColor(context, R.color.hintGray));
+                holder.busNumber.setTextColor(ContextCompat.getColor(context, R.color.nyoomYellow));
+                holder.RECTANGLE.setBackgroundColor(ContextCompat.getColor(context, R.color.darkGray));
+                holder.ARRIVING_IN.setTextColor(ContextCompat.getColor(context, R.color.hintGray));
+            } else { // light
+                holder.BSVPCardView.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.LbackgroundPanel));
+                holder.BUS.setTextColor(ContextCompat.getColor(context, R.color.LhintGray));
+                holder.busNumber.setTextColor(ContextCompat.getColor(context, R.color.LnyoomYellow));
+                holder.RECTANGLE.setBackgroundColor(ContextCompat.getColor(context, R.color.LdarkGray));
+                holder.ARRIVING_IN.setTextColor(ContextCompat.getColor(context, R.color.LhintGray));
+            }
         }
         // overrides size of recyclerview
         @Override
@@ -196,11 +218,14 @@ public class BusServicesList extends Fragment {
         }
         // contains the reference of views (UI) of a single item in recyclerview
         public class ItemViewHolder extends RecyclerView.ViewHolder {
-            TextView busNumber, BUS, AT1, AT2, AT3, MINS, NOW, unavailableText;
+            CardView BSVPCardView;
+            TextView busNumber, BUS, AT1, AT2, AT3, MINS, NOW, unavailableText, ARRIVING_IN;
             Button bookmarkButton;
             ImageView bookmarkIcon;
+            View RECTANGLE;
             public ItemViewHolder(View itemView) {
                 super(itemView);
+                BSVPCardView = itemView.findViewById(R.id.BSVPCardView);
                 busNumber = itemView.findViewById(R.id.BusNumber);
                 BUS = itemView.findViewById(R.id.BUS);
                 AT1 = itemView.findViewById(R.id.AT1a);
@@ -209,6 +234,7 @@ public class BusServicesList extends Fragment {
                 MINS = itemView.findViewById(R.id.MINS);
                 NOW = itemView.findViewById(R.id.NOWa);
                 unavailableText = itemView.findViewById(R.id.UnavailableTexta);
+                ARRIVING_IN = itemView.findViewById(R.id.ARRIVING_IN);
                 itemView.setOnClickListener(v -> {
                     if (clickListener != null) {
                         clickedTextView = itemView.findViewById(R.id.BusNumber);
@@ -222,6 +248,7 @@ public class BusServicesList extends Fragment {
                         bookmarkClickListener.onItemClick(getAdapterPosition());
                     }
                 });
+                RECTANGLE = itemView.findViewById(R.id.RECTANGLE);
             }
         }
     }

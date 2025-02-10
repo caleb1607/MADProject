@@ -1,17 +1,16 @@
 package com.example.madproject.pages.bus_times;
 
-import android.animation.Animator;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.database.Cursor; // stupid dont use
 
 import android.os.Handler;
 import android.os.Looper;
@@ -19,7 +18,6 @@ import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -40,7 +38,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import android.content.Context; // dont use
-import androidx.cursoradapter.widget.CursorAdapter; // dont use
+
 
 public class BusStopsList extends Fragment {
 
@@ -115,7 +113,10 @@ public class BusStopsList extends Fragment {
         // Shutdown executor to prevent memory leaks
         executor.shutdown();
         // adapter setup
-        adapter = new ItemAdapter(fullPanelList, position -> onPanelClick(position), position -> onBookmarkClick(position));
+        adapter = new ItemAdapter(fullPanelList,
+                position -> onPanelClick(position),
+                position -> onBookmarkClick(position),
+                getContext());
         busStopPanelsRV.setAdapter(adapter);
         return rootView;
     }
@@ -142,22 +143,22 @@ public class BusStopsList extends Fragment {
         private List<BusStopPanel> panelList;
         private BusServicesList.ItemAdapter.OnItemClickListener clickListener;
         private BusServicesList.ItemAdapter.OnItemClickListener bookmarkClickListener;
+        private Context context;
 
         public ItemAdapter(
                 List<BusStopPanel> panelList,
                 BusServicesList.ItemAdapter.OnItemClickListener clickListener,
-                BusServicesList.ItemAdapter.OnItemClickListener bookmarkClickListener
-        ) {
+                BusServicesList.ItemAdapter.OnItemClickListener bookmarkClickListener,
+                Context context) {
             // constructor
             this.panelList = panelList;
             this.clickListener = clickListener;
             this.bookmarkClickListener = bookmarkClickListener;
-
+            this.context = context;
         }
         public interface OnItemClickListener {
             void onItemClick(int position);
         }
-
 
         // changes layout view to our version
         @Override
@@ -211,6 +212,25 @@ public class BusStopsList extends Fragment {
                         ContextCompat.getColor(holder.itemView.getContext(), R.color.nyoomLightYellow)
                 ));
             }
+            manageThemeRV(holder);
+        }
+
+        private void manageThemeRV(BusStopsList.ItemAdapter.ItemViewHolder holder) {
+            if (ThemeManager.isDarkTheme()) {
+                holder.BSPCardView.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.backgroundPanel));
+                holder.busStopName.setTextColor(ContextCompat.getColor(context, R.color.nyoomYellow));
+                holder.streetName.setTextColor(ContextCompat.getColor(context, R.color.hintGray));
+                holder.busStopCode.setTextColor(ContextCompat.getColor(context, R.color.hintGray));
+                holder.RECTANGLE.setBackgroundColor(ContextCompat.getColor(context, R.color.darkGray));
+                holder.ARRIVING_IN.setTextColor(ContextCompat.getColor(context, R.color.hintGray));
+            } else { // light
+                holder.BSPCardView.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.LbackgroundPanel));
+                holder.busStopName.setTextColor(ContextCompat.getColor(context, R.color.LnyoomYellow));
+                holder.streetName.setTextColor(ContextCompat.getColor(context, R.color.LhintGray));
+                holder.busStopCode.setTextColor(ContextCompat.getColor(context, R.color.LhintGray));
+                holder.RECTANGLE.setBackgroundColor(ContextCompat.getColor(context, R.color.LdarkGray));
+                holder.ARRIVING_IN.setTextColor(ContextCompat.getColor(context, R.color.LhintGray));
+            }
         }
         // overrides size of recyclerview
         @Override
@@ -219,11 +239,14 @@ public class BusStopsList extends Fragment {
         }
         // contains the reference of views (UI) of a single item in recyclerview
         public class ItemViewHolder extends RecyclerView.ViewHolder {
-            TextView busStopName, busStopCode, streetName, AT1, AT2, AT3, MINS, NOW, unavailableText;
+            CardView BSPCardView;
+            TextView busStopName, busStopCode, streetName, AT1, AT2, AT3, MINS, NOW, unavailableText, ARRIVING_IN;
             Button bookmarkButton;
             ImageView bookmarkIcon, enabledBookmarkIcon;
+            View RECTANGLE;
             public ItemViewHolder(View itemView) {
                 super(itemView);
+                BSPCardView = itemView.findViewById(R.id.BSPCardView);
                 busStopName = itemView.findViewById(R.id.BusStopName);
                 busStopCode = itemView.findViewById(R.id.BusStopCode);
                 streetName = itemView.findViewById(R.id.RoadName);
@@ -233,6 +256,7 @@ public class BusStopsList extends Fragment {
                 MINS = itemView.findViewById(R.id.MINS);
                 NOW = itemView.findViewById(R.id.NOWb);
                 unavailableText = itemView.findViewById(R.id.UnavailableTextb);
+                ARRIVING_IN = itemView.findViewById(R.id.ARRIVING_IN);
                 itemView.setOnClickListener(v -> {
                     if (clickListener != null) {
                         clickListener.onItemClick(getAdapterPosition());
@@ -246,6 +270,7 @@ public class BusStopsList extends Fragment {
                         bookmarkClickListener.onItemClick(getAdapterPosition());
                     }
                 });
+                RECTANGLE = itemView.findViewById(R.id.RECTANGLE);
             }
         }
     }

@@ -19,6 +19,7 @@
             android:layout_height="4dp" />
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/BSPCardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/backgroundPanel"
