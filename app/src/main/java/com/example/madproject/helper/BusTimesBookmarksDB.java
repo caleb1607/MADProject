@@ -101,7 +101,13 @@ public class BusTimesBookmarksDB extends SQLiteOpenHelper {
 
     public void deleteBookmarkByService(String busStopService) {
         SQLiteDatabase db = getWritableDatabase();
-        db.delete("bookmarks", "bus_stop_code=?", new String[]{String.valueOf(busStopService)});
+        db.delete("bookmarks", "bus_service=?", new String[]{String.valueOf(busStopService)});
+        db.close();
+    }
+
+    public void deleteBookmarkAll(String busStopCode, String busStopName, String busStopService){
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete("bookmarks", "bus_stop_name=? AND bus_stop_code=? AND bus_service=?", new String[]{busStopCode, busStopName, busStopService});
         db.close();
     }
 

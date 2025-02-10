@@ -230,10 +230,10 @@ public class BusServicesList extends Fragment {
         String busStopCode = this.busStopCode;
         String busService = fullPanelList.get(position).getBusNumber();
         if (!fullPanelList.get(position).getIsBookmarked()) {
-            // add a bookmark
+            busTimesBookmarksDB.insert(busStopName,busStopCode, busService);
 
         } else {
-            // delete bookmark
+            busTimesBookmarksDB.deleteBookmarkAll(busStopCode, busStopName, busService);
 
         }
         fullPanelList.get(position).toggleIsBookmarked();
