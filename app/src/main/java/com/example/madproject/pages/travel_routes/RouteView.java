@@ -20,6 +20,7 @@ public class RouteView extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_routeview, container, false);
+        assert getArguments() != null;
         String lat1 = getArguments().getString("lat1");
         String lon1 = getArguments().getString("lon1");
         String name1 = getArguments().getString("name1");

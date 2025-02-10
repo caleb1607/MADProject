@@ -78,15 +78,16 @@ public class TRSearch extends Fragment {
         searchResultList.clear();
         if (query.length() >= 2) {
             OnemapSearchApi onemapSearchApi = OnemapSearchClient.getApiService();
-            onemapSearchApi.getSearchResults(APIReader.getAPIKey(), "Y", "N", 1, query)
+            onemapSearchApi.getSearchResults(APIReader.getAPIKey(), "Y", "Y", 1, query)
                 .enqueue(new Callback<OnemapSearchResponse>() {
                     @Override
                     public void onResponse(Call<OnemapSearchResponse> call, Response<OnemapSearchResponse> response) {
                         if (response.isSuccessful()) {
                             OnemapSearchResponse onemapResponse = response.body();
+                            assert onemapResponse != null;
                             for (OnemapSearchResponse.Result result : onemapResponse.Results) {
                                 searchResultList.add(new LocationData(
-                                    Helper.TitleCase(result.SEARCHVAL),
+                                    Helper.TitleCase(result.ADDRESS),
                                     result.LATITUDE,
                                     result.LONGITUDE,
                                         ""

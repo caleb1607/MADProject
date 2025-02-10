@@ -17,5 +17,3 @@ public interface OnemapSearchApi {
             @Query("searchVal") String searchVal
     );
 }
-
-
