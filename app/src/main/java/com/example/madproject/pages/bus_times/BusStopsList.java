@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import android.database.Cursor;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -37,6 +38,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import android.content.Context;
+import androidx.cursoradapter.widget.CursorAdapter;
 
 public class BusStopsList extends Fragment {
 
@@ -45,6 +48,11 @@ public class BusStopsList extends Fragment {
     String busService; // bus stop code of bus stop
     List<BusStopPanel> fullPanelList = new ArrayList<>(); // list of panel data
     ItemAdapter adapter;
+
+    private Cursor model = null;
+    private BusTimesBookmarksDB helper = null;
+
+
 
     @Nullable
     @Override
@@ -70,6 +78,11 @@ public class BusStopsList extends Fragment {
         busServiceText.setText(busService);
         // Read from datasets
         List<BusStopsMap> busStopsMapList = JSONReader.busstops_map(getContext());
+
+        helper = new BusTimesBookmarksDB(this);
+        model = helper.getAll();
+        adapter = new BookmarksDB(this, model, 0);
+
         // async
         ExecutorService executor = Executors.newFixedThreadPool(10); // Use a thread pool for efficiency
         List<Future<String[]>> futures = new ArrayList<>();
@@ -131,6 +144,9 @@ public class BusStopsList extends Fragment {
             void onItemClick(int position);
         }
 
+        protected void onDestroy(){
+            helper.close();
+        }
         // changes layout view to our version
         @Override
         public BusStopsList.ItemAdapter.ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -242,7 +258,8 @@ public class BusStopsList extends Fragment {
         String busStopCode = fullPanelList.get(position).getBusStopCode();
         String busService = this.busService;
         if (!fullPanelList.get(position).getIsBookmarked()) {
-            // add a bookmark
+
+
 
         } else {
             // delete bookmark

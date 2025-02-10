@@ -5,4 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/mainBackground"
-    tools:context=".pages.travel_routes.TRSearch"/>
+    tools:context=".pages.travel_routes.TRSearch">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TEST1"
+        android:textColor="#00BCD4"
+        android:textColorHint="#00BCD4"
+        android:textSize="130dp" />
+</FrameLayout>

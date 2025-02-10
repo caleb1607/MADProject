@@ -15,9 +15,10 @@ public class OnemapSearchResponse {
         public String SEARCHVAL;
         public String LATITUDE;
         public String LONGITUDE;
+        public String ADDRESS;
 
-        public Result(String SEARCHVAL, String LATITUDE, String LONGITUDE) {
-            this.SEARCHVAL = SEARCHVAL;
+        public Result(String ADDRESS, String LATITUDE, String LONGITUDE) {
+            this.ADDRESS = ADDRESS;
             this.LATITUDE = LATITUDE;
             this.LONGITUDE = LONGITUDE;
         }
