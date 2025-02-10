@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -48,18 +49,16 @@ public class Bookmarks extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_bookmarks, container, false);
-        manageTheme();
 
         RecyclerView bookmarksPanels = rootView.findViewById(R.id.BookmarksRV);
         bookmarksPanels.setLayoutManager(new GridLayoutManager(getContext(), 2));
         busTimesBookmarks = new BusTimesBookmarksDB(getContext());
-
+        // manage theme
+        manageTheme();
         // Clear any previous data to avoid duplication
         fullPanelList.clear();
-
         // Ensure bookmarks are only loaded once
         loadBookmarks();
-
         ExecutorService executor = Executors.newFixedThreadPool(10);
         List<Future<String[]>> futures = new ArrayList<>();
 
@@ -90,10 +89,6 @@ public class Bookmarks extends Fragment {
 
         return rootView;
     }
-
-
-
-
     private void manageTheme() {
         TextView YOUR_BOOKMARKS =  rootView.findViewById(R.id.YOUR_BOOKMARKS);
         ImageView BOOKMARK_ICON = rootView.findViewById(R.id.BOOKMARK_ICON);
@@ -108,8 +103,6 @@ public class Bookmarks extends Fragment {
 
         }
     }
-
-
     // adapter for recycler view
     public static class ItemAdapter extends RecyclerView.Adapter<Bookmarks.ItemAdapter.ItemViewHolder> {
         private List<BookmarkPanel> panelList;
@@ -166,12 +159,14 @@ public class Bookmarks extends Fragment {
 
         private void manageThemeRV(Bookmarks.ItemAdapter.ItemViewHolder holder) {
             if (ThemeManager.isDarkTheme()) {
+                holder.BMPCardView.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.backgroundPanel));
                 holder.BUS.setTextColor(ContextCompat.getColor(context, R.color.hintGray));
                 holder.busNumber.setTextColor(ContextCompat.getColor(context, R.color.nyoomYellow));
                 holder.busStopName.setTextColor(ContextCompat.getColor(context, R.color.nyoomLightYellow));
                 holder.RECTANGLE.setBackgroundColor(ContextCompat.getColor(context, R.color.darkGray));
                 holder.ARRIVING_IN.setTextColor(ContextCompat.getColor(context, R.color.hintGray));
             } else { // light
+                holder.BMPCardView.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.LbackgroundPanel));
                 holder.BUS.setTextColor(ContextCompat.getColor(context, R.color.LhintGray));
                 holder.busNumber.setTextColor(ContextCompat.getColor(context, R.color.LnyoomYellow));
                 holder.busStopName.setTextColor(ContextCompat.getColor(context, R.color.nyoomDarkYellow));
@@ -187,6 +182,7 @@ public class Bookmarks extends Fragment {
         // contains the reference of views (UI) of a single item in recyclerview
         public class ItemViewHolder extends RecyclerView.ViewHolder {
             TextView busNumber, busStopName, AT1, AT2, AT3, MINS, NOW, unavailableText, BUS, ARRIVING_IN;
+            CardView BMPCardView;
             View RECTANGLE;
             public ItemViewHolder(View itemView) {
                 super(itemView);
@@ -200,6 +196,7 @@ public class Bookmarks extends Fragment {
                 unavailableText = itemView.findViewById(R.id.UnavailableTextc);
                 BUS = itemView.findViewById(R.id.BUS);
                 ARRIVING_IN = itemView.findViewById(R.id.ARRIVING_IN);
+                BMPCardView = itemView.findViewById(R.id.BMPCardView);
                 RECTANGLE = itemView.findViewById(R.id.RECTANGLE);
                 itemView.setOnClickListener(v -> {
                     if (listener != null) {

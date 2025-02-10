@@ -31,6 +31,7 @@ import com.example.madproject.helper.APIReader;
 import com.example.madproject.helper.BusTimesBookmarksDB;
 import com.example.madproject.helper.Helper;
 import com.example.madproject.helper.JSONReader;
+import com.example.madproject.pages.settings.ThemeManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,38 +44,41 @@ import androidx.cursoradapter.widget.CursorAdapter; // dont use
 
 public class BusStopsList extends Fragment {
 
+    View rootView;
     RecyclerView busStopPanelsRV;
+    Button backButton;
+    TextView busServiceText;
     BusTimesBookmarksDB busTimesBookmarksDB;
     String busService; // bus stop code of bus stop
     List<BusStopPanel> fullPanelList = new ArrayList<>(); // list of panel data
     ItemAdapter adapter;
-
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_busstopslist, container, false);
+        rootView = inflater.inflate(R.layout.fragment_busstopslist, container, false);
         // views setup
         busStopPanelsRV = rootView.findViewById(R.id.BusStopsRV);
         busStopPanelsRV.setLayoutManager(new GridLayoutManager(getContext(), 1));
-        Button backButton = rootView.findViewById(R.id.ReturnButton3);
+        backButton = rootView.findViewById(R.id.ReturnButton3);
         backButton.setOnClickListener(view -> { goBack(); });
         // transition
         Transition transition = TransitionInflater.from(requireContext()).inflateTransition(R.transition.shared_textview);
         setSharedElementEnterTransition(transition);
-        // class
-        busTimesBookmarksDB = new BusTimesBookmarksDB(getContext());
         // get input params
         Bundle bundle = getArguments();
         busService = bundle.getString("value");
         // set title text
-        TextView busServiceText = rootView.findViewById(R.id.BusServiceText);
+        busServiceText = rootView.findViewById(R.id.BusServiceText);
         busServiceText.setText(busService);
+        // manage theme
+        manageTheme();
+        // class
+        busTimesBookmarksDB = new BusTimesBookmarksDB(getContext());
         // Read from datasets
         List<BusStopsMap> busStopsMapList = JSONReader.busstops_map(getContext());
-
 
         // async
         ExecutorService executor = Executors.newFixedThreadPool(10); // Use a thread pool for efficiency
@@ -114,6 +118,23 @@ public class BusStopsList extends Fragment {
         adapter = new ItemAdapter(fullPanelList, position -> onPanelClick(position), position -> onBookmarkClick(position));
         busStopPanelsRV.setAdapter(adapter);
         return rootView;
+    }
+    private void manageTheme() {
+        TextView BUS =  rootView.findViewById(R.id.BUS);
+        TextView ROUTE = rootView.findViewById(R.id.ROUTE);
+        if (ThemeManager.isDarkTheme()) {
+            rootView.setBackgroundColor(getResources().getColor(R.color.mainBackground));
+            backButton.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.white));
+            BUS.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+            busServiceText.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+            ROUTE.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+        } else { // light
+            rootView.setBackgroundColor(getResources().getColor(R.color.LmainBackground));
+            backButton.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.black));
+            BUS.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
+            busServiceText.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
+            ROUTE.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
+        }
     }
 
     // adapter for recycler view
