@@ -33,6 +33,8 @@ import com.example.madproject.helper.Helper;
 import com.example.madproject.pages.bus_times.BusTimes;
 import com.example.madproject.pages.settings.ThemeManager;
 
+import org.w3c.dom.Text;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -47,6 +49,7 @@ public class TRSearch extends Fragment {
     String searchbarType;
     Button returnButton;
     RecyclerView searchResultsRV;
+    TextView startTyping;
     // variables
     static String query = "";
     List<LocationData> searchResultList = new ArrayList<>();
@@ -58,6 +61,7 @@ public class TRSearch extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_trsearch, container, false);
         // views setup
+        startTyping = rootView.findViewById(R.id.startTyping);
         TRSearchBar = rootView.findViewById(R.id.TRSearchBar);
         TRSearchBar.addTextChangedListener(SearchBarTextWatcher());
         searchResultsRV = rootView.findViewById(R.id.TravelRoutesRV);
@@ -135,6 +139,12 @@ public class TRSearch extends Fragment {
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
                 query = charSequence.toString();
                 onSearch();
+                // Hide the placeholder text when the user starts typing
+                if (charSequence.length() > 0) {
+                    startTyping.setVisibility(View.GONE);  // Hide the TextView
+                } else {
+                    startTyping.setVisibility(View.VISIBLE);  // Show the TextView if the field is empty
+                }
             }
             @Override
             public void afterTextChanged(Editable editable) {}
