@@ -1,5 +1,6 @@
 package com.example.madproject.pages.bus_times;
 
+import android.animation.Animator;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 
@@ -18,6 +19,7 @@ import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -181,13 +183,21 @@ public class BusStopsList extends Fragment {
                 holder.MINS.setVisibility(View.INVISIBLE);
             }
             if (!item.getIsBookmarked()) {
-                holder.bookmarkIcon.setImageTintList(ColorStateList.valueOf(
-                        ContextCompat.getColor(holder.itemView.getContext(), R.color.darkGray)
-                ));
+//                holder.bookmarkIcon.setImageTintList(ColorStateList.valueOf(
+//                        ContextCompat.getColor(holder.itemView.getContext(), R.color.darkGray)
+//                ));
             } else {
-                holder.bookmarkIcon.setImageTintList(ColorStateList.valueOf(
-                        ContextCompat.getColor(holder.itemView.getContext(), R.color.nyoomLightYellow)
-                ));
+                int cx = holder.enabledBookmarkIcon.getWidth() / 2; // Center horizontally
+                int cy = 0; // Start from the top edge
+                float startRadius = 0f;
+                float endRadius = (float) Math.hypot(holder.enabledBookmarkIcon.getWidth(), holder.enabledBookmarkIcon.getHeight());
+                Animator revealAnim = ViewAnimationUtils.createCircularReveal(holder.enabledBookmarkIcon, cx, cy, startRadius, endRadius);
+                holder.enabledBookmarkIcon.setVisibility(View.VISIBLE);
+                revealAnim.setDuration(500);
+                revealAnim.start();
+//                holder.bookmarkIcon.setImageTintList(ColorStateList.valueOf(
+//                        ContextCompat.getColor(holder.itemView.getContext(), R.color.nyoomLightYellow)
+//                ));
             }
         }
         // overrides size of recyclerview
@@ -199,7 +209,7 @@ public class BusStopsList extends Fragment {
         public class ItemViewHolder extends RecyclerView.ViewHolder {
             TextView busStopName, busStopCode, streetName, AT1, AT2, AT3, MINS, NOW, unavailableText;
             Button bookmarkButton;
-            ImageView bookmarkIcon;
+            ImageView bookmarkIcon, enabledBookmarkIcon;
             public ItemViewHolder(View itemView) {
                 super(itemView);
                 busStopName = itemView.findViewById(R.id.BusStopName);
@@ -217,6 +227,7 @@ public class BusStopsList extends Fragment {
                     }
                 });
                 bookmarkIcon = itemView.findViewById(R.id.BookmarkIcon2);
+                enabledBookmarkIcon = itemView.findViewById(R.id.EnabledBookmarkIcon2);
                 bookmarkButton = itemView.findViewById(R.id.BookmarkButton2);
                 bookmarkButton.setOnClickListener(v -> {
                     if (bookmarkClickListener != null) {

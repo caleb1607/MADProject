@@ -192,7 +192,12 @@ public class TravelRoutes extends Fragment {
         Fragment selectedFragment = new RouteView();
 
         Bundle bundle = new Bundle();
-        bundle.putString("idk", "");
+        bundle.putString("lat1", fromData.getLat());
+        bundle.putString("lon1", fromData.getLon());
+        bundle.putString("name1", fromData.getName());
+        bundle.putString("lat2", toData.getLat());
+        bundle.putString("lat2", toData.getLon());
+        bundle.putString("name2", toData.getName());
         selectedFragment.setArguments(bundle);
 
         getParentFragmentManager()
