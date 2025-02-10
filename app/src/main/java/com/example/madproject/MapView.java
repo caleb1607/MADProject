@@ -48,7 +48,6 @@ public class MapView extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        Log.d("MapView", "GoogleMap is ready!");
         if (cameraQueue.isEmpty()) {
             // set position to world spawn
             moveCamera(new LatLng(1.3832, 103.819105), 11f);

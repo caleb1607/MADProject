@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/mainBackground"
+    android:transitionName="helloworld"
     tools:context=".pages.bus_times.BusTimes">
 
     <LinearLayout
@@ -119,14 +120,5 @@
             android:layout_height="16dp" />
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/HHELLOOO"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        android:textColor="#CD2222"
-        android:textSize="30sp"
-        android:transitionName="sex" />
 
 </FrameLayout>

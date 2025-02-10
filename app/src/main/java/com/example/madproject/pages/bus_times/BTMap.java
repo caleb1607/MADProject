@@ -49,7 +49,6 @@ public class BTMap extends Fragment {
         FrameLayout mapFragmentContainer = rootView.findViewById(R.id.MapFragmentContainer2);
         mapFragmentContainer.setOnClickListener(v -> {
             openBTPopup(false);
-            Log.d("clicko","");
         });
         Button returnButton = rootView.findViewById(R.id.ReturnButton4);
         returnButton.setOnClickListener(v -> onReturn());
@@ -68,7 +67,6 @@ public class BTMap extends Fragment {
     }
     private void setupMap() {
         //for (BusStopsComplete BSData : busStopsCompleteList) {
-            Log.d("adding marker", "adding marker");
             mapView.addMarker(
                     new LatLng(1.3098/*BSData.getLatitude()*/, 103.7775/*BSData.getLongitude()*/),
                     "SP"/*BSData.getDescription()*/,
@@ -111,7 +109,6 @@ public class BTMap extends Fragment {
                 .commit();
     }
     private void onReturn() {
-        Log.d("returning", "returning");
         getParentFragmentManager().popBackStack("BusTimes", FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 }

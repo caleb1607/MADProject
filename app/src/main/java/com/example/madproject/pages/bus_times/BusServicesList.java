@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,7 +39,7 @@ import java.util.concurrent.Future;
 
 public class BusServicesList extends Fragment {
 
-    RecyclerView busServicePanels;
+    RecyclerView busServicePanelsRV;
     BusTimesBookmarksDB busTimesBookmarksDB;
     String busStopCode;
     String busStopName;
@@ -52,10 +54,13 @@ public class BusServicesList extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_busserviceslist, container, false);
         // views setup
-        busServicePanels = rootView.findViewById(R.id.BusServicesRV);
-        busServicePanels.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        busServicePanelsRV = rootView.findViewById(R.id.BusServicesRV);
+        busServicePanelsRV.setLayoutManager(new GridLayoutManager(getContext(), 2));
         Button backButton = rootView.findViewById(R.id.ReturnButton2);
         backButton.setOnClickListener(view -> { goBack(); });
+        // transition
+        Transition transition = TransitionInflater.from(requireContext()).inflateTransition(R.transition.shared_textview);
+        setSharedElementEnterTransition(transition);
         // class
         busTimesBookmarksDB = new BusTimesBookmarksDB(getContext());
         // get input params
@@ -66,7 +71,6 @@ public class BusServicesList extends Fragment {
         TextView busStopNameText = rootView.findViewById(R.id.BusStopNameText);
         busStopName = busStopInfo.getDescription();
         busStopNameText.setText(busStopName);
-        Log.d("Bundle received:", busStopCode);
         // Read from datasets
         List<BusServicesAtStop> busServicesAtStopList = JSONReader.bus_services_at_stop(getContext());
         // async
@@ -101,7 +105,7 @@ public class BusServicesList extends Fragment {
         executor.shutdown();
         // adapter setup
         adapter = new ItemAdapter(fullPanelList, position -> onPanelClick(position), position -> onBookmarkClick(position));
-        busServicePanels.setAdapter(adapter);
+        busServicePanelsRV.setAdapter(adapter);
         return rootView;
     }
 
@@ -147,7 +151,6 @@ public class BusServicesList extends Fragment {
                     holder.MINS.setVisibility(View.INVISIBLE);
                     holder.NOW.setVisibility(View.VISIBLE);
                 }
-                Log.d("item.getAT()2", Arrays.toString(item.getAT()));
                 holder.AT1.setText(item.getAT()[0]);
                 holder.AT2.setText(item.getAT()[1]);
                 holder.AT3.setText(item.getAT()[2]);
@@ -175,12 +178,13 @@ public class BusServicesList extends Fragment {
         }
         // contains the reference of views (UI) of a single item in recyclerview
         public class ItemViewHolder extends RecyclerView.ViewHolder {
-            TextView busNumber, AT1, AT2, AT3, MINS, NOW, unavailableText;
+            TextView busNumber, BUS, AT1, AT2, AT3, MINS, NOW, unavailableText;
             Button bookmarkButton;
             ImageView bookmarkIcon;
             public ItemViewHolder(View itemView) {
                 super(itemView);
                 busNumber = itemView.findViewById(R.id.BusNumber);
+                BUS = itemView.findViewById(R.id.BUS);
                 AT1 = itemView.findViewById(R.id.AT1a);
                 AT2 = itemView.findViewById(R.id.AT2a);
                 AT3 = itemView.findViewById(R.id.AT3a);
@@ -206,8 +210,9 @@ public class BusServicesList extends Fragment {
 
     private void onPanelClick(int position) { // move to BusStopsList
         Fragment selectedFragment = new BusStopsList();
-        ItemAdapter.ItemViewHolder holder = (ItemAdapter.ItemViewHolder) busServicePanels.findViewHolderForAdapterPosition(position);
+        ItemAdapter.ItemViewHolder holder = (ItemAdapter.ItemViewHolder) busServicePanelsRV.findViewHolderForAdapterPosition(position);
         holder.busNumber.setTransitionName("BusServiceText");
+        holder.BUS.setTransitionName("BUS");
         Bundle bundle = new Bundle();
         bundle.putString("value", fullPanelList.get(position).getBusNumber());
         selectedFragment.setArguments(bundle);
@@ -215,6 +220,7 @@ public class BusServicesList extends Fragment {
                 .getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, selectedFragment)
+                .addSharedElement(holder.BUS, "BUS")
                 .addSharedElement(holder.busNumber, "BusServiceText")
                 .addToBackStack(null) // allows for backing
                 .commit();
@@ -238,8 +244,8 @@ public class BusServicesList extends Fragment {
         fragmentManager
                 .beginTransaction()
                 .setCustomAnimations(
-                R.anim.slide_in_left,  // Enter animation for the fragment being revealed
-                R.anim.slide_out_right // Exit animation for the current fragment
+                R.anim.slidefade_in_left,  // Enter animation for the fragment being revealed
+                R.anim.slidefade_out_right // Exit animation for the current fragment
         )
         .commit();
         fragmentManager.popBackStack("BusTimes", FragmentManager.POP_BACK_STACK_INCLUSIVE);

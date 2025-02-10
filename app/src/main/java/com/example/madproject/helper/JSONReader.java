@@ -66,11 +66,8 @@ public class JSONReader {
 
     public static List<BusStopsMap> busstops_map(Context context) {
         try {
-            Log.d("busstops_map", "Opening JSON file...");
 
             InputStreamReader reader = new InputStreamReader(context.getResources().openRawResource(R.raw.busstops_map));
-
-            Log.d("busstops_map", "JSON file opened successfully. Parsing JSON...");
 
             Gson gson = new Gson();
             Type mapType = new TypeToken<Map<String, BusStopsMap>>() {}.getType();
@@ -88,15 +85,12 @@ public class JSONReader {
                 busStopsMap.setBusService(entry.getKey()); // Manually assign the bus service key
                 resultList.add(busStopsMap);
             }
-
             if (resultList.isEmpty()) {
                 Log.e("busstops_map", "Result list is empty!");
                 return null;
             }
-
             Log.d("busstops_map", "Returning parsed list with " + resultList.size() + " elements.");
             return resultList;
-
         } catch (Exception e) {
             Log.e("busstops_map", "Error parsing JSON: " + e.getMessage(), e);
             return null;

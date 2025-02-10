@@ -7,6 +7,8 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextWatcher;
 import android.text.style.BackgroundColorSpan;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,7 +58,6 @@ public class TRSearch extends Fragment {
         searchResults.setLayoutManager(new LinearLayoutManager(getContext()));
         Button returnButton = rootView.findViewById(R.id.ReturnButton);
         returnButton.setOnClickListener(view -> transaction(-1));
-        EditText TRSearchBar = rootView.findViewById(R.id.TRSearchBar);
         // adapter
         adapter = new TRSearch.ItemAdapter(searchResultList, this::transaction);
         searchResults.setAdapter(adapter);

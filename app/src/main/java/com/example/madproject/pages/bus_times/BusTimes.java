@@ -2,12 +2,11 @@ package com.example.madproject.pages.bus_times;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.res.ColorStateList;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
@@ -26,12 +25,11 @@ import java.util.List;
 
 import com.example.madproject.R;
 import com.example.madproject.datasets.BusStopsComplete;
-import com.example.madproject.helper.APIReader;
 import com.example.madproject.helper.JSONReader;
-import com.example.madproject.pages.travel_routes.TRSearch;
 
 public class BusTimes extends Fragment {
 
+    RecyclerView searchResultsRV;
     // widgets
     View rootView;
     Button viewMapButton;
@@ -42,7 +40,7 @@ public class BusTimes extends Fragment {
     // variables
     List<BTSearchResultItem> searchResultList = new ArrayList<>();
     ItemAdapter adapter = new ItemAdapter(searchResultList, position -> {
-        transaction(searchResultList.get(position).getType(), searchResultList.get(position).getValue());
+        transaction(position);
     });
     List<String> busServicesList;
     List<BusStopsComplete> busStopsList;
@@ -54,7 +52,7 @@ public class BusTimes extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_busarrivaltimes, container, false);
+        rootView = inflater.inflate(R.layout.fragment_bustimes, container, false);
         // views setup
         viewMapButton = rootView.findViewById(R.id.ViewMapButton);
         viewMapButton.setOnClickListener(onViewMap);
@@ -64,9 +62,9 @@ public class BusTimes extends Fragment {
         busStopsButton.setOnClickListener(toggleBusStopsFilter);
         searchBar = rootView.findViewById(R.id.SearchBar);
         searchBar.addTextChangedListener(SearchBarTextWatcher());
-        RecyclerView searchResults = rootView.findViewById(R.id.BusTimesRV);
-        searchResults.setLayoutManager(new LinearLayoutManager(getContext()));
-        searchResults.setAdapter(adapter);
+        searchResultsRV = rootView.findViewById(R.id.BusTimesRV);
+        searchResultsRV.setLayoutManager(new LinearLayoutManager(getContext()));
+        searchResultsRV.setAdapter(adapter);
         // Read from datasets
         busServicesList = JSONReader.bus_services(getContext());
         busStopsList = JSONReader.bus_stops_complete(getContext());
@@ -75,7 +73,6 @@ public class BusTimes extends Fragment {
 
     public void onSearch() {
         searchResultList.clear();
-        Log.d("query", query);
         if (!query.equals("")) {
             if (includeBusServices) {
                 for (String item : busServicesList) {
@@ -83,7 +80,7 @@ public class BusTimes extends Fragment {
                         searchResultList.add(new BTSearchResultItem(
                                 "busService",
                                 item,
-                                "Bus " + item,
+                                item,
                                 "Bus Service",
                                 ""
                         ));
@@ -190,11 +187,15 @@ public class BusTimes extends Fragment {
         @Override
         public void onBindViewHolder(ItemViewHolder holder, int position) {
             BTSearchResultItem item = itemList.get(position);
+            if (item.getType().equals("busService"))
+                    holder.BUS.setVisibility(View.VISIBLE);
+            else // busStop
+                    holder.BUS.setVisibility(View.GONE);
             holder.header.setText(item.getHeader());
             holder.subheader1.setText(item.getSubheader1());
             holder.subheader2.setText(item.getSubheader2());
             holder.icon.setImageResource(
-                    item.getType() == "busService" ? R.drawable.bus : R.drawable.bus_stop_icon
+                    item.getType().equals("busService") ? R.drawable.bus : R.drawable.bus_stop_icon
             );
         }
 
@@ -204,11 +205,12 @@ public class BusTimes extends Fragment {
         }
 
         public class ItemViewHolder extends RecyclerView.ViewHolder {
-            TextView header, subheader1, subheader2;
+            TextView BUS, header, subheader1, subheader2;
             ImageView icon;
             public ItemViewHolder(View itemView) {
                 super(itemView);
-                header = itemView.findViewById(R.id.BUS);
+                BUS = itemView.findViewById(R.id.BUS3);
+                header = itemView.findViewById(R.id.header);
                 subheader1 = itemView.findViewById(R.id.subheader1);
                 subheader2 = itemView.findViewById(R.id.subheader2);
                 icon = itemView.findViewById(R.id.TypeIcon);
@@ -221,22 +223,36 @@ public class BusTimes extends Fragment {
         }
     }
 
-    private void transaction(String type, String value) {
-        Fragment selectedFragment = (type == "busService") ? new BusStopsList() : new BusServicesList();
+    private void transaction(int position) {
+        String type = searchResultList.get(position).getType();
+        String value = searchResultList.get(position).getValue();
+        Fragment selectedFragment = (type.equals("busService")) ? new BusStopsList() : new BusServicesList();
+        BusTimes.ItemAdapter.ItemViewHolder holder = (BusTimes.ItemAdapter.ItemViewHolder) searchResultsRV.findViewHolderForAdapterPosition(position);
         Bundle bundle = new Bundle();
         bundle.putString("value", value);
         selectedFragment.setArguments(bundle);
-        getActivity()
+        FragmentTransaction transaction = getActivity()
                 .getSupportFragmentManager()
                 .beginTransaction()
                 .setCustomAnimations(
-                        R.anim.fade_in,  // Enter animation
-                        R.anim.fade_out,  // Exit animation
-                        R.anim.slide_in_left,   // Pop enter animation (when fragment is re-added)
-                        R.anim.slide_out_right  // Pop exit animation (when fragment is removed)
+                        R.anim.slidefade_in_right,  // Enter animation
+                        R.anim.slidefade_out_left,  // Exit animation
+                        R.anim.slidefade_in_left,   // Pop enter animation (when fragment is re-added)
+                        R.anim.slidefade_out_right  // Pop exit animation (when fragment is removed)
                 )
-                .addSharedElement(rootView.findViewById(R.id.HHELLOOO), "sex")
-                .replace(R.id.fragment_container, selectedFragment)
+                .replace(R.id.fragment_container, selectedFragment);
+        if (type.equals("busService")) {
+            holder.BUS.setTransitionName("BUS");
+            holder.header.setTransitionName("BusServiceText");
+            transaction
+                    .addSharedElement(holder.BUS, "BUS")
+                    .addSharedElement(holder.header, "BusServiceText");
+        } else { // busStop
+            holder.header.setTransitionName("BusStopNameText");
+            transaction
+                    .addSharedElement(holder.header, "BusStopNameText");
+        }
+        transaction
                 .addToBackStack("BusTimes") // allows for backing
                 .commit();
     }

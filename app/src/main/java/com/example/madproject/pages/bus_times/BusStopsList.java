@@ -15,7 +15,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +30,6 @@ import com.example.madproject.helper.Helper;
 import com.example.madproject.helper.JSONReader;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -40,6 +38,7 @@ import java.util.concurrent.Future;
 
 public class BusStopsList extends Fragment {
 
+    RecyclerView busStopPanelsRV;
     BusTimesBookmarksDB busTimesBookmarksDB;
     String busService; // bus stop code of bus stop
     List<BusStopPanel> fullPanelList = new ArrayList<>(); // list of panel data
@@ -51,14 +50,14 @@ public class BusStopsList extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_busstopslist, container, false);
-        Transition transition = TransitionInflater.from(requireContext())
-                .inflateTransition(R.transition.shared_image);
-        setSharedElementEnterTransition(transition);
         // views setup
-        RecyclerView busStopPanels = rootView.findViewById(R.id.BusStopsRV);
-        busStopPanels.setLayoutManager(new GridLayoutManager(getContext(), 1));
+        busStopPanelsRV = rootView.findViewById(R.id.BusStopsRV);
+        busStopPanelsRV.setLayoutManager(new GridLayoutManager(getContext(), 1));
         Button backButton = rootView.findViewById(R.id.ReturnButton3);
         backButton.setOnClickListener(view -> { goBack(); });
+        // transition
+        Transition transition = TransitionInflater.from(requireContext()).inflateTransition(R.transition.shared_textview);
+        setSharedElementEnterTransition(transition);
         // class
         busTimesBookmarksDB = new BusTimesBookmarksDB(getContext());
         // get input params
@@ -105,7 +104,7 @@ public class BusStopsList extends Fragment {
         executor.shutdown();
         // adapter setup
         adapter = new ItemAdapter(fullPanelList, position -> onPanelClick(position), position -> onBookmarkClick(position));
-        busStopPanels.setAdapter(adapter);
+        busStopPanelsRV.setAdapter(adapter);
         return rootView;
     }
 
@@ -214,6 +213,8 @@ public class BusStopsList extends Fragment {
 
     private void onPanelClick(int position) { // move to BusStopsList
         Fragment selectedFragment = new BusServicesList();
+        BusStopsList.ItemAdapter.ItemViewHolder holder = (BusStopsList.ItemAdapter.ItemViewHolder) busStopPanelsRV.findViewHolderForAdapterPosition(position);
+        holder.busStopName.setTransitionName("BusStopNameText");
         Bundle bundle = new Bundle();
         bundle.putString("value", fullPanelList.get(position).getBusStopCode());
         selectedFragment.setArguments(bundle);
@@ -221,6 +222,7 @@ public class BusStopsList extends Fragment {
                 .getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, selectedFragment)
+                .addSharedElement(holder.busStopName, "BusStopNameText")
                 .addToBackStack(null) // allows for backing
                 .commit();
     }
@@ -243,8 +245,8 @@ public class BusStopsList extends Fragment {
         fragmentManager
                 .beginTransaction()
                 .setCustomAnimations(
-                        R.anim.slide_in_left,  // Enter animation for the fragment being revealed
-                        R.anim.slide_out_right // Exit animation for the current fragment
+                        R.anim.slidefade_in_left,  // Enter animation for the fragment being revealed
+                        R.anim.slidefade_out_right // Exit animation for the current fragment
                 )
                 .commit();
         fragmentManager.popBackStack("BusTimes", FragmentManager.POP_BACK_STACK_INCLUSIVE);

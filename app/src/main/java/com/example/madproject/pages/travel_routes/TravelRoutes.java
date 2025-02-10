@@ -3,12 +3,14 @@ package com.example.madproject.pages.travel_routes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +25,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 public class TravelRoutes extends Fragment {
 
+    TextView sitText;
     View rootView;
     LocationData fromData = new LocationData("", null, null, "");
     LocationData toData = new LocationData("", null, null, "");
@@ -32,6 +35,7 @@ public class TravelRoutes extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_travelroutes, container, false);
+        //ViewCompat.setTransitionName(sitText, "fatass");
         // onclick listeners
         Button fromButton = rootView.findViewById(R.id.TRFromButton);
         fromButton.setOnClickListener(view -> {onSearch("from");});
@@ -142,8 +146,6 @@ public class TravelRoutes extends Fragment {
                     ), 11f
                     );
         } else if (fromData.getLat() != null && toData.getLat() == null) { // only FROM coords
-            Log.d("Double.toString(fromLat)", Double.toString(fromLat));
-            Log.d("Double.toString(fromLon)", Double.toString(fromLon));
             mapView.moveCamera(new LatLng(
                     fromLat,
                     fromLon
@@ -170,7 +172,6 @@ public class TravelRoutes extends Fragment {
 
         Bundle bundle = new Bundle();
         String savedQuery = searchbarType.equals("from") ? fromData.getSavedQuery() : toData.getSavedQuery();
-        Log.d("passing savedQuery", savedQuery);
         bundle.putString("savedQuery", savedQuery);
         bundle.putString("searchbarType", searchbarType);
         selectedFragment.setArguments(bundle);
@@ -180,7 +181,7 @@ public class TravelRoutes extends Fragment {
                 .setCustomAnimations(
                         R.anim.slidefade_in_right,
                         R.anim.slidefade_out_left,
-                        R.anim.slidefade_in_left,
+                       R.anim.slidefade_in_left,
                         R.anim.slidefade_out_right
                 )
                 .replace(R.id.fragment_container, selectedFragment)

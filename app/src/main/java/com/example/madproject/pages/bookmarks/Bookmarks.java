@@ -36,7 +36,7 @@ public class Bookmarks extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_bookmarks, container, false);
         // views setup
-        RecyclerView bookmarksPanels = rootView.findViewById(R.id.BookmarksRW);
+        RecyclerView bookmarksPanels = rootView.findViewById(R.id.BookmarksRV);
         bookmarksPanels.setLayoutManager(new GridLayoutManager(getContext(), 2));
         // read from SQLite
         List<List<String>> sqlitedata = Arrays.asList( // THIS SHIT IS TEMPORARY
