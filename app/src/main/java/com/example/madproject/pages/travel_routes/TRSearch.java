@@ -118,12 +118,14 @@ public class TRSearch extends Fragment {
                             assert onemapResponse != null;
                             for (OnemapSearchResponse.Result result : onemapResponse.Results) {
                                 searchResultList.add(new LocationData(
-                                    Helper.TitleCase(result.ADDRESS),
-                                    result.LATITUDE,
-                                    result.LONGITUDE,
+                                    Helper.FormatSEARCHVAL(result.SEARCHVAL),
+                                        result.BLK_NO,
+                                        result.LATITUDE,
+                                        result.LONGITUDE,
                                         ""
                                 ));
                             }
+                            Helper.FormatSearchResultList(searchResultList, query);
                             adapter.notifyDataSetChanged();
                         }
                     }

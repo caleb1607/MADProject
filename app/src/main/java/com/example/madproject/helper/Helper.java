@@ -3,12 +3,20 @@ package com.example.madproject.helper;
 import android.content.Context;
 
 import com.example.madproject.datasets.BusStopsComplete;
+import com.example.madproject.pages.travel_routes.LocationData;
 
 import java.time.Duration;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class Helper {
     private static List<BusStopsComplete> busStopsList;
@@ -31,7 +39,10 @@ public class Helper {
         public double getLatitude() { return busStopInfo.getLatitude(); }
         public double getLongitude() { return busStopInfo.getLongitude(); }
     }
-    public static String TitleCase(String input) {
+    public static String FormatSEARCHVAL(String input) {
+        return TitleCase(input);
+    }
+    private static String TitleCase(String input) {
         if (input == null || input.isEmpty()) {
             return input;
         }
@@ -60,6 +71,50 @@ public class Helper {
             }
         }
         return result.toString();
+    }
+    public static void FormatSearchResultList(List<LocationData> list, String query) {
+        BlkSuffix(list);
+        ASCIISort(list);
+        SmartSort(list, query);
+    }
+    private static void BlkSuffix(List<LocationData> list) {
+        List<LocationData> copyList = new ArrayList<>(list);
+        list.clear();
+        Map<String, Integer> countMap = new HashMap<>();
+        Set<String> duplicates = new HashSet<>();
+        for (LocationData locationdata : copyList) {
+            String name = locationdata.getName();
+            countMap.put(name, countMap.getOrDefault(name, 0) + 1);
+            if (countMap.get(name) > 1) {
+                duplicates.add(name);
+            }
+        }
+        for (LocationData locationdata : copyList) {
+            String name = locationdata.getName();
+            if (duplicates.contains(name)) {
+                locationdata.name = name + " Blk " + locationdata.getBlk();
+                list.add(locationdata);
+            } else {
+                list.add(locationdata);
+            }
+        }
+    }
+    public static void ASCIISort(List<LocationData> list) {
+        list.sort(Comparator.comparing(LocationData::getName));
+    }
+    private static void SmartSort(List<LocationData> list, String query) {
+        List<LocationData> copyList = new ArrayList<>(list);
+        list.clear();
+        for (LocationData locationdata : copyList) {
+            if (locationdata.getName().toLowerCase().startsWith(query)) {
+                list.add(locationdata);
+            }
+        }
+        for (LocationData locationdata : copyList) {
+            if (!locationdata.getName().toLowerCase().startsWith(query)) {
+                list.add(locationdata);
+            }
+        }
     }
     public static String ISOToMinutes(String timestamp) {
 
