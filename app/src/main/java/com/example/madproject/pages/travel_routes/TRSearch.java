@@ -2,6 +2,7 @@ package com.example.madproject.pages.travel_routes;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.media.Image;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.Spannable;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -50,6 +52,7 @@ public class TRSearch extends Fragment {
     Button returnButton;
     RecyclerView searchResultsRV;
     TextView startTyping;
+    ImageView startTypingImage;
     // variables
     static String query = "";
     List<LocationData> searchResultList = new ArrayList<>();
@@ -62,6 +65,7 @@ public class TRSearch extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_trsearch, container, false);
         // views setup
         startTyping = rootView.findViewById(R.id.startTyping);
+        startTypingImage = rootView.findViewById(R.id.startTypingImage);
         TRSearchBar = rootView.findViewById(R.id.TRSearchBar);
         TRSearchBar.addTextChangedListener(SearchBarTextWatcher());
         searchResultsRV = rootView.findViewById(R.id.TravelRoutesRV);
@@ -103,7 +107,7 @@ public class TRSearch extends Fragment {
     }
     public void onSearch() {
         searchResultList.clear();
-        if (query.length() >= 2) {
+        if (query.length() >= 1) {
             OnemapSearchApi onemapSearchApi = OnemapSearchClient.getApiService();
             onemapSearchApi.getSearchResults(APIReader.getAPIKey(), "Y", "Y", 1, query)
                 .enqueue(new Callback<OnemapSearchResponse>() {
@@ -139,11 +143,14 @@ public class TRSearch extends Fragment {
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
                 query = charSequence.toString();
                 onSearch();
-                // Hide the placeholder text when the user starts typing
                 if (charSequence.length() > 0) {
-                    startTyping.setVisibility(View.GONE);  // Hide the TextView
+                    // hide "start typing" hint
+                    startTyping.setVisibility(View.GONE);
+                    startTypingImage.setVisibility(View.GONE);
                 } else {
-                    startTyping.setVisibility(View.VISIBLE);  // Show the TextView if the field is empty
+                    // show "start typing" hint
+                    startTyping.setVisibility(View.VISIBLE);
+                    startTypingImage.setVisibility(View.VISIBLE);
                 }
             }
             @Override

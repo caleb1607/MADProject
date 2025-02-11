@@ -52,8 +52,8 @@
                 android:hint="Search for Location..."
                 android:inputType="text"
                 android:paddingLeft="16dp"
-                android:paddingTop="12dp"
-                android:paddingBottom="12dp"
+                android:paddingTop="14dp"
+                android:paddingBottom="14dp"
                 android:textColor="#FFFFFF"
                 android:textColorHint="@color/hintGray"
                 android:textSize="15sp" />
@@ -76,17 +76,19 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                android:paddingBottom="60dp">
 
                 <ImageView
-                    android:id="@+id/imageView"
+                    android:id="@+id/startTypingImage"
                     android:layout_width="200dp"
                     android:layout_height="200dp"
                     android:layout_gravity="center"
-                    android:tint="@color/darkGray"
-                    app:srcCompat="@drawable/magnifying_glass" />
+                    app:srcCompat="@drawable/magnifying_glass"
+                    app:tint="@color/hintGray" />
 
                 <TextView
                     android:id="@+id/startTyping"
@@ -95,7 +97,7 @@
                     android:layout_gravity="center"
                     android:fontFamily="@font/albertsans6_semibold"
                     android:text="Start typing to search places..."
-                    android:textColor="@color/darkGray"
+                    android:textColor="@color/hintGray"
                     android:textSize="20sp" />
             </LinearLayout>
 

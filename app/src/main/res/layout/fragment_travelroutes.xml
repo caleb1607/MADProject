@@ -142,26 +142,16 @@
 
             </FrameLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
+            <Button
+                android:id="@+id/FindRouteButton"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:orientation="vertical">
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="12dp" />
-
-                <Button
-                    android:id="@+id/FindRouteButton"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:backgroundTint="@color/nyoomGreen"
-                    android:text="Find Route"
-                    android:textColor="#FFFFFF"
-                    android:visibility="gone" />
-            </LinearLayout>
+                android:layout_gravity="bottom|center_horizontal"
+                android:backgroundTint="@color/nyoomGreen"
+                android:insetBottom="30dp"
+                android:text="Find Route!"
+                android:textColor="#FFFFFF"
+                android:visibility="gone" />
 
         </FrameLayout>
 
