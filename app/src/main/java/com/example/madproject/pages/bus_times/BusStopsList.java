@@ -1,5 +1,6 @@
 package com.example.madproject.pages.bus_times;
 
+import android.animation.Animator;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 
@@ -16,9 +17,12 @@ import android.os.Handler;
 import android.os.Looper;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -196,21 +200,23 @@ public class BusStopsList extends Fragment {
                 holder.MINS.setVisibility(View.INVISIBLE);
             }
             if (!item.getIsBookmarked()) {
-                holder.bookmarkIcon.setImageTintList(ColorStateList.valueOf(
-                        ContextCompat.getColor(holder.itemView.getContext(), R.color.darkGray)
-                ));
+                holder.enabledBookmarkIcon.setVisibility(View.INVISIBLE);
             } else {
-//                int cx = holder.enabledBookmarkIcon.getWidth() / 2; // Center horizontally
-//                int cy = 0; // Start from the top edge
-//                float startRadius = 0f;
-//                float endRadius = (float) Math.hypot(holder.enabledBookmarkIcon.getWidth(), holder.enabledBookmarkIcon.getHeight());
-//                Animator revealAnim = ViewAnimationUtils.createCircularReveal(holder.enabledBookmarkIcon, cx, cy, startRadius, endRadius);
-//                holder.enabledBookmarkIcon.setVisibility(View.VISIBLE);
-//                revealAnim.setDuration(500);
-//                revealAnim.start();
-                holder.bookmarkIcon.setImageTintList(ColorStateList.valueOf(
-                        ContextCompat.getColor(holder.itemView.getContext(), R.color.nyoomLightYellow)
-                ));
+                int cx = holder.enabledBookmarkIcon.getWidth() / 2; // Center horizontally
+                int cy = 0; // Start from the top edge
+                float startRadius = 0f;
+                float endRadius = (float) Math.hypot(holder.enabledBookmarkIcon.getWidth(), holder.enabledBookmarkIcon.getHeight());
+                holder.enabledBookmarkIcon.setVisibility(View.VISIBLE);
+                holder.enabledBookmarkIcon.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                    @Override
+                    public boolean onPreDraw() {
+                        holder.enabledBookmarkIcon.getViewTreeObserver().removeOnPreDrawListener(this);
+                        Animator revealAnim = ViewAnimationUtils.createCircularReveal(holder.enabledBookmarkIcon, cx, cy, startRadius, endRadius);
+                        revealAnim.setDuration(300);
+                        revealAnim.start();
+                        return true;
+                    }
+                });
             }
             manageThemeRV(holder);
         }

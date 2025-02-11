@@ -52,6 +52,15 @@
                     app:srcCompat="@drawable/ic_bookmark"
                     app:tint="@color/darkGray" />
 
+                <ImageView
+                    android:id="@+id/EnabledBookmarkIcon"
+                    android:layout_width="44dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="end"
+                    android:visibility="invisible"
+                    app:srcCompat="@drawable/ic_bookmark"
+                    app:tint="@color/nyoomLightYellow" />
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
