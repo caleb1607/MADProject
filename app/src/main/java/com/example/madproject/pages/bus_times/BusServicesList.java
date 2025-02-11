@@ -188,23 +188,29 @@ public class BusServicesList extends Fragment {
                 holder.MINS.setVisibility(View.INVISIBLE);
             }
             if (!item.getIsBookmarked()) {
+                holder.bookmarkIcon.setVisibility(View.VISIBLE);
                 holder.enabledBookmarkIcon.setVisibility(View.INVISIBLE);
+                item.setBMAnimDone(false);
             } else {
-                int cx = holder.enabledBookmarkIcon.getWidth() / 2; // Center horizontally
-                int cy = 0; // Start from the top edge
-                float startRadius = 0f;
-                float endRadius = (float) Math.hypot(holder.enabledBookmarkIcon.getWidth(), holder.enabledBookmarkIcon.getHeight());
-                holder.enabledBookmarkIcon.setVisibility(View.VISIBLE);
-                holder.enabledBookmarkIcon.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-                    @Override
-                    public boolean onPreDraw() {
-                        holder.enabledBookmarkIcon.getViewTreeObserver().removeOnPreDrawListener(this);
-                        Animator revealAnim = ViewAnimationUtils.createCircularReveal(holder.enabledBookmarkIcon, cx, cy, startRadius, endRadius);
-                        revealAnim.setDuration(300);
-                        revealAnim.start();
-                        return true;
-                    }
-                });
+                if (!item.bookmarkAnimDone()) {
+                    holder.bookmarkIcon.setVisibility(View.INVISIBLE);
+                    holder.enabledBookmarkIcon.setVisibility(View.VISIBLE);
+                    int cx = holder.enabledBookmarkIcon.getWidth() / 2; // Center horizontally
+                    int cy = 0; // Start from the top edge
+                    float startRadius = 0f;
+                    float endRadius = (float) Math.hypot(holder.enabledBookmarkIcon.getWidth(), holder.enabledBookmarkIcon.getHeight());
+                    holder.enabledBookmarkIcon.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                        @Override
+                        public boolean onPreDraw() {
+                            holder.enabledBookmarkIcon.getViewTreeObserver().removeOnPreDrawListener(this);
+                            Animator revealAnim = ViewAnimationUtils.createCircularReveal(holder.enabledBookmarkIcon, cx, cy, startRadius, endRadius);
+                            revealAnim.setDuration(400);
+                            revealAnim.start();
+                            return true;
+                        }
+                    });
+                    item.setBMAnimDone(true);
+                }
             }
             manageThemeRV(holder);
         }

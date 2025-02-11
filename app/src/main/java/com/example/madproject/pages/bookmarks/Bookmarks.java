@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.example.madproject.helper.BusTimesBookmarksDB;
 
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -41,11 +42,13 @@ import java.util.concurrent.Future;
 public class Bookmarks extends Fragment {
 
     View rootView;
+    FrameLayout ConfirmationPopup;
     static List<BookmarkPanel> fullPanelList = new ArrayList<>(); // list of panel data
     BusTimesBookmarksDB busTimesBookmarks;
     private boolean isDataLoaded = false;
     static Bookmarks.ItemAdapter adapter;
-
+    boolean confirmed;
+    int bookmarkPosition;
 
     @Nullable
     @Override
@@ -55,6 +58,12 @@ public class Bookmarks extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_bookmarks, container, false);
 
         RecyclerView bookmarksPanels = rootView.findViewById(R.id.BookmarksRV);
+        ConfirmationPopup = rootView.findViewById(R.id.ConfirmationPopup);
+        ConfirmationPopup.setVisibility(View.GONE);
+        Button ConfirmationButton = rootView.findViewById(R.id.ConfirmationButton);
+        ConfirmationButton.setOnClickListener(view -> onDeletionConfirmed());
+        ImageView CancellationButton = rootView.findViewById(R.id.CancellationButton);
+        CancellationButton.setOnClickListener(view -> onDeletionCancelled());
         bookmarksPanels.setLayoutManager(new GridLayoutManager(getContext(), 2));
         busTimesBookmarks = new BusTimesBookmarksDB(getContext());
         // manage theme
@@ -88,7 +97,7 @@ public class Bookmarks extends Fragment {
         executor.shutdown();
 
         // adapter setup
-        adapter = new Bookmarks.ItemAdapter(fullPanelList, position -> onPanelClick(position), getContext());
+        adapter = new Bookmarks.ItemAdapter(fullPanelList, position -> onBookmarkClick(position), getContext());
         bookmarksPanels.setAdapter(adapter);
 
         return rootView;
@@ -158,7 +167,6 @@ public class Bookmarks extends Fragment {
                 holder.AT3.setVisibility(View.INVISIBLE);
                 holder.MINS.setVisibility(View.INVISIBLE);
             }
-
             if (!item.getIsBookmarked()) {
                 holder.bookmarkIcon.setImageTintList(ColorStateList.valueOf(
                         ContextCompat.getColor(holder.itemView.getContext(), R.color.darkGray)
@@ -168,8 +176,6 @@ public class Bookmarks extends Fragment {
                         ContextCompat.getColor(holder.itemView.getContext(), R.color.nyoomLightYellow)
                 ));
             }
-
-
             manageThemeRV(holder);
         }
 
@@ -232,19 +238,36 @@ public class Bookmarks extends Fragment {
         }
     }
 
-    private void onPanelClick(int position) {
-        BookmarkPanel bookmark = fullPanelList.get(position);
+    private void onBookmarkClick(int position) {
+        bookmarkPosition = position;
+        if (!confirmed) {
+            ConfirmationPopup.setVisibility(View.VISIBLE);
+        } else {
+            BookmarkPanel bookmark = fullPanelList.get(position);
 
-        Log.d("SQLite", "Deleting: " + bookmark.getBusStopName() + " (" + bookmark.getBusStopCode() + ")");
+            Log.d("SQLite", "Deleting: " + bookmark.getBusStopName() + " (" + bookmark.getBusStopCode() + ")");
 
-        // Remove from SQLite
-        busTimesBookmarks.deleteBookmark(bookmark.getBusStopName(), bookmark.getBusStopCode(), bookmark.getBusNumber());
+            // Remove from SQLite
+            busTimesBookmarks.deleteBookmark(bookmark.getBusStopName(), bookmark.getBusStopCode(), bookmark.getBusNumber());
 
-        // Remove from the list and update UI
-        fullPanelList.remove(position);
-        adapter.notifyItemRemoved(position);
+            // Remove from the list and update UI
+            fullPanelList.remove(position);
+            adapter.notifyItemRemoved(position);
+
+            confirmed = false;
+        }
     }
 
+    private void onDeletionConfirmed() {
+        confirmed = true;
+        onBookmarkClick(bookmarkPosition);
+        ConfirmationPopup.setVisibility(View.GONE);
+    }
+
+    private void onDeletionCancelled() {
+        confirmed = false;
+        ConfirmationPopup.setVisibility(View.GONE);
+    }
 
     private void loadBookmarks() {
         // Only load the bookmarks if they haven't been loaded yet
@@ -274,8 +297,4 @@ public class Bookmarks extends Fragment {
             isDataLoaded = true;
         }
     }
-
-
-
-
 }

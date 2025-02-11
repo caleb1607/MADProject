@@ -6,6 +6,7 @@ public class BusStopPanel {
     private String streetName;
     private String[] AT;
     private boolean isBookmarked;
+    private boolean BMAnimDone = false;
 
     public BusStopPanel(String busStopName, String busStopCode, String streetName, String[] AT, boolean isBookmarked) {
         this.busStopName = busStopName;
@@ -18,9 +19,11 @@ public class BusStopPanel {
         this.AT = AT;
     }
     public void toggleIsBookmarked() { isBookmarked = !isBookmarked; }
+    public void setBMAnimDone(boolean BMAnimDone) { this.BMAnimDone = BMAnimDone; }
     public String getBusStopName() { return busStopName; }
     public String getBusStopCode() { return busStopCode; }
     public String getStreetName() { return streetName; }
     public String[] getAT() { return AT; }
     public boolean getIsBookmarked() { return isBookmarked; }
+    public boolean bookmarkAnimDone() { return BMAnimDone; }
 }

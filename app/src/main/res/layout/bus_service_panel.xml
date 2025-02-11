@@ -50,7 +50,7 @@
                     android:layout_gravity="end"
                     android:paddingRight="4dp"
                     app:srcCompat="@drawable/ic_bookmark"
-                    app:tint="@color/darkGray" />
+                    app:tint="@color/buttonPanel" />
 
                 <ImageView
                     android:id="@+id/EnabledBookmarkIcon"
