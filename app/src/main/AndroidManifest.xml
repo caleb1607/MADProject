@@ -54,13 +54,7 @@
             android:exported="false" />
         <activity
             android:name=".pages.misc.Login"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="false"/>
         <activity
             android:name=".pages.misc.Register"
             android:exported="false" />
@@ -68,14 +62,16 @@
             android:name=".pages.settings.Settings"
             android:exported="false" />
         <activity
-            android:name=".pages.travel_routes.TRSearch"
-            android:exported="false" />
-        <activity
             android:name=".pages.bus_times.BusTimes"
             android:exported="false" />
         <activity
             android:name=".pages.bookmarks.Bookmarks"
-            android:exported="false" />
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".pages.Main"
             android:exported="true" />
