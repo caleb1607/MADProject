@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import com.example.madproject.R;
 import com.example.madproject.pages.Main;
 import com.example.madproject.pages.misc.Login;
+import com.example.madproject.pages.misc.Startup;
 
 public class Settings extends Fragment {
 
@@ -58,7 +59,7 @@ public class Settings extends Fragment {
         manageTheme();
     }
     private void onLogout() {
-        Intent logout = new Intent(mainContext, Login.class);
+        Intent logout = new Intent(mainContext, Startup.class);
         startActivity(logout);
         if (mainContext instanceof Activity) {
             Activity activity = (Activity) mainContext;

@@ -11,17 +11,24 @@ import com.example.madproject.pages.Main;
 
 public class Startup extends AppCompatActivity {
 
-    Button justLemmeInButton;
+    Button SignInButton, GuestButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_startup);
-        justLemmeInButton = findViewById(R.id.justLemmeIn);
-        justLemmeInButton.setOnClickListener(view -> onEnter());
+        SignInButton = findViewById(R.id.SignInButton);
+        SignInButton.setOnClickListener(view -> goToSignInEnter());
+        GuestButton = findViewById(R.id.GuestButton);
+        GuestButton.setOnClickListener(view -> onEnter());
+    }
+    private void goToSignInEnter() {
+        Intent signin = new Intent(Startup.this, Login.class);
+        startActivity(signin);
+        finish();
     }
     private void onEnter() {
-        Intent login = new Intent(Startup.this, Main.class);
-        startActivity(login);
+        Intent enter = new Intent(Startup.this, Main.class);
+        startActivity(enter);
         finish();
     }
 }

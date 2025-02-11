@@ -4,32 +4,50 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/slide1"
     tools:context=".pages.misc.Startup">
 
-    <Button
-        android:id="@+id/justLemmeIn"
-        android:layout_width="360dp"
-        android:layout_height="48dp"
-        android:layout_gravity="center_horizontal"
-        android:alpha="0.8"
-        android:background="@drawable/round_button"
-        android:fontFamily="@font/albertsans6_semibold"
-        android:text="Just Lemme In"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        app:backgroundTint="@color/buttonPanel" />
-
-    <ImageSwitcher
-        android:id="@+id/backgroundSlides"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/placeholder" />
-
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="bottom"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/SignInButton"
+            android:layout_width="320dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:alpha="0.8"
+            android:background="@drawable/round_button"
+            android:fontFamily="@font/albertsans6_semibold"
+            android:text="Sign In"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:backgroundTint="@color/black" />
+
+        <Button
+            android:id="@+id/GuestButton"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:alpha="0.8"
+            android:background="@color/transparent"
+            android:fontFamily="@font/albertsans7_bold"
+            android:text="Continue as Guest"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:backgroundTint="@color/transparent" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="60dp" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
