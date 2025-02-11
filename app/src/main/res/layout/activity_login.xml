@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LoginBG"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/mainBackground"
+    android:background="@drawable/slide1blurdark"
     android:elevation="20dp"
-    tools:context=".pages.Main" >
+    tools:context=".pages.Main">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,21 +21,30 @@
             android:layout_gravity="center_horizontal"
             android:paddingTop="32dp"
             android:paddingBottom="32dp"
-            android:src="@drawable/nyoomtext" />
+            android:src="@drawable/nyoomtext"
+            app:srcCompat="@drawable/nyoomtextshadow" />
 
         <FrameLayout
             android:layout_width="360dp"
-            android:layout_height="wrap_content"
+            android:layout_height="70dp"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/round_box"
-            android:backgroundTint="@color/backgroundPanel"
             android:orientation="vertical">
 
+            <View
+                android:id="@+id/EmailBG"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha="0.65"
+                android:background="@drawable/round_box"
+                android:backgroundTint="@color/black"
+                android:orientation="vertical" />
+
             <TextView
-                android:id="@+id/STARTING_POINT"
+                android:id="@+id/EMAIL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
+                android:alpha="0.8"
                 android:fontFamily="sans-serif-medium"
                 android:paddingLeft="16dp"
                 android:paddingTop="12dp"
@@ -55,8 +65,7 @@
                 android:paddingLeft="16dp"
                 android:paddingTop="36dp"
                 android:paddingBottom="12dp"
-                android:textColor="#FFFFFF"
-                android:textColorHint="@color/hintGray"
+                android:textColor="@color/nyoomLightYellow"
                 android:textSize="15sp" />
 
         </FrameLayout>
@@ -67,17 +76,25 @@
 
         <FrameLayout
             android:layout_width="360dp"
-            android:layout_height="wrap_content"
+            android:layout_height="70dp"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/round_box"
-            android:backgroundTint="@color/backgroundPanel"
             android:orientation="vertical">
 
+            <View
+                android:id="@+id/PasswordBG"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha="0.65"
+                android:background="@drawable/round_box"
+                android:backgroundTint="@color/black"
+                android:orientation="vertical" />
+
             <TextView
-                android:id="@+id/DESTINATION"
+                android:id="@+id/PASSWORD"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
+                android:alpha="0.8"
                 android:fontFamily="sans-serif-medium"
                 android:paddingLeft="16dp"
                 android:paddingTop="12dp"
@@ -98,8 +115,7 @@
                 android:paddingLeft="16dp"
                 android:paddingTop="36dp"
                 android:paddingBottom="12dp"
-                android:textColor="#FFFFFF"
-                android:textColorHint="@color/hintGray"
+                android:textColor="@color/nyoomLightYellow"
                 android:textSize="15sp" />
 
         </FrameLayout>
@@ -113,11 +129,14 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:backgroundTint="@color/nyoomBlue"
-            android:fontFamily="sans-serif-medium"
-            android:text="LOGIN"
+            android:background="@drawable/round_button"
+            android:fontFamily="@font/albertsans7_bold"
+            android:letterSpacing="0.04"
+            android:text="Login"
+            android:textAllCaps="false"
             android:textColor="#FFFFFF"
-            android:textSize="20sp" />
+            android:textSize="24sp"
+            app:backgroundTint="@color/nyoomBlue" />
 
         <Button
             android:id="@+id/RegisterRedirect"
@@ -131,15 +150,16 @@
             android:textColor="@color/hintGray"
             android:textSize="14sp" />
 
-        TextView
-            android:id="@+id/helloworld"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Hello World"
-            android:textColor="#FF0000"
-            android:textSize="28sp"
-            android:transitionName="helloworld" />
 
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageView
+        android:id="@+id/DownButton"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:layout_gravity="bottom"
+        android:alpha="0.4"
+        app:srcCompat="@drawable/arrow_down"
+        app:tint="@color/hintGray" />
+
+</FrameLayout>

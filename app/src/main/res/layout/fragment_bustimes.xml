@@ -17,19 +17,27 @@
             android:layout_width="match_parent"
             android:layout_height="16dp" />
 
-        <Button
-            android:id="@+id/ViewMapButton"
+        <FrameLayout
             android:layout_width="360dp"
             android:layout_height="48dp"
-            android:layout_gravity="center_horizontal"
-            android:alpha="0.8"
-            android:background="@drawable/round_button"
-            android:fontFamily="@font/albertsans6_semibold"
-            android:text="Bus Services"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            app:backgroundTint="@color/buttonPanel" />
+            android:layout_gravity="center_horizontal">
+
+            <Button
+                android:id="@+id/ViewMapButton"
+
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha="0.8"
+                android:background="@drawable/round_button"
+                android:fontFamily="@font/albertsans6_semibold"
+                android:letterSpacing="0.04"
+                android:text="         View Map"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:backgroundTint="@color/buttonPanel" />
+
+        </FrameLayout>
 
         <Space
             android:layout_width="match_parent"
@@ -69,6 +77,7 @@
                 android:alpha="0.8"
                 android:background="@drawable/round_button"
                 android:fontFamily="@font/albertsans6_semibold"
+                android:letterSpacing="0.04"
                 android:text="Bus Services"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
@@ -89,6 +98,7 @@
                 android:alpha="0.8"
                 android:background="@drawable/round_button"
                 android:fontFamily="@font/albertsans6_semibold"
+                android:letterSpacing="0.04"
                 android:text="Bus Stops"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
@@ -112,5 +122,17 @@
             android:layout_height="16dp" />
 
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/MAPICON"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center_horizontal"
+        android:alpha="0.8"
+        android:paddingTop="21dp"
+        android:paddingRight="100dp"
+        android:paddingBottom="145dp"
+        app:srcCompat="@drawable/map2"
+        app:tint="@color/white" />
 
 </FrameLayout>

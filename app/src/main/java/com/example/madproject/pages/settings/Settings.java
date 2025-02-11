@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.madproject.R;
+import com.example.madproject.helper.LocalStorageDB;
 import com.example.madproject.pages.Main;
 import com.example.madproject.pages.misc.Login;
 import com.example.madproject.pages.misc.Startup;
@@ -55,11 +56,19 @@ public class Settings extends Fragment {
         mainContext = context;
     }
     private void toggleTheme() {
-        ThemeManager.toggleTheme(mainContext);
+        LocalStorageDB localStorageDB = new LocalStorageDB(getContext());
+        if (localStorageDB.getValue("theme_preference").equals("light")) {
+            localStorageDB.insertOrUpdate("theme_preference", "dark");
+        } else {
+            localStorageDB.insertOrUpdate("theme_preference", "light");
+        }
+        ThemeManager.setTheme(mainContext, !ThemeManager.isDarkTheme());
         manageTheme();
     }
     private void onLogout() {
-        Intent logout = new Intent(mainContext, Startup.class);
+        LocalStorageDB localStorageDB = new LocalStorageDB(getContext());
+        localStorageDB.insertOrUpdate("LoginToken", "0");
+        Intent logout = new Intent(mainContext, Login.class);
         startActivity(logout);
         if (mainContext instanceof Activity) {
             Activity activity = (Activity) mainContext;

@@ -107,7 +107,7 @@ public class BusTimesBookmarksDB extends SQLiteOpenHelper {
 
     public void deleteBookmarksbyBusStop(String busStopName, String busStopCode) {
         SQLiteDatabase db = getWritableDatabase();
-        db.delete("bookmarks", "bus_stop_name=? AND bus_stop_code=?", new String[]{busStopCode, busStopName});
+        db.delete("bookmarks", "bus_stop_name=? AND bus_stop_code=?", new String[]{busStopName, busStopCode});
         db.close();
     }
 
@@ -120,7 +120,7 @@ public class BusTimesBookmarksDB extends SQLiteOpenHelper {
 
     public void deleteBookmarkAll(String busStopCode, String busStopName, String busService) {
         SQLiteDatabase db = getWritableDatabase();
-        db.delete("bookmarks", "bus_stop_name=? AND bus_stop_code=? AND bus_service=?", new String[]{busStopCode, busStopName, busService});
+        db.delete("bookmarks", "bus_stop_name=? AND bus_stop_code=? AND bus_service=?", new String[]{busStopName, busStopCode, busService});
         db.close();
     }
 
@@ -135,6 +135,29 @@ public class BusTimesBookmarksDB extends SQLiteOpenHelper {
 
     public String getBusService(Cursor c) {
         return c.getString(c.getColumnIndexOrThrow("bus_service"));
+    }
+
+    public boolean doesBusStopCodeExist(String busStopCode) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(
+                "SELECT * FROM bookmarks WHERE bus_stop_code = ?",
+                new String[]{busStopCode}
+        );
+        boolean exists = cursor.moveToFirst();
+        cursor.close();
+        db.close();
+        return exists;
+    }
+    public boolean doesBusServiceExist(String busService) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(
+                "SELECT * FROM bookmarks WHERE bus_service = ?",
+                new String[]{busService}
+        );
+        boolean exists = cursor.moveToFirst();
+        cursor.close();
+        db.close();
+        return exists;
     }
 
 

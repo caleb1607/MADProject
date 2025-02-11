@@ -51,8 +51,9 @@ public class BusStopsList extends Fragment {
     RecyclerView busStopPanelsRV;
     Button backButton;
     TextView busServiceText;
+    TextView BUS;
     BusTimesBookmarksDB busTimesBookmarksDB;
-    String busService; // bus stop code of bus stop
+    String busService;
     List<BusStopPanel> fullPanelList = new ArrayList<>(); // list of panel data
     ItemAdapter adapter;
 
@@ -67,6 +68,7 @@ public class BusStopsList extends Fragment {
         busStopPanelsRV.setLayoutManager(new GridLayoutManager(getContext(), 1));
         backButton = rootView.findViewById(R.id.ReturnButton3);
         backButton.setOnClickListener(view -> { goBack(); });
+        BUS = rootView.findViewById(R.id.BUS);
         // transition
         Transition transition = TransitionInflater.from(requireContext()).inflateTransition(R.transition.shared_textview);
         setSharedElementEnterTransition(transition);
@@ -99,7 +101,7 @@ public class BusStopsList extends Fragment {
                             busStopData.getBusStopCode(),
                             busStopInfo.getRoadName(),
                             new String[]{" ", " ", " "},
-                            false
+                            busTimesBookmarksDB.doesBusStopCodeExist(busStopData.getBusStopCode())
                     ));
                 }
             }
@@ -126,7 +128,6 @@ public class BusStopsList extends Fragment {
         return rootView;
     }
     private void manageTheme() {
-        TextView BUS =  rootView.findViewById(R.id.BUS);
         TextView ROUTE = rootView.findViewById(R.id.ROUTE);
         if (ThemeManager.isDarkTheme()) {
             rootView.setBackgroundColor(getResources().getColor(R.color.mainBackground));
@@ -320,11 +321,13 @@ public class BusStopsList extends Fragment {
         fragmentManager
                 .beginTransaction()
                 .setCustomAnimations(
-                        R.anim.slidefade_in_left,  // Enter animation for the fragment being revealed
-                        R.anim.slidefade_out_right // Exit animation for the current fragment
+                        R.anim.fade_in,  // Enter animation for the fragment being revealed
+                        R.anim.fade_out // Exit animation for the current fragment
                 )
+                .addSharedElement(BUS, "BUS")
+                .addSharedElement(busServiceText, "BusServiceText")
                 .commit();
-        fragmentManager.popBackStack("BusTimes", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        fragmentManager.popBackStack();
     }
 }
 

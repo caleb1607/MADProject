@@ -2,5 +2,4 @@
 <transitionSet xmlns:android="http://schemas.android.com/apk/res/android">
     <changeBounds />
     <changeTransform />
-    <fade android:duration="300" />
 </transitionSet>

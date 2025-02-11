@@ -95,7 +95,7 @@ public class BusServicesList extends Fragment {
                     fullPanelList.add(new BusServicePanel(
                             busService,
                             new String[]{" ", " ", " "},
-                            false
+                            busTimesBookmarksDB.doesBusServiceExist(busService)
                     ));
                 }
             }
@@ -299,7 +299,6 @@ public class BusServicesList extends Fragment {
 
         } else {
             busTimesBookmarksDB.deleteBookmarkByService(busService);
-
         }
         fullPanelList.get(position).toggleIsBookmarked();
         adapter.notifyDataSetChanged();
@@ -309,10 +308,11 @@ public class BusServicesList extends Fragment {
         fragmentManager
                 .beginTransaction()
                 .setCustomAnimations(
-                R.anim.slidefade_in_left,  // Enter animation for the fragment being revealed
-                R.anim.slidefade_out_right // Exit animation for the current fragment
+                R.anim.fade_in,  // Enter animation for the fragment being revealed
+                R.anim.fade_out // Exit animation for the current fragmen
         )
+                .addSharedElement(busStopNameText, "BusStopNameText")
         .commit();
-        fragmentManager.popBackStack("BusTimes", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        fragmentManager.popBackStack();
     }
 }
