@@ -62,11 +62,7 @@ public class Login extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     };
     private View.OnClickListener onLogin = view -> {
-        //Intent login = new Intent(Login.this, main.class);
-        //startActivity(login);
         loginUser();
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-        finish();
     };
 
 
@@ -79,25 +75,29 @@ public class Login extends AppCompatActivity {
         // Validate input
         if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
             Toast.makeText(this, "Please fill out all fields", Toast.LENGTH_SHORT).show();
-            return;
+        } else {
+            // Sign in the user with Firebase Authentication
+            mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, task -> {
+                        if (task.isSuccessful()) {
+                            // Sign in success
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            Toast.makeText(Login.this, "Login successful: " + user.getEmail(), Toast.LENGTH_SHORT).show();
+                            Log.d("Firebase", "User logged in: " + user.getEmail());
+                            Intent login = new Intent(Login.this, Main.class);
+                            startActivity(login);
+                            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                            finish();
+                            // Navigate to the next activity (e.g., HomeActivity)
+                            // startActivity(new Intent(Login.this, HomeActivity.class));
+                        } else {
+                            // Sign in failure
+                            Toast.makeText(Login.this, "Authentication failed", Toast.LENGTH_SHORT).show();
+                            Log.e("Firebase", "Authentication failed", task.getException());
+                        }
+                    });
         }
 
-        // Sign in the user with Firebase Authentication
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, task -> {
-                    if (task.isSuccessful()) {
-                        // Sign in success
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        Toast.makeText(Login.this, "Login successful: " + user.getEmail(), Toast.LENGTH_SHORT).show();
-                        Log.d("Firebase", "User logged in: " + user.getEmail());
 
-                        // Navigate to the next activity (e.g., HomeActivity)
-                        // startActivity(new Intent(Login.this, HomeActivity.class));
-                    } else {
-                        // Sign in failure
-                        Toast.makeText(Login.this, "Authentication failed", Toast.LENGTH_SHORT).show();
-                        Log.e("Firebase", "Authentication failed", task.getException());
-                    }
-                });
     }
 }
