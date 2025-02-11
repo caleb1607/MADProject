@@ -1,6 +1,9 @@
 package com.example.madproject.pages.bookmarks;
 
+
+
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -10,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.example.madproject.helper.BusTimesBookmarksDB;
 
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -154,6 +158,18 @@ public class Bookmarks extends Fragment {
                 holder.AT3.setVisibility(View.INVISIBLE);
                 holder.MINS.setVisibility(View.INVISIBLE);
             }
+
+            if (!item.getIsBookmarked()) {
+                holder.bookmarkIcon.setImageTintList(ColorStateList.valueOf(
+                        ContextCompat.getColor(holder.itemView.getContext(), R.color.darkGray)
+                ));
+            } else {
+                holder.bookmarkIcon.setImageTintList(ColorStateList.valueOf(
+                        ContextCompat.getColor(holder.itemView.getContext(), R.color.nyoomLightYellow)
+                ));
+            }
+
+
             manageThemeRV(holder);
         }
 
@@ -173,6 +189,8 @@ public class Bookmarks extends Fragment {
                 holder.RECTANGLE.setBackgroundColor(ContextCompat.getColor(context, R.color.LdarkGray));
                 holder.ARRIVING_IN.setTextColor(ContextCompat.getColor(context, R.color.LhintGray));
             }
+
+
         }
         // overrides size of recyclerview
         @Override
@@ -181,8 +199,11 @@ public class Bookmarks extends Fragment {
         }
         // contains the reference of views (UI) of a single item in recyclerview
         public class ItemViewHolder extends RecyclerView.ViewHolder {
+
             TextView busNumber, busStopName, AT1, AT2, AT3, MINS, NOW, unavailableText, BUS, ARRIVING_IN;
             CardView BMPCardView;
+            Button BOOKMARKBTN;
+            ImageView bookmarkIcon;
             View RECTANGLE;
             public ItemViewHolder(View itemView) {
                 super(itemView);
@@ -198,7 +219,11 @@ public class Bookmarks extends Fragment {
                 ARRIVING_IN = itemView.findViewById(R.id.ARRIVING_IN);
                 BMPCardView = itemView.findViewById(R.id.BMPCardView);
                 RECTANGLE = itemView.findViewById(R.id.RECTANGLE);
-                itemView.setOnClickListener(v -> {
+                BOOKMARKBTN =itemView.findViewById(R.id.BookmarkButton);
+                bookmarkIcon = itemView.findViewById(R.id.BookmarkIcon2);
+
+
+                BOOKMARKBTN.setOnClickListener(v -> {
                     if (listener != null) {
                         listener.onItemClick(getAdapterPosition());
                     }
