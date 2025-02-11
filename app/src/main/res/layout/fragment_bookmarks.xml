@@ -61,7 +61,7 @@
         android:id="@+id/ConfirmationPopup"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <View
             android:id="@+id/blackBG"
@@ -131,8 +131,8 @@
             android:layout_gravity="right"
             android:paddingTop="10dp"
             android:paddingRight="10dp"
-            app:tint="@color/white"
-            app:srcCompat="@drawable/the_x" />
+            app:srcCompat="@drawable/the_x"
+            app:tint="@color/white" />
 
     </FrameLayout>
 

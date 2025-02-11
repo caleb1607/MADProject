@@ -12,101 +12,64 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <FrameLayout
-            android:id="@+id/PFP_FrameLayout"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="160dp"
-            android:paddingTop="25dp"
-            android:paddingBottom="15dp">
-
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/pfp"
-                android:layout_width="200dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:src="@drawable/dancing_android"
-                app:shapeAppearanceOverlay="@style/Widget.MaterialComponents.CircularProgressIndicator"
-                app:srcCompat="@drawable/dancing_android" />
-
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/circleFrame"
-                android:layout_width="200dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:src="@drawable/circleframe"
-                app:shapeAppearanceOverlay="@style/Widget.MaterialComponents.CircularProgressIndicator"
-                app:srcCompat="@drawable/circleframe" />
-
-        </FrameLayout>
-
-        <TextView
-            android:id="@+id/PFP_Name"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:fontFamily="sans-serif-black"
-            android:text="No Name"
-            android:textColor="@color/white"
-            android:textSize="24sp" />
+            android:orientation="horizontal"
+            android:paddingLeft="8dp"
+            android:paddingTop="8dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="8dp">
+
+            <ImageView
+                android:id="@+id/SETTINGS_ICON"
+                android:layout_width="33dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center_vertical"
+                android:paddingLeft="8dp"
+                android:src="@drawable/ic_bookmark"
+                app:srcCompat="@drawable/ic_settings"
+                app:tint="@color/white" />
+
+            <TextView
+                android:id="@+id/SETTINGS"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:fontFamily="@font/albertsans6_semibold"
+                android:paddingLeft="12dp"
+                android:paddingTop="8dp"
+                android:paddingRight="8dp"
+                android:paddingBottom="8dp"
+                android:text="Settings"
+                android:textColor="@color/white"
+                android:textSize="20dp" />
+
+        </LinearLayout>
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="20dp" />
 
         <LinearLayout
-            android:id="@+id/Notifications"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/NOTIFICATIONS"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:paddingRight="10dp"
-                android:text="Notifications"
-                android:textAlignment="textEnd"
-                android:textColor="@color/white"
-                android:textSize="24sp" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-            <FrameLayout
-                android:id="@+id/Frame"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_weight="1"
-                android:paddingLeft="10dp">
-
-                <LinearLayout
-                    android:id="@+id/ButtonFrame"
-                    android:layout_width="140dp"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <Button
-                        android:id="@+id/buttonOFF"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start"
-                        android:layout_weight="1"
-                        android:text="off"
-                        android:textColor="#FFFFFF"
-                        app:iconGravity="start" />
-
-                    <Button
-                        android:id="@+id/buttonON"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start"
-                        android:layout_weight="1"
-                        android:text="ON"
-                        android:textColor="#FFFFFF"
-                        app:iconGravity="start" />
-                </LinearLayout>
-
-            </FrameLayout>
-
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center"
+                    android:src="@tools:sample/avatars"
+                    android:tint="@color/white"
+                    app:srcCompat="@drawable/mrt" />
+            </LinearLayout>
         </LinearLayout>
 
         <FrameLayout
@@ -123,55 +86,59 @@
             android:layout_width="275dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:backgroundTint="@color/buttonPanel"
+            android:background="@drawable/round_button"
+            app:backgroundTint="@color/buttonPanel"
             android:fontFamily="sans-serif-medium"
             android:gravity="center_horizontal|center_vertical"
             android:text="Any Issues?"
             android:textAlignment="center"
             android:textColor="#FFFFFF" />
 
-        <Button
-            android:id="@+id/ClearBookmarksButton"
-            android:layout_width="275dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:backgroundTint="@color/buttonPanel"
-            android:fontFamily="sans-serif-medium"
-            android:gravity="center_horizontal|center_vertical"
-            android:text="Clear Bookmarks"
-            android:textAlignment="center"
-            android:textColor="#FFFFFF" />
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
 
         <Button
             android:id="@+id/ToggleThemeButton"
             android:layout_width="275dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:backgroundTint="@color/buttonPanel"
+            android:background="@drawable/round_button"
+            app:backgroundTint="@color/buttonPanel"
             android:fontFamily="sans-serif-medium"
             android:gravity="center_horizontal|center_vertical"
             android:text="Toggle Theme"
             android:textAlignment="center"
             android:textColor="#FFFFFF" />
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
+
         <Button
             android:id="@+id/DeleteAccountButton"
             android:layout_width="275dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:backgroundTint="@color/redError"
+            android:background="@drawable/round_button"
+            app:backgroundTint="@color/redError"
             android:fontFamily="sans-serif-medium"
             android:gravity="center_horizontal|center_vertical"
             android:text="Delete Account"
             android:textAlignment="center"
             android:textColor="#FFFFFF" />
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
+
         <Button
             android:id="@+id/LogOutButton"
             android:layout_width="275dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:backgroundTint="@color/nyoomBlue"
+            android:background="@drawable/round_button"
+            app:backgroundTint="@color/nyoomBlue"
             android:fontFamily="sans-serif-medium"
             android:gravity="center_horizontal|center_vertical"
             android:text="Log Out"

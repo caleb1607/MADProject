@@ -129,7 +129,9 @@ public class Helper {
         ZonedDateTime currentTime = ZonedDateTime.now(ZoneId.of("Asia/Singapore"));
         // Calculate the difference in minutes
         long minutesDifference = Duration.between(parsedTime, currentTime).toMinutes();
-        // Print the result
-        return Long.toString(Math.abs(minutesDifference));
+        // Round down (if necessary) and take the absolute value
+        long min = Math.abs(minutesDifference);
+        // Return the result as a string without the decimal part
+        return Long.toString(min);
     }
 }
