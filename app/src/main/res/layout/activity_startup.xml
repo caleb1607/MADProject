@@ -6,6 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".pages.misc.Startup">
 
+    <Button
+        android:id="@+id/justLemmeIn"
+        android:layout_width="360dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center_horizontal"
+        android:alpha="0.8"
+        android:background="@drawable/round_button"
+        android:fontFamily="@font/albertsans6_semibold"
+        android:text="Just Lemme In"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:backgroundTint="@color/buttonPanel" />
+
     <ImageSwitcher
         android:id="@+id/backgroundSlides"
         android:layout_width="match_parent"
@@ -16,20 +30,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:orientation="vertical">
-
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sign Up Now"
-            android:textColor="#FFFFFF" />
-
-        <Button
-            android:id="@+id/button4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Button" />
-    </LinearLayout>
+        android:orientation="vertical"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
