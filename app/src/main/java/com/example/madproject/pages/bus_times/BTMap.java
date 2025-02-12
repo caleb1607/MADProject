@@ -24,10 +24,13 @@ import com.example.madproject.MapView;
 import com.example.madproject.R;
 import com.example.madproject.datasets.BusServicesAtStop;
 import com.example.madproject.datasets.BusStopsComplete;
+import com.example.madproject.datasets.BusStopsMap;
 import com.example.madproject.helper.JSONReader;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+
+
 
 import java.util.List;
 
@@ -43,8 +46,9 @@ public class BTMap extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_btmap, container, false);
-       // read from datasets
+        // read from datasets
         busStopsCompleteList = JSONReader.bus_stops_complete(getContext());
+
         // setup widgets
         FrameLayout mapFragmentContainer = rootView.findViewById(R.id.MapFragmentContainer2);
         mapFragmentContainer.setOnClickListener(v -> {
@@ -65,24 +69,88 @@ public class BTMap extends Fragment {
         }, 500);  // 500ms delay for it to load
         return rootView;
     }
+
     private void setupMap() {
-        //for (BusStopsComplete BSData : busStopsCompleteList) {
-            mapView.addMarker(
-                    new LatLng(1.3098/*BSData.getLatitude()*/, 103.7775/*BSData.getLongitude()*/),
-                    "SP"/*BSData.getDescription()*/,
-                    BitmapDescriptorFactory.HUE_AZURE
-            );
-        //}
+        if (busStopsCompleteList == null || busStopsCompleteList.isEmpty()) {
+            Log.e("BTMap", "Bus stops data is empty or not loaded!");
+            return;
+        }
+
+        LatLng singaporeLocation = new LatLng(1.3500, 103.7044);
+        mapView.moveCamera(singaporeLocation, 15f);  // Zoom level 15
+        updateVisibleMarkers(mapView.getCameraPosition());
+        mapView.addMarker(singaporeLocation, "My Bookmark", BitmapDescriptorFactory.HUE_RED);
+
+
+
+        mapView.setOnCameraMoveListener(() -> {
+            LatLng newCenter = mapView.getCameraPosition();
+            updateVisibleMarkers(newCenter);
+        });
+
+
+        for (BusStopsComplete busStop : busStopsCompleteList) {
+            LatLng position = new LatLng(busStop.getLatitude(), busStop.getLongitude());
+
+            double distance = calculateDistance(1.3500, 103.7044, busStop.getLatitude(), busStop.getLongitude());
+
+
+        }
+
+
+
         mapView.setMarkerOnClickListener(this::onMarkerClick);
         mapView.setMapOnClickListener(this::onMapClick);
     }
+
+
+
+    private void updateVisibleMarkers(LatLng center) {
+        mapView.clearBookmarks(); // Remove old markers
+
+        LatLng singaporeLocation = new LatLng(1.3500, 103.7044);
+        mapView.addMarker(singaporeLocation, "My Bookmark", BitmapDescriptorFactory.HUE_RED);
+
+        for (BusStopsComplete busStop : busStopsCompleteList) {
+            LatLng position = new LatLng(busStop.getLatitude(), busStop.getLongitude());
+
+
+            double distance = calculateDistance(
+                    center.latitude, center.longitude,
+                    busStop.getLatitude(), busStop.getLongitude()
+            );
+
+
+            if (distance <= 0.3) { //0.3=300m
+                mapView.addMarker(
+                        position,
+                        busStop.getDescription(),
+                        BitmapDescriptorFactory.HUE_AZURE // BLUE MARKER
+                );
+            }
+        }
+    }
+
     private void onMarkerClick(Marker marker) {
         openBTPopup(true);
         mapView.moveCamera(marker.getPosition(), 15f);
+
     }
     private void onMapClick(LatLng position) {
         openBTPopup(false);
     }
+
+    private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+        final int R = 6371; // Earth radius in km
+        double latDistance = Math.toRadians(lat2 - lat1);
+        double lonDistance = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2) +
+                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+                        Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c; // Distance in kmmmmmmm
+    }
+
     private void openBTPopup(boolean doOpen) {
         FrameLayout slidingView = rootView.findViewById(R.id.BTMapBusTimesPanel);
         if (doOpen && slidingView.getVisibility() == View.INVISIBLE) {

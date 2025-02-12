@@ -20,13 +20,21 @@
         <FrameLayout
             android:layout_width="360dp"
             android:layout_height="48dp"
-            android:layout_gravity="center_horizontal">
+            android:layout_gravity="center_horizontal"
+            android:alpha="0.8"
+            android:background="@drawable/round_button"
+            android:fontFamily="@font/albertsans6_semibold"
+            android:text="View Map"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:backgroundTint="@color/buttonPanel" >
 
             <Button
                 android:id="@+id/ViewMapButton"
 
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:alpha="0.8"
                 android:background="@drawable/round_button"
                 android:fontFamily="@font/albertsans6_semibold"
@@ -36,8 +44,8 @@
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 app:backgroundTint="@color/buttonPanel" />
-
         </FrameLayout>
+
 
         <Space
             android:layout_width="match_parent"
@@ -57,6 +65,7 @@
             android:textColor="#FFFFFF"
             android:textColorHint="@color/hintGray"
             android:textSize="18sp" />
+
 
         <Space
             android:layout_width="match_parent"

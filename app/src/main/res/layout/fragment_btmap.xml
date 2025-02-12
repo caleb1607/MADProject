@@ -30,21 +30,26 @@
             android:background="@drawable/arrow_left_thin"
             android:text="@string/blank"
             app:backgroundTint="@color/black" />
+
     </FrameLayout>
 
     <FrameLayout
         android:id="@+id/BTMapBusTimesPanel"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="305dp"
         android:layout_gravity="bottom"
         android:background="#BC2B2B"
         android:visibility="invisible">
 
-        <TextView
-            android:id="@+id/Test1Text"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/BUSclickcard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            app:cardBackgroundColor="#1E1A1A"
+            app:cardCornerRadius="48dp">
+        </androidx.cardview.widget.CardView>
+
+
     </FrameLayout>
 
 </FrameLayout>

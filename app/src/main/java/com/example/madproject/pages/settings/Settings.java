@@ -40,7 +40,7 @@ public class Settings extends Fragment {
         logoutButton = rootView.findViewById(R.id.LogOutButton);
         logoutButton.setOnClickListener(view -> onLogout());
         PhotoView photoView = rootView.findViewById(R.id.photoView);
-        photoView.setImageResource(R.drawable.your_high_res_image);
+        photoView.setImageResource(R.drawable.mrtmap6756);
         // manage theme
         manageTheme();
         return rootView;

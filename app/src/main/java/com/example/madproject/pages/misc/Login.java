@@ -50,6 +50,21 @@ public class Login extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
     }
 
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        //FirebaseUser currentUser = mAuth.getCurrentUser();
+        //updateUI(currentUser);
+    }
+
+    //private void updateUI(FirebaseUser currentUser) {
+    //}
+
+
+
     private void manageTheme() {
         FrameLayout LoginBG = findViewById(R.id.LoginBG);
         View EmailBG = findViewById(R.id.EmailBG);
@@ -83,24 +98,13 @@ public class Login extends AppCompatActivity {
         overridePendingTransition(R.anim.slidefade_in_top, R.anim.slidefade_out_bottom);
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        //FirebaseUser currentUser = mAuth.getCurrentUser();
-        //updateUI(currentUser);
-    }
-
-    //private void updateUI(FirebaseUser currentUser) {
-    //}
-
-
-
-    private void onRegisterRedirect() {
+    private void onRegisterRedirect() {}
+    private View.OnClickListener onRegisterRedirect = view -> {
         Intent redirect = new Intent(Login.this, Register.class);
         startActivity(redirect);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     };
+
     private View.OnClickListener onLogin = view -> {
         loginUser();
     };
