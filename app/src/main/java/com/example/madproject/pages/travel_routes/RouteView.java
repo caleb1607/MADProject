@@ -11,6 +11,10 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.net.URLEncoder;
+import java.io.UnsupportedEncodingException;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -42,27 +46,41 @@ public class RouteView extends Fragment {
         start = rootView.findViewById(R.id.routeStart);
         end = rootView.findViewById(R.id.routeEnd);
         assert getArguments() != null;
+        TRSearch.ItemAdapter adapter;
+        String TAG = "RouteView.javaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
         String lat1 = getArguments().getString("lat1");
         String lon1 = getArguments().getString("lon1");
         String name1 = getArguments().getString("name1");
         String lat2 = getArguments().getString("lat2");
         String lon2 = getArguments().getString("lon2");
         String name2 = getArguments().getString("name2");
-        String startCoords = "";
-        String endCoords = "";
-        String date = "";
-        String time = "";
+        String startCoords = lat1 + "%2C" + lon1;
+        String endCoords = lat2 + "%2C" + lon2;
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
+        String formattedDate = now.format(dateFormatter);
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        String formattedTime = now.format(timeFormatter);
+        String encodedTime = "";
+        try {
+            encodedTime = URLEncoder.encode(formattedTime, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         start.setText(name1);
         end.setText(name2);
-        Log.d("RouteView.java", name1 + lat1 + ", " + lon1);
-        Log.d("RouteView.java", name2 + lat2 + ", " + lon2);
         OnemapRouteApi onemapRouteApi = OnemapRouteClient.getApiService();
-        onemapRouteApi.getRouteResults(APIReader.getAPIKey(), startCoords, endCoords, "pt", date, time, "TRANSIT", "2")
+        onemapRouteApi.getRouteResults(APIReader.getAPIKey(), startCoords, endCoords, "pt", formattedDate, encodedTime, "TRANSIT", "2")
             .enqueue(new Callback<OnemapRouteResponse>() {
                 @Override
                 public void onResponse(Call<OnemapRouteResponse> call, Response<OnemapRouteResponse> response) {
-                    if (response.isSuccessful()) {
+                    Log.d(TAG, "onResponse: " + response);
 
+                    if (response.isSuccessful()) {
+                        assert response.body() != null;
+                        String rawJson = response.body().toString();
+                        Log.d("RetrofitResponse", rawJson);
+                        Log.d("RouteView.java", "onResponse: " + response);
                     }
                 }
 
@@ -80,7 +98,7 @@ public class RouteView extends Fragment {
 
     }
 
-    static class RouteViewAdapter extends RecyclerView.Adapter<RouteViewAdapter.ViewHolder> {
+    public static class RouteViewAdapter extends RecyclerView.Adapter<RouteViewAdapter.ViewHolder> {
         private List<OnemapRouteResponse.Itinerary> itineraries;
 
         public RouteViewAdapter(List<OnemapRouteResponse.Itinerary> itineraries) {
