@@ -34,6 +34,8 @@ public class MapView extends Fragment implements OnMapReadyCallback {
     private List<CameraUpdate> cameraQueue = new ArrayList<>();
     private List<Consumer<Marker>> markerOnClickListenerQueue = new ArrayList<>();
     private List<Consumer<LatLng>> mapOnClickListenerQueue = new ArrayList<>();
+    private Runnable cameraMoveListener;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -82,6 +84,14 @@ public class MapView extends Fragment implements OnMapReadyCallback {
             mMap.addMarker(markerOptions);
         }
     }
+
+    public LatLng getCameraPosition() {
+        if (mMap != null) {
+            return mMap.getCameraPosition().target;
+        }
+        return null; // Return null if the map isn't ready yet
+    }
+
     public void moveCamera(LatLng coords, float zoom) {
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(coords, zoom);
         if (mMap == null) {
@@ -109,4 +119,19 @@ public class MapView extends Fragment implements OnMapReadyCallback {
             });
         }
     }
+
+    public void setOnCameraMoveListener(Runnable listener) {
+        this.cameraMoveListener = listener;
+        if (mMap != null) {
+            mMap.setOnCameraMoveListener(() -> cameraMoveListener.run());
+        }
+    }
+
+    public void clearBookmarks() {
+        if (mMap != null) {
+            mMap.clear(); // Removes all markers from the map
+        }
+        markerQueue.clear(); // Clears queued markers in case map wasn't initialized
+    }
+
 }

@@ -25,7 +25,7 @@
             android:alpha="0.8"
             android:background="@drawable/round_button"
             android:fontFamily="@font/albertsans6_semibold"
-            android:text="Bus Services"
+            android:text="View Map"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="16sp"
