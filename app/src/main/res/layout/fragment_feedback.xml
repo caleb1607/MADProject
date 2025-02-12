@@ -102,7 +102,7 @@
             android:layout_height="20dp" />
 
         <EditText
-            android:id="@+id/editTextText"
+            android:id="@+id/FeedbackTextBox"
             android:layout_width="340dp"
             android:layout_height="200dp"
             android:layout_gravity="center"
