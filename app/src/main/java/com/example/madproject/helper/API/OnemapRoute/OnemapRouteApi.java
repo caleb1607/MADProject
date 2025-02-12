@@ -11,8 +11,8 @@ public interface OnemapRouteApi {
     @GET("api/public/routingsvc/route")
     Call<OnemapRouteResponse> getRouteResults(
             @Header("Authorization") String authorization,
-            @Query("start") String start,
-            @Query("end") String end,
+            @Query(value = "start", encoded = true) String start,
+            @Query(value = "end", encoded = true) String end,
             @Query("routeType") String routeType,
             @Query("date") String date,
             @Query("time") String time,

@@ -7,7 +7,7 @@ import android.util.Log;
 
 public class OnemapRouteResponse {
     @SerializedName("plan")
-    private Plan plan;
+    public static Plan plan;
 
     public Plan getPlan() {
         return plan;

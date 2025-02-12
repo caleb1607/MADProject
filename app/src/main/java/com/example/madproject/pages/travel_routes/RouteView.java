@@ -74,13 +74,11 @@ public class RouteView extends Fragment {
             .enqueue(new Callback<OnemapRouteResponse>() {
                 @Override
                 public void onResponse(Call<OnemapRouteResponse> call, Response<OnemapRouteResponse> response) {
-                    Log.d(TAG, "onResponse: " + response);
 
                     if (response.isSuccessful()) {
-                        assert response.body() != null;
-                        String rawJson = response.body().toString();
-                        Log.d("RetrofitResponse", rawJson);
-                        Log.d("RouteView.java", "onResponse: " + response);
+                        OnemapRouteResponse OnemapResponse = response.body();
+                        for (OnemapRouteResponse.Itinerary Itinerary;;) {
+                        }
                     }
                 }
 
