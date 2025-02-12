@@ -28,7 +28,7 @@
                 android:layout_gravity="center_vertical"
                 android:paddingLeft="8dp"
                 android:src="@drawable/ic_bookmark"
-                android:tint="@color/white" />
+                app:tint="@color/white" />
 
             <TextView
                 android:id="@+id/YOUR_BOOKMARKS"
