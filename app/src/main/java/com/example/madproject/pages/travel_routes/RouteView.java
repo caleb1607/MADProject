@@ -62,7 +62,7 @@ public class RouteView extends Fragment {
                 @Override
                 public void onResponse(Call<OnemapRouteResponse> call, Response<OnemapRouteResponse> response) {
                     if (response.isSuccessful()) {
-                        new RouteViewAdapter(response;
+
                     }
                 }
 
