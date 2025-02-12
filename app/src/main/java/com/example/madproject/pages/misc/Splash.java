@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageView;
 
@@ -22,20 +23,27 @@ public class Splash extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        Log.d("test1", "");
         init();
         // manage theme
+        Log.d("test2", "");
         manageTheme();
         ImageView NYOOM = findViewById(R.id.NYOOM);
+        Log.d("test3", "");
         Handler handler = new Handler();
+        Log.d("test4", "");
         handler.postDelayed(() -> {
-
+            Log.d("test5", "");
             Intent intent = (localStorageDB.getValue("LoginToken").equals("0")) ?
                     new Intent(Splash.this, Startup.class) :
                     new Intent(Splash.this, Main.class);
+            Log.d("test6", "");
             handler.postDelayed(() -> {
                 startActivity(intent);
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                Log.d("test7", "");
                 finish();
+                Log.d("test8", "");
             }, 400);
         }, 400);
     }
