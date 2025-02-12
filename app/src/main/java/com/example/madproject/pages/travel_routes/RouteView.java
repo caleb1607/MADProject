@@ -51,6 +51,10 @@ public class RouteView extends Fragment {
     TextView start;
     TextView end;
     LegAdapter adapter;
+    TextView timeTaken;
+    TextView startTime;
+    TextView endTime;
+    TextView fare;
     List<LegPanel> fullLegList = new ArrayList<>();
     @Nullable
     @Override
@@ -155,7 +159,7 @@ public class RouteView extends Fragment {
         @Override
         public void onBindViewHolder(RouteView.LegAdapter.ItemViewHolder holder, int position) {
             LegPanel item = panelList.get(position);
-
+            holder.fromTextView.setText("a");
             manageThemeRV(holder); // light mode
         }
 
