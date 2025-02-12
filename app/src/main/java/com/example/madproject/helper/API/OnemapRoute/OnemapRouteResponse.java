@@ -64,9 +64,9 @@ public class OnemapRouteResponse {
         @SerializedName("distance")
         private double distance;
         @SerializedName("from")
-        private String from;
+        private from from;
         @SerializedName("to")
-        private String to;
+        private to to;
         @SerializedName("duration")
         private int Duration;
 
@@ -82,8 +82,8 @@ public class OnemapRouteResponse {
             return distance;
         }
 
-        public String getFrom() { return from;}
-        public String getTo() { return to;}
+        public from getFrom() { return from;}
+        public to getTo() { return to;}
         public int getDuration() {return Duration;}
     }
 
@@ -92,6 +92,10 @@ public class OnemapRouteResponse {
         private String name;
         @SerializedName("stopIndex")
         private String stopIndex;
+
+        public String getName() {return name;}
+
+        public String getStopIndex() {return stopIndex;}
     }
 
     public class to {
@@ -99,5 +103,9 @@ public class OnemapRouteResponse {
         private String name;
         @SerializedName("stopIndex")
         private String stopIndex;
+
+        public String getName() {return name;}
+
+        public String getStopIndex() {return stopIndex;}
     }
 }
