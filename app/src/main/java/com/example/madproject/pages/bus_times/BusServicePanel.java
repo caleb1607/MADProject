@@ -4,12 +4,13 @@ public class BusServicePanel {
     private String busNumber;
     private String[] AT;
     private boolean isBookmarked;
-    private boolean BMAnimDone = false;
+    private boolean BMAnimDone;
 
-    public BusServicePanel(String busNumber, String[] AT, boolean isBookmarked) {
+    public BusServicePanel(String busNumber, String[] AT, boolean isBookmarked, boolean BMAnimDone) {
         this.busNumber = busNumber;
         this.AT = AT;
         this.isBookmarked = isBookmarked;
+        this.BMAnimDone = BMAnimDone;
     }
     public void setAT(String[] AT) {
         this.AT = AT;

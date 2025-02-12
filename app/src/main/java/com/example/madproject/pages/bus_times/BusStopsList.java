@@ -101,7 +101,8 @@ public class BusStopsList extends Fragment {
                             busStopData.getBusStopCode(),
                             busStopInfo.getRoadName(),
                             new String[]{" ", " ", " "},
-                            busTimesBookmarksDB.doesBusStopCodeExist(busStopData.getBusStopCode())
+                            busTimesBookmarksDB.doesBusStopCodeExist(busStopData.getBusStopCode()),
+                            !busTimesBookmarksDB.doesBusStopCodeExist(busStopData.getBusStopCode())
                     ));
                 }
             }
@@ -136,11 +137,11 @@ public class BusStopsList extends Fragment {
             busServiceText.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
             ROUTE.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
         } else { // light
-            rootView.setBackgroundColor(getResources().getColor(R.color.LmainBackground));
-            backButton.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.black));
-            BUS.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
-            busServiceText.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
-            ROUTE.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
+            rootView.setBackgroundColor(getResources().getColor(R.color.nyoomBlue));
+            backButton.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.white));
+            BUS.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+            busServiceText.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+            ROUTE.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
         }
     }
 
@@ -238,16 +239,16 @@ public class BusStopsList extends Fragment {
                 holder.RECTANGLE.setBackgroundColor(ContextCompat.getColor(context, R.color.darkGray));
                 holder.ARRIVING_IN.setTextColor(ContextCompat.getColor(context, R.color.hintGray));
                 holder.bookmarkIcon.setImageTintList(ContextCompat.getColorStateList(context, R.color.buttonPanel));
-                holder.enabledBookmarkIcon.setImageTintList(ContextCompat.getColorStateList(context, R.color.nyoomLightYellow));
+                //holder.enabledBookmarkIcon.setImageTintList(ContextCompat.getColorStateList(context, R.color.nyoomLightYellow));
             } else { // light
                 holder.BSPCardView.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.LbackgroundPanel));
-                holder.busStopName.setTextColor(ContextCompat.getColor(context, R.color.LnyoomYellow));
-                holder.streetName.setTextColor(ContextCompat.getColor(context, R.color.LhintGray));
-                holder.busStopCode.setTextColor(ContextCompat.getColor(context, R.color.LhintGray));
+                holder.busStopName.setTextColor(ContextCompat.getColor(context, R.color.black));
+                holder.streetName.setTextColor(ContextCompat.getColor(context, R.color.nyoomDarkYellow));
+                holder.busStopCode.setTextColor(ContextCompat.getColor(context, R.color.nyoomDarkYellow));
                 holder.RECTANGLE.setBackgroundColor(ContextCompat.getColor(context, R.color.LdarkGray));
                 holder.ARRIVING_IN.setTextColor(ContextCompat.getColor(context, R.color.LhintGray));
                 holder.bookmarkIcon.setImageTintList(ContextCompat.getColorStateList(context, R.color.LbuttonPanel));
-                holder.enabledBookmarkIcon.setImageTintList(ContextCompat.getColorStateList(context, R.color.nyoomDarkYellow));
+                //holder.enabledBookmarkIcon.setImageTintList(ContextCompat.getColorStateList(context, R.color.nyoomDarkYellow));
             }
         }
         // overrides size of recyclerview

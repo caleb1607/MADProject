@@ -39,7 +39,7 @@ public class Startup extends AppCompatActivity {
     private void goToSignInEnter() {
         Intent signin = new Intent(Startup.this, Login.class);
         startActivity(signin);
-        overridePendingTransition(R.anim.slidefade_in_bottom, R.anim.slidefade_out_top);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         finish();
     }
     private void onEnter() {

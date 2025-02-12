@@ -93,7 +93,7 @@ public class BusTimes extends Fragment {
             searchBar.setHintTextColor(getResources().getColor(R.color.hintGray));
             searchBar.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.backgroundPanel));
         } else { // light
-            rootView.setBackgroundColor(getResources().getColor(R.color.LmainBackground));
+            rootView.setBackgroundColor(getResources().getColor(R.color.nyoomBlue));
             MAPICON.setImageTintList(ContextCompat.getColorStateList(getContext(), R.color.black));
             viewMapButton.setTextColor(getResources().getColor(R.color.black));
             viewMapButton.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.LbuttonPanel));
@@ -248,9 +248,8 @@ public class BusTimes extends Fragment {
                 holder.BTSRCardView.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.LbackgroundPanel));
                 holder.icon.setImageTintList(ContextCompat.getColorStateList(context, R.color.LhintGray));
                 holder.bookmarkButton.setImageTintList(ContextCompat.getColorStateList(context, R.color.LbuttonPanel));
-                holder.BUS.setTextColor(ContextCompat.getColorStateList(context, R.color.LnyoomYellow));
-                holder.header.setTextColor(ContextCompat.getColorStateList(context, R.color.LnyoomYellow));
-
+                holder.BUS.setTextColor(ContextCompat.getColorStateList(context, R.color.nyoomDarkYellow));
+                holder.header.setTextColor(ContextCompat.getColorStateList(context, R.color.nyoomDarkYellow));
             }
         }
 

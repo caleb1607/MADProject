@@ -33,8 +33,10 @@ public class TravelRoutes extends Fragment {
     Button findRouteButton;
     TextView sitText;
     View rootView;
-    LocationData fromData = new LocationData("", "",null, null, "");
-    LocationData toData = new LocationData("", "",null, null, "");
+    //LocationData fromData = new LocationData("", "",null, null, "");
+    //LocationData toData = new LocationData("", "",null, null, "");
+    LocationData fromData = new LocationData("DOVER MRT STATION (EW22)", "","1.31140529320963", "103.778637841909", "DOVER MRT STATION (EW22)");
+    LocationData toData = new LocationData("Afghanistan Family Restaurant", "","1.35171765014011", "103.951963085466", "Afghanistan Family Restaurant");
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -73,13 +75,13 @@ public class TravelRoutes extends Fragment {
             MARKER_ICON.setImageTintList(ContextCompat.getColorStateList(getContext(), R.color.white));
             FIND_A_ROUTE.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
         } else { // light
-            rootView.setBackgroundColor(getResources().getColor(R.color.LmainBackground));
+            rootView.setBackgroundColor(getResources().getColor(R.color.nyoomGreen));
             fromFL.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.LbackgroundPanel));
             toFL.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.LbackgroundPanel));
             fromText.setTextColor(getResources().getColor(R.color.LhintGray));
             toText.setTextColor(getResources().getColor(R.color.LhintGray));
-            MARKER_ICON.setImageTintList(ContextCompat.getColorStateList(getContext(), R.color.black));
-            FIND_A_ROUTE.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
+            MARKER_ICON.setImageTintList(ContextCompat.getColorStateList(getContext(), R.color.white));
+            FIND_A_ROUTE.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
         }
     }
     private void unloadData() {

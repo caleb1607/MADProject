@@ -2,13 +2,21 @@ package com.example.madproject.pages;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.res.ColorStateList;
+import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.TextPaint;
+import android.text.style.TypefaceSpan;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.example.madproject.R;
@@ -38,6 +46,14 @@ public class Main extends AppCompatActivity {
         menu = bottomNavigationView.getMenu();
         // manage theme
         manageTheme();
+        // update font family
+        Typeface typeface = ResourcesCompat.getFont(this, R.font.albertsans5_medium);
+        for (int i = 0; i < bottomNavigationView.getMenu().size(); i++) {
+            MenuItem item = bottomNavigationView.getMenu().getItem(i);
+            SpannableString spanString = new SpannableString(item.getTitle());
+            spanString.setSpan(new CustomTypefaceSpan("", typeface), 0, spanString.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            item.setTitle(spanString);
+        }
         // find navbar clicked item
         bottomNavigationView.setOnItemSelectedListener(item -> {
             Fragment selectedFragment = null;
@@ -162,6 +178,29 @@ public class Main extends AppCompatActivity {
             }
         } else {
             super.onBackPressed();
+        }
+    }
+
+    public class CustomTypefaceSpan extends TypefaceSpan {
+        private final Typeface newType;
+
+        public CustomTypefaceSpan(String family, Typeface type) {
+            super(family);
+            newType = type;
+        }
+
+        @Override
+        public void updateDrawState(TextPaint ds) {
+            applyCustomTypeFace(ds, newType);
+        }
+
+        @Override
+        public void updateMeasureState(TextPaint paint) {
+            applyCustomTypeFace(paint, newType);
+        }
+
+        private void applyCustomTypeFace(Paint paint, Typeface tf) {
+            paint.setTypeface(tf);
         }
     }
 }

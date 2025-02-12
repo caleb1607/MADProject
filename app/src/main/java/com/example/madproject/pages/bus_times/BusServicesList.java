@@ -94,7 +94,8 @@ public class BusServicesList extends Fragment {
                     fullPanelList.add(new BusServicePanel(
                             busService,
                             new String[]{" ", " ", " "},
-                            busTimesBookmarksDB.doesBusServiceExist(busService)
+                            busTimesBookmarksDB.doesBusServiceExist(busService),
+                            !busTimesBookmarksDB.doesBusServiceExist(busService)
                     ));
                 }
             }
@@ -127,9 +128,9 @@ public class BusServicesList extends Fragment {
             backButton.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.white));
             busStopNameText.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
         } else { // light
-            rootView.setBackgroundColor(getResources().getColor(R.color.LmainBackground));
-            backButton.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.black));
-            busStopNameText.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
+            rootView.setBackgroundColor(getResources().getColor(R.color.nyoomBlue));
+            backButton.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.white));
+            busStopNameText.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
         }
     }
     // adapter for recycler view
@@ -222,15 +223,15 @@ public class BusServicesList extends Fragment {
                 holder.RECTANGLE.setBackgroundColor(ContextCompat.getColor(context, R.color.darkGray));
                 holder.ARRIVING_IN.setTextColor(ContextCompat.getColor(context, R.color.hintGray));
                 holder.bookmarkIcon.setImageTintList(ContextCompat.getColorStateList(context, R.color.buttonPanel));
-                holder.enabledBookmarkIcon.setImageTintList(ContextCompat.getColorStateList(context, R.color.nyoomLightYellow));
+                //holder.enabledBookmarkIcon.setImageTintList(ContextCompat.getColorStateList(context, R.color.nyoomLightYellow));
             } else { // light
                 holder.BSVPCardView.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.LbackgroundPanel));
                 holder.BUS.setTextColor(ContextCompat.getColor(context, R.color.LhintGray));
-                holder.busNumber.setTextColor(ContextCompat.getColor(context, R.color.LnyoomYellow));
+                holder.busNumber.setTextColor(ContextCompat.getColor(context, R.color.black));
                 holder.RECTANGLE.setBackgroundColor(ContextCompat.getColor(context, R.color.LdarkGray));
                 holder.ARRIVING_IN.setTextColor(ContextCompat.getColor(context, R.color.LhintGray));
                 holder.bookmarkIcon.setImageTintList(ContextCompat.getColorStateList(context, R.color.LbuttonPanel));
-                holder.enabledBookmarkIcon.setImageTintList(ContextCompat.getColorStateList(context, R.color.nyoomDarkYellow));
+                //holder.enabledBookmarkIcon.setImageTintList(ContextCompat.getColorStateList(context, R.color.nyoomDarkYellow));
             }
         }
         // overrides size of recyclerview

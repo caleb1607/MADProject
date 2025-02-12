@@ -9,8 +9,10 @@ import com.example.madproject.pages.Main;
 import com.example.madproject.pages.settings.ThemeManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -24,10 +26,12 @@ import android.widget.Toast;
 
 public class Login extends AppCompatActivity {
 
-    private Button registerRedirect;
-    private Button loginButton;
+    private Button registerRedirect, loginButton;
     private EditText emailEditText, passwordEditText;
     private FirebaseAuth mAuth; // Initialize Firebase Auth
+    private FirebaseFirestore db;
+    private FirebaseUser currentUser;
+    private SharedPreferences usernamepref, emailpref;
 
 
 
@@ -44,10 +48,17 @@ public class Login extends AppCompatActivity {
         passwordEditText = findViewById(R.id.Password_InputField);
         ImageView DownButton = findViewById(R.id.DownButton);
         DownButton.setOnClickListener(view -> goBack());
+
         // manage theme
         manageTheme();
+
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+        currentUser = mAuth.getCurrentUser();
+
+        usernamepref = getSharedPreferences("Usernamepref", MODE_PRIVATE);
+        emailpref =getSharedPreferences("Emailpref", MODE_PRIVATE);
     }
 
 
@@ -56,12 +67,23 @@ public class Login extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
-        //FirebaseUser currentUser = mAuth.getCurrentUser();
-        //updateUI(currentUser);
-    }
 
-    //private void updateUI(FirebaseUser currentUser) {
-    //}
+        db.collection("users").document(currentUser.getUid()).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        String username = documentSnapshot.getString("username");
+                        String email = documentSnapshot.getString("email");
+
+                        usernamepref.edit().putString("username", username);
+                        usernamepref.edit().apply();
+                        emailpref.edit().putString("email", email);
+                        emailpref.edit().apply();
+
+
+                        //Log.d("UserInfo", "Username: " + username);
+                    }
+                });
+    }
 
 
 
@@ -95,20 +117,18 @@ public class Login extends AppCompatActivity {
     private void goBack() {
         Intent goback = new Intent(Login.this, Startup.class);
         startActivity(goback);
-        overridePendingTransition(R.anim.slidefade_in_top, R.anim.slidefade_out_bottom);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
-    private void onRegisterRedirect() {}
-    private View.OnClickListener onRegisterRedirect = view -> {
+    private void onRegisterRedirect() {
         Intent redirect = new Intent(Login.this, Register.class);
         startActivity(redirect);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-    };
+    }
 
     private View.OnClickListener onLogin = view -> {
         loginUser();
     };
-
 
 
     private void loginUser() {
@@ -127,15 +147,19 @@ public class Login extends AppCompatActivity {
                             // Sign in success
                             LocalStorageDB localStorageDB = new LocalStorageDB(this);
                             localStorageDB.insertOrUpdate("LoginToken", "1");
+
                             FirebaseUser user = mAuth.getCurrentUser();
+
+                            //Logs
                             Toast.makeText(Login.this, "Login successful: " + user.getEmail(), Toast.LENGTH_SHORT).show();
                             Log.d("Firebase", "User logged in: " + user.getEmail());
+                            // Navigate to the next activity (e.g., HomeActivity)
+                            // startActivity(new Intent(Login.this, HomeActivity.class));
                             Intent login = new Intent(Login.this, Main.class);
                             startActivity(login);
                             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                             finish();
-                            // Navigate to the next activity (e.g., HomeActivity)
-                            // startActivity(new Intent(Login.this, HomeActivity.class));
+
                         } else {
                             // Sign in failure
                             Toast.makeText(Login.this, "Authentication failed", Toast.LENGTH_SHORT).show();

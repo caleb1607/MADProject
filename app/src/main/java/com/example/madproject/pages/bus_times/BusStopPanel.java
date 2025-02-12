@@ -6,14 +6,15 @@ public class BusStopPanel {
     private String streetName;
     private String[] AT;
     private boolean isBookmarked;
-    private boolean BMAnimDone = false;
+    private boolean BMAnimDone;
 
-    public BusStopPanel(String busStopName, String busStopCode, String streetName, String[] AT, boolean isBookmarked) {
+    public BusStopPanel(String busStopName, String busStopCode, String streetName, String[] AT, boolean isBookmarked, boolean BMAnimDone) {
         this.busStopName = busStopName;
         this.busStopCode = busStopCode;
         this.streetName = streetName;
         this.AT = AT;
         this.isBookmarked = isBookmarked;
+        this.BMAnimDone = BMAnimDone;
     }
     public void setAT(String[] AT) {
         this.AT = AT;

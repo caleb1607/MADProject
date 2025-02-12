@@ -21,8 +21,7 @@
             android:layout_gravity="center_horizontal"
             android:paddingTop="32dp"
             android:paddingBottom="32dp"
-            android:src="@drawable/nyoomtext"
-            app:srcCompat="@drawable/nyoomtextshadow" />
+            android:src="@drawable/nyoomtextshadow" />
 
         <FrameLayout
             android:layout_width="360dp"
