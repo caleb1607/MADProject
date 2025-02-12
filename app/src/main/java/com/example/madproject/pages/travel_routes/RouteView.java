@@ -114,4 +114,5 @@ public class RouteView extends Fragment {
                 routeTextView = itemView.findViewById(android.R.id.text1);
             }
         }
+    }
 }
