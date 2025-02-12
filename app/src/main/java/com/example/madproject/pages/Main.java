@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Paint;
 import android.graphics.Typeface;
@@ -15,6 +16,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextPaint;
 import android.text.style.TypefaceSpan;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,9 +29,15 @@ import com.example.madproject.pages.settings.ThemeManager;
 import com.example.madproject.pages.travel_routes.TRSearch;
 import com.example.madproject.pages.travel_routes.TravelRoutes;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Main extends AppCompatActivity {
-
+    private FirebaseAuth mAuth; // Initialize Firebase Auth
+    private FirebaseFirestore db;
+    private FirebaseUser currentUser;
+    private SharedPreferences usernamepref, emailpref; //Initialize Pref
     int currentFragmentId;
     int fragmentPosition;
     BottomNavigationView bottomNavigationView;
@@ -38,6 +46,14 @@ public class Main extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Initialize Pref
+        usernamepref = getSharedPreferences("Usernamepref", MODE_PRIVATE);
+        emailpref = getSharedPreferences("Emailpref", MODE_PRIVATE);
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+        currentUser = mAuth.getCurrentUser();
         // set default fragment
         loadFragment(new Bookmarks(), null);
         currentFragmentId = R.id.bookmarks;
@@ -90,6 +106,32 @@ public class Main extends AppCompatActivity {
             return true;
         });
     }
+
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        db.collection("users").document(currentUser.getUid()).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        String username = documentSnapshot.getString("username");
+                        String email = documentSnapshot.getString("email");
+
+                        usernamepref.edit().putString("username", username).apply();
+                        emailpref.edit().putString("email", email).apply();
+                        SharedPreferences emailpref2 = getSharedPreferences("Emailpref", MODE_PRIVATE);
+                        String userEmail = emailpref2.getString("email", "default@gmail.com"); // Default if not found
+                        Log.d("email",userEmail);
+
+
+                        //Log.d("UserInfo", "Username: " + username + "Email: " + email);
+                    }
+                });
+    }
+
+
 
     public void manageTheme() {
         View rootView = findViewById(android.R.id.content);

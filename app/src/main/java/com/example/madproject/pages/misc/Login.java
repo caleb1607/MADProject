@@ -29,10 +29,6 @@ public class Login extends AppCompatActivity {
     private Button registerRedirect, loginButton;
     private EditText emailEditText, passwordEditText;
     private FirebaseAuth mAuth; // Initialize Firebase Auth
-    private FirebaseFirestore db;
-    private FirebaseUser currentUser;
-    private SharedPreferences usernamepref, emailpref;
-
 
 
     @Override
@@ -49,39 +45,11 @@ public class Login extends AppCompatActivity {
         ImageView DownButton = findViewById(R.id.DownButton);
         DownButton.setOnClickListener(view -> goBack());
 
-        // manage theme
-        manageTheme();
-
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
-        currentUser = mAuth.getCurrentUser();
 
-        usernamepref = getSharedPreferences("Usernamepref", MODE_PRIVATE);
-        emailpref =getSharedPreferences("Emailpref", MODE_PRIVATE);
-    }
-
-
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        db.collection("users").document(currentUser.getUid()).get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                        String username = documentSnapshot.getString("username");
-                        String email = documentSnapshot.getString("email");
-
-                        usernamepref.edit().putString("username", username);
-                        usernamepref.edit().apply();
-                        emailpref.edit().putString("email", email);
-                        emailpref.edit().apply();
-
-
-                        //Log.d("UserInfo", "Username: " + username);
-                    }
-                });
+        // manage theme
+        manageTheme();
     }
 
 
