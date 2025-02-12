@@ -33,8 +33,10 @@ public class TravelRoutes extends Fragment {
     Button findRouteButton;
     TextView sitText;
     View rootView;
-    LocationData fromData = new LocationData("", "",null, null, "");
-    LocationData toData = new LocationData("", "",null, null, "");
+    //LocationData fromData = new LocationData("", "",null, null, "");
+    //LocationData toData = new LocationData("", "",null, null, "");
+    LocationData fromData = new LocationData("DOVER MRT STATION (EW22)", "","1.31140529320963", "103.778637841909", "DOVER MRT STATION (EW22)");
+    LocationData toData = new LocationData("Afghanistan Family Restaurant", "","1.35171765014011", "103.951963085466", "Afghanistan Family Restaurant");
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
