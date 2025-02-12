@@ -116,7 +116,7 @@
             android:paddingLeft="8dp"
             android:text="Recommended"
             android:textColor="#888888"
-            android:textSize="16sp" />
+            android:textSize="20dp" />
 
         <FrameLayout
             android:layout_width="match_parent"

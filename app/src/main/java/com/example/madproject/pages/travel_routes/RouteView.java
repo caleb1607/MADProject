@@ -79,6 +79,8 @@ public class RouteView extends Fragment {
                 @Override
                 public void onResponse(Call<OnemapRouteResponse> call, Response<OnemapRouteResponse> response) {
 
+                    Log.d("call", call.toString());
+                    Log.d("response", response.toString());
                     if (response.isSuccessful()) {
                         OnemapRouteResponse OnemapResponse = response.body();
                         OnemapRouteResponse.Plan plan = OnemapResponse.getPlan();
@@ -88,9 +90,19 @@ public class RouteView extends Fragment {
                         String fare = itinerary.get(0).getFare();
                         long startTime = itinerary.get(0).getStartTime();
                         long endTime = itinerary.get(0).getEndTime();
+                        String Header = durationInMin + ", " + fare;
 
                         for (OnemapRouteResponse.Leg leg: itinerary.get(0).getLegs()) {
-
+                            String fromLocation = leg.getFrom();
+                            String mode = leg.getMode();
+                            String toLocation = leg.getTo();
+                            int durationPerLeg = leg.getDuration();
+                            fullLegList.add(new LegPanel(
+                                    fromLocation,
+                                    mode,
+                                    toLocation,
+                                    durationPerLeg
+                            ));
                         }
                     }
                 }
