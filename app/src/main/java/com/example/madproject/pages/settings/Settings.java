@@ -104,19 +104,29 @@ public class Settings extends Fragment {
             alertsButton.setBackgroundTintList(getResources().getColorStateList(R.color.buttonPanel));
             MRTMapButton.setBackgroundTintList(getResources().getColorStateList(R.color.buttonPanel));
             feedbackButton.setBackgroundTintList(getResources().getColorStateList(R.color.buttonPanel));
+            ALERTS_ICON.setImageTintList(getResources().getColorStateList(R.color.nyoomBlue));
+            ALERTS.setTextColor(getResources().getColor(R.color.nyoomBlue));
+            MRTMAP_ICON.setImageTintList(getResources().getColorStateList(R.color.nyoomGreen));
+            MRTMAP.setTextColor(getResources().getColor(R.color.nyoomGreen));
             FEEDBACK_ICON.setImageTintList(getResources().getColorStateList(R.color.nyoomYellow));
             FEEDBACK.setTextColor(getResources().getColor(R.color.nyoomYellow));
+            MRT_MAP.setImageResource(R.drawable.mrtdark2048);
         } else { // light
-            rootView.setBackgroundColor(getResources().getColor(R.color.LmainBackground));
-            toggleThemeButton.setBackgroundTintList(getResources().getColorStateList(R.color.LbuttonPanel));
+            rootView.setBackgroundColor(getResources().getColor(R.color.LhintGray));
+            toggleThemeButton.setBackgroundTintList(getResources().getColorStateList(R.color.LdarkGray));
             toggleThemeButton.setTextColor(getResources().getColor(R.color.black));
-            SETTINGS_ICON.setImageTintList(getResources().getColorStateList(R.color.black));
-            SETTINGS.setTextColor(getResources().getColor(R.color.black));
-            alertsButton.setBackgroundTintList(getResources().getColorStateList(R.color.LbuttonPanel));
-            MRTMapButton.setBackgroundTintList(getResources().getColorStateList(R.color.LbuttonPanel));
-            feedbackButton.setBackgroundTintList(getResources().getColorStateList(R.color.LbuttonPanel));
-            FEEDBACK_ICON.setImageTintList(getResources().getColorStateList(R.color.LnyoomYellow));
-            FEEDBACK.setTextColor(getResources().getColor(R.color.LnyoomYellow));
+            SETTINGS_ICON.setImageTintList(getResources().getColorStateList(R.color.white));
+            SETTINGS.setTextColor(getResources().getColor(R.color.white));
+            alertsButton.setBackgroundTintList(getResources().getColorStateList(R.color.nyoomBlue));
+            MRTMapButton.setBackgroundTintList(getResources().getColorStateList(R.color.nyoomGreen));
+            feedbackButton.setBackgroundTintList(getResources().getColorStateList(R.color.LnyoomYellow));
+            ALERTS_ICON.setImageTintList(getResources().getColorStateList(R.color.white));
+            ALERTS.setTextColor(getResources().getColor(R.color.white));
+            MRTMAP_ICON.setImageTintList(getResources().getColorStateList(R.color.white));
+            MRTMAP.setTextColor(getResources().getColor(R.color.white));
+            FEEDBACK_ICON.setImageTintList(getResources().getColorStateList(R.color.white));
+            FEEDBACK.setTextColor(getResources().getColor(R.color.white));
+            MRT_MAP.setImageResource(R.drawable.mrtlight2048);
         }
     }
     @Override

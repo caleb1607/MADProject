@@ -117,12 +117,12 @@ public class Bookmarks extends Fragment {
             YOUR_BOOKMARKS.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
             BOOKMARK_ICON.setImageTintList(ContextCompat.getColorStateList(getContext(), R.color.white));
         } else { // light
-            rootView.setBackgroundColor(getResources().getColor(R.color.LmainBackground));
+            rootView.setBackgroundColor(getResources().getColor(R.color.LnyoomYellow));
             PopupPanel.setBackgroundTintList(getResources().getColorStateList(R.color.LbuttonPanel));
             DELETE_BOOKMARK.setTextColor(getResources().getColor(R.color.LhintGray));
             bookmarkStopName.setTextColor(getResources().getColor(R.color.black));
-            YOUR_BOOKMARKS.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
-            BOOKMARK_ICON.setImageTintList(ContextCompat.getColorStateList(getContext(), R.color.black));
+            YOUR_BOOKMARKS.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+            BOOKMARK_ICON.setImageTintList(ContextCompat.getColorStateList(getContext(), R.color.white));
         }
     }
     // adapter for recycler view
@@ -199,7 +199,7 @@ public class Bookmarks extends Fragment {
             } else { // light
                 holder.BMPCardView.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.LbackgroundPanel));
                 holder.BUS.setTextColor(ContextCompat.getColor(context, R.color.LhintGray));
-                holder.busNumber.setTextColor(ContextCompat.getColor(context, R.color.LnyoomYellow));
+                holder.busNumber.setTextColor(ContextCompat.getColor(context, R.color.black));
                 holder.busStopName.setTextColor(ContextCompat.getColor(context, R.color.nyoomDarkYellow));
                 holder.RECTANGLE.setBackgroundColor(ContextCompat.getColor(context, R.color.LdarkGray));
                 holder.ARRIVING_IN.setTextColor(ContextCompat.getColor(context, R.color.LhintGray));

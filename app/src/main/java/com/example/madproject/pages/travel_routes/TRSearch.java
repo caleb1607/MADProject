@@ -97,12 +97,16 @@ public class TRSearch extends Fragment {
             TRSearchBar.setTextColor(getResources().getColor(R.color.white));
             TRSearchBar.setHintTextColor(getResources().getColor(R.color.hintGray));
             TRSearchBar.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.backgroundPanel));
+            startTyping.setTextColor(getResources().getColor(R.color.hintGray));
+            startTypingImage.setImageTintList(getResources().getColorStateList(R.color.hintGray));
         } else { // light
-            rootView.setBackgroundColor(getResources().getColor(R.color.LmainBackground));
-            returnButton.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.black));
+            rootView.setBackgroundColor(getResources().getColor(R.color.nyoomGreen));
+            returnButton.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.white));
             TRSearchBar.setTextColor(getResources().getColor(R.color.black));
             TRSearchBar.setHintTextColor(getResources().getColor(R.color.LhintGray));
             TRSearchBar.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.LbackgroundPanel));
+            startTyping.setTextColor(getResources().getColor(R.color.white));
+            startTypingImage.setImageTintList(getResources().getColorStateList(R.color.white));
         }
     }
     public void onSearch() {
