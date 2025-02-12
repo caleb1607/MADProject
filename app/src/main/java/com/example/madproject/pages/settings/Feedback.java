@@ -76,9 +76,9 @@ public class Feedback extends Fragment {
             feedbackTextBox.setBackgroundTintList(getResources().getColorStateList(R.color.backgroundPanel));
             feedbackTextBox.setHintTextColor(getResources().getColor(R.color.hintGray));
         } else { // light
-            rootView.setBackgroundColor(getResources().getColor(R.color.LmainBackground));
-            SETTINGS.setTextColor(getResources().getColor(R.color.LhintGray));
-            returnButton.setImageTintList(getResources().getColorStateList(R.color.LhintGray));
+            rootView.setBackgroundColor(getResources().getColor(R.color.LhintGray));
+            SETTINGS.setTextColor(getResources().getColor(R.color.LdarkGray));
+            returnButton.setImageTintList(getResources().getColorStateList(R.color.LdarkGray));
             FEEDBACK_ICON.setImageTintList(getResources().getColorStateList(R.color.LnyoomYellow));
             FEEDBACK.setTextColor(getResources().getColorStateList(R.color.LnyoomYellow));
             feedbackTextBox.setBackgroundTintList(getResources().getColorStateList(R.color.LbackgroundPanel));

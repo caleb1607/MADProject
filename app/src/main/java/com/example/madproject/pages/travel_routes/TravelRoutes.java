@@ -73,13 +73,13 @@ public class TravelRoutes extends Fragment {
             MARKER_ICON.setImageTintList(ContextCompat.getColorStateList(getContext(), R.color.white));
             FIND_A_ROUTE.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
         } else { // light
-            rootView.setBackgroundColor(getResources().getColor(R.color.LmainBackground));
+            rootView.setBackgroundColor(getResources().getColor(R.color.nyoomGreen));
             fromFL.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.LbackgroundPanel));
             toFL.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.LbackgroundPanel));
             fromText.setTextColor(getResources().getColor(R.color.LhintGray));
             toText.setTextColor(getResources().getColor(R.color.LhintGray));
-            MARKER_ICON.setImageTintList(ContextCompat.getColorStateList(getContext(), R.color.black));
-            FIND_A_ROUTE.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
+            MARKER_ICON.setImageTintList(ContextCompat.getColorStateList(getContext(), R.color.white));
+            FIND_A_ROUTE.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
         }
     }
     private void unloadData() {
