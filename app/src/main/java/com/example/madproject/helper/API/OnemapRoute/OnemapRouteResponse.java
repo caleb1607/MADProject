@@ -2,6 +2,8 @@ package com.example.madproject.helper.API.OnemapRoute;
 
 import com.google.gson.annotations.SerializedName;
 import java.util.List;
+import android.util.Log;
+
 
 public class OnemapRouteResponse {
     @SerializedName("plan")
@@ -26,9 +28,9 @@ public class OnemapRouteResponse {
         @SerializedName("legs")
         private List<Leg> legs;
         @SerializedName("endTime")
-        private int endTime;
+        private long endTime;
         @SerializedName("startTime")
-        private int startTime;
+        private long startTime;
         @SerializedName("fare")
         private String fare;
 
@@ -40,11 +42,11 @@ public class OnemapRouteResponse {
             return legs;
         }
 
-        public int getEndTime() {
+        public long getEndTime() {
             return endTime;
         }
 
-        public int getStartTime() {
+        public long getStartTime() {
             return startTime;
         }
 
@@ -62,9 +64,9 @@ public class OnemapRouteResponse {
         @SerializedName("distance")
         private double distance;
         @SerializedName("from")
-        private Object from;
+        private from from;
         @SerializedName("to")
-        private Object to;
+        private to to;
 
         public String getMode() {
             return mode;
@@ -78,8 +80,8 @@ public class OnemapRouteResponse {
             return distance;
         }
 
-        public Object getFrom() { return from;}
-        public Object getTo() { return to;}
+        public from getFrom() { return from;}
+        public to getTo() { return to;}
     }
 
     public static class from {
