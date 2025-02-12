@@ -66,7 +66,6 @@ public class Login extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
 
         db.collection("users").document(currentUser.getUid()).get()
                 .addOnSuccessListener(documentSnapshot -> {
@@ -150,9 +149,10 @@ public class Login extends AppCompatActivity {
 
                             FirebaseUser user = mAuth.getCurrentUser();
 
-                            //Logs
                             Toast.makeText(Login.this, "Login successful: " + user.getEmail(), Toast.LENGTH_SHORT).show();
-                            Log.d("Firebase", "User logged in: " + user.getEmail());
+                            //Logs
+                            //Log.d("Firebase", "User logged in: " + user.getEmail());
+
                             // Navigate to the next activity (e.g., HomeActivity)
                             // startActivity(new Intent(Login.this, HomeActivity.class));
                             Intent login = new Intent(Login.this, Main.class);

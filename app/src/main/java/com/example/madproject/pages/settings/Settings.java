@@ -216,7 +216,9 @@ public class Settings extends Fragment {
         }
     }
     private void onAlertsView() {
-        activateAlertsButton(false);
+        //activateAlertsButton(false);
+        Intent alert = new Intent(mainContext, Alerts.class);
+        startActivity(alert);
     }
     private void onMRTMapView() {
         mapFL.setVisibility(View.VISIBLE);
