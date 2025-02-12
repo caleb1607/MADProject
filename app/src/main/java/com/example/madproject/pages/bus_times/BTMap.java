@@ -204,7 +204,8 @@ public class BTMap extends Fragment {
                             fullPanelList.add(new BusServicePanel(
                                     busService,
                                     new String[]{" ", " ", " "},
-                                    busTimesBookmarksDB.doesBusServiceExist(busService)
+                                    busTimesBookmarksDB.doesBusServiceExist(busService),
+                                    !busTimesBookmarksDB.doesBusServiceExist(busService)
                             ));
                         }
                     }
