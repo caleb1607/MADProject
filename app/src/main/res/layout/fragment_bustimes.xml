@@ -20,7 +20,6 @@
         <FrameLayout
             android:layout_width="360dp"
             android:layout_height="48dp"
-<<<<<<< HEAD
             android:layout_gravity="center_horizontal"
             android:alpha="0.8"
             android:background="@drawable/round_button"
@@ -30,8 +29,6 @@
             android:textColor="@color/white"
             android:textSize="16sp"
             app:backgroundTint="@color/buttonPanel" />
-=======
-            android:layout_gravity="center_horizontal">
 
             <Button
                 android:id="@+id/ViewMapButton"
@@ -48,8 +45,6 @@
                 android:textSize="16sp"
                 app:backgroundTint="@color/buttonPanel" />
 
-        </FrameLayout>
->>>>>>> 459588d5240a4dc05c58bc286d2687f33b350295
 
         <Space
             android:layout_width="match_parent"

@@ -47,10 +47,9 @@
             android:layout_height="wrap_content"
             app:cardBackgroundColor="#1E1A1A"
             app:cardCornerRadius="48dp">
-
-
-            </FrameLayout>
         </androidx.cardview.widget.CardView>
+
+
     </FrameLayout>
 
 </FrameLayout>
