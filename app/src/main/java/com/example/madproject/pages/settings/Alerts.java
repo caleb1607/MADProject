@@ -1,5 +1,6 @@
 package com.example.madproject.pages.settings;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,6 +18,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Alerts extends AppCompatActivity {
     private TextView alert;
@@ -32,12 +37,22 @@ public class Alerts extends AppCompatActivity {
 
         alert = findViewById(R.id.alerts);
         add = findViewById(R.id.Add);
+        add.setOnClickListener(view -> onAdd());
         delete = findViewById(R.id.Delete);
+        delete.setOnClickListener(view -> onDel());
         addalerts = findViewById(R.id.Addalerts);
         db = FirebaseFirestore.getInstance();
 
         getAnnouncements();
         checkEmail(); // Call function to check email
+    }
+
+
+
+    private void restartActivity() {
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
     }
 
 
@@ -79,5 +94,70 @@ public class Alerts extends AppCompatActivity {
             delete.setVisibility(View.GONE);
             addalerts.setVisibility(View.GONE);
         }
+    }
+
+
+
+    private void onAdd() {
+        // 5️⃣ Get text from TextView
+        String alerts = addalerts.getText().toString();
+
+        if (alerts.isEmpty()) {
+            Toast.makeText(this, "Text cannot be empty!", Toast.LENGTH_SHORT).show();
+            return; // Stop if the text is empty
+        }
+
+        // 6️⃣ Create a Firestore document
+        Map<String, Object> announcement = new HashMap<>();
+        announcement.put("message", alerts);
+        announcement.put("timestamp", System.currentTimeMillis()); // Optional: Timestamp
+
+        // 7️⃣ Add to Firestore
+        db.collection("announcements")
+                .add(announcement) // Auto-generates a document ID
+                .addOnSuccessListener(documentReference -> {
+                        Toast.makeText(this, "Saved successfully!", Toast.LENGTH_SHORT).show();
+                        restartActivity();
+                })
+                .addOnFailureListener(e ->
+                        Toast.makeText(this, "Failed to save!", Toast.LENGTH_SHORT).show());
+
+    }
+
+
+
+    private void onDel() {
+        // 4️⃣ Get text from TextView
+        String announcementText = addalerts.getText().toString();
+
+        if (announcementText.isEmpty()) {
+            Toast.makeText(this, "No text to delete!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // 5️⃣ Find the document that matches the text
+        db.collection("announcements")
+                .whereEqualTo("message", announcementText) // Match by text
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                            db.collection("announcements")
+                                    .document(doc.getId()) // Get the document ID
+                                    .delete()
+                                    .addOnSuccessListener(unused -> {
+                                        Toast.makeText(this, "Deleted successfully!", Toast.LENGTH_SHORT).show();
+                                        restartActivity();
+                                    })
+                                    .addOnFailureListener(e ->
+                                            Toast.makeText(this, "Failed to delete!", Toast.LENGTH_SHORT).show());
+                        }
+                    } else {
+                        Toast.makeText(this, "No matching document found!", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(e ->
+                        Toast.makeText(this, "Failed to find document!", Toast.LENGTH_SHORT).show());
+
     }
 }
