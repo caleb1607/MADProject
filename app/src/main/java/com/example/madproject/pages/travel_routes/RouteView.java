@@ -189,7 +189,9 @@ public class RouteView extends Fragment {
         private void manageThemeRV(RouteView.LegAdapter.ItemViewHolder holder) {
             // lighht mode code will go here eventually
             if (ThemeManager.isDarkTheme()) {
+                
             } else { // light
+
             }
         }
         @Override
