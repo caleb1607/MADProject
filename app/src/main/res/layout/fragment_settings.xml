@@ -66,15 +66,10 @@
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_gravity="center"
-                    app:tint="@color/white"
-                    app:srcCompat="@drawable/mrt" />
+                    app:srcCompat="@drawable/mrt"
+                    app:tint="@color/white" />
             </LinearLayout>
         </LinearLayout>
-
-        <FrameLayout
-            android:id="@+id/InterfaceButtons"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
 
         <Space
             android:layout_width="match_parent"
@@ -86,12 +81,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@drawable/round_button"
-            app:backgroundTint="@color/buttonPanel"
             android:fontFamily="sans-serif-medium"
             android:gravity="center_horizontal|center_vertical"
             android:text="Any Issues?"
             android:textAlignment="center"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"
+            app:backgroundTint="@color/buttonPanel" />
 
         <Space
             android:layout_width="match_parent"
@@ -103,12 +98,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@drawable/round_button"
-            app:backgroundTint="@color/buttonPanel"
             android:fontFamily="sans-serif-medium"
             android:gravity="center_horizontal|center_vertical"
             android:text="Toggle Theme"
             android:textAlignment="center"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"
+            app:backgroundTint="@color/buttonPanel" />
 
         <Space
             android:layout_width="match_parent"
@@ -120,12 +115,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@drawable/round_button"
-            app:backgroundTint="@color/redError"
             android:fontFamily="sans-serif-medium"
             android:gravity="center_horizontal|center_vertical"
             android:text="Delete Account"
             android:textAlignment="center"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"
+            app:backgroundTint="@color/redError" />
 
         <Space
             android:layout_width="match_parent"
@@ -137,13 +132,20 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@drawable/round_button"
-            app:backgroundTint="@color/nyoomBlue"
             android:fontFamily="sans-serif-medium"
             android:gravity="center_horizontal|center_vertical"
             android:text="Log Out"
             android:textAlignment="center"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"
+            app:backgroundTint="@color/nyoomBlue" />
 
     </LinearLayout>
+
+    <com.github.chrisbanes.photoview.PhotoView
+        android:id="@+id/photoView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitCenter"
+        android:visibility="gone" />
 
 </FrameLayout>

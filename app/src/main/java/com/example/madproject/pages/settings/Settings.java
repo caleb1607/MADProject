@@ -20,6 +20,7 @@ import com.example.madproject.helper.LocalStorageDB;
 import com.example.madproject.pages.Main;
 import com.example.madproject.pages.misc.Login;
 import com.example.madproject.pages.misc.Startup;
+import com.github.chrisbanes.photoview.PhotoView;
 
 public class Settings extends Fragment {
 
@@ -38,6 +39,8 @@ public class Settings extends Fragment {
         toggleThemeButton.setOnClickListener(view -> toggleTheme());
         logoutButton = rootView.findViewById(R.id.LogOutButton);
         logoutButton.setOnClickListener(view -> onLogout());
+        PhotoView photoView = rootView.findViewById(R.id.photoView);
+        photoView.setImageResource(R.drawable.your_high_res_image);
         // manage theme
         manageTheme();
         return rootView;
