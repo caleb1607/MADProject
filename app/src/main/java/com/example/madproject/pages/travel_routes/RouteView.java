@@ -17,14 +17,18 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.net.URLEncoder;
 import java.io.UnsupportedEncodingException;
+import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -51,10 +55,11 @@ public class RouteView extends Fragment {
     TextView start;
     TextView end;
     LegAdapter adapter;
-    TextView timeTaken;
-    TextView startTime;
-    TextView endTime;
-    TextView fare;
+    TextView timeTakenV;
+    TextView startTimeV;
+    TextView endTimeV;
+    TextView fareV;
+    RecyclerView routeRV;
     List<LegPanel> fullLegList = new ArrayList<>();
     @Nullable
     @Override
@@ -63,7 +68,13 @@ public class RouteView extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_routeview, container, false);
         backButton = rootView.findViewById(R.id.ReturnButton3);
+        timeTakenV = rootView.findViewById(R.id.timeTaken);
+        startTimeV = rootView.findViewById(R.id.startTime);
+        endTimeV = rootView.findViewById(R.id.endTime);
+        fareV = rootView.findViewById(R.id.fare);
         backButton.setOnClickListener(view -> {getParentFragmentManager().popBackStack();});
+        routeRV = rootView.findViewById(R.id.routeViewRV);
+        routeRV.setLayoutManager(new LinearLayoutManager(getContext()));
         start = rootView.findViewById(R.id.routeStart);
         end = rootView.findViewById(R.id.routeEnd);
         assert getArguments() != null;
@@ -96,8 +107,6 @@ public class RouteView extends Fragment {
                 @Override
                 public void onResponse(Call<OnemapRouteResponse> call, Response<OnemapRouteResponse> response) {
 
-                    Log.d("call", call.toString());
-                    Log.d("response", response.toString());
                     if (response.isSuccessful()) {
                         OnemapRouteResponse OnemapResponse = response.body();
                         OnemapRouteResponse.Plan plan = OnemapResponse.getPlan();
@@ -106,13 +115,24 @@ public class RouteView extends Fragment {
                         float durationInMin = Math.round(duration/60);
                         String fare = itinerary.get(0).getFare();
                         long startTime = itinerary.get(0).getStartTime();
+                        Date date = new Date(startTime);
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                        String startTimeString = sdf.format(date);
                         long endTime = itinerary.get(0).getEndTime();
-                        String Header = durationInMin + ", " + fare;
+                        date = new Date(endTime);
+                        String endTimeString = sdf.format(date);
+                        timeTakenV.setText(String.valueOf(durationInMin));
+                        fareV.setText(fare);
+                        startTimeV.setText(startTimeString);
+                        endTimeV.setText(endTimeString);
+
 
                         for (OnemapRouteResponse.Leg leg: itinerary.get(0).getLegs()) {
-                            String fromLocation = leg.getFrom();
+                            OnemapRouteResponse.from from = leg.getFrom();
+                            OnemapRouteResponse.to to = leg.getTo();
                             String mode = leg.getMode();
-                            String toLocation = leg.getTo();
+                            String fromLocation = from.getName();
+                            String toLocation = to.getName();
                             int durationPerLeg = leg.getDuration();
                             fullLegList.add(new LegPanel(
                                     fromLocation,
@@ -121,6 +141,7 @@ public class RouteView extends Fragment {
                                     durationPerLeg
                             ));
                         }
+                        adapter.notifyDataSetChanged();
                     }
                 }
 
@@ -159,7 +180,10 @@ public class RouteView extends Fragment {
         @Override
         public void onBindViewHolder(RouteView.LegAdapter.ItemViewHolder holder, int position) {
             LegPanel item = panelList.get(position);
-            holder.fromTextView.setText("a");
+            holder.fromTextView.setText(item.getFromLocation());
+            holder.modeTextView.setText(item.getMode());
+            holder.toTextView.setText(item.getToLocation());
+            holder.timeTextView.setText(String.valueOf(item.getDuration()));
             manageThemeRV(holder); // light mode
         }
 
@@ -193,45 +217,4 @@ public class RouteView extends Fragment {
             }
         }
     }
-
-
-//    private void onBack() {
-//
-//    }
-//
-//    public static class RouteViewAdapter extends RecyclerView.Adapter<RouteViewAdapter.ViewHolder> {
-//        private List<OnemapRouteResponse.Itinerary> itineraries;
-//
-//        public RouteViewAdapter(List<OnemapRouteResponse.Itinerary> itineraries) {
-//            this.itineraries = itineraries;
-//        }
-//
-//        @NonNull
-//        @Override
-//        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//            View view = LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_list_item_2, parent, false);
-//            return new ViewHolder(view);
-//        }
-//
-//        @SuppressLint("SetTextI18n")
-//        @Override
-//        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-//            OnemapRouteResponse.Itinerary itinerary = itineraries.get(position);
-//            holder.routeTextView.setText("Duration: " + itinerary.getDuration() + " seconds");
-//        }
-//
-//        @Override
-//        public int getItemCount() {
-//            return itineraries.size();
-//        }
-//
-//        static class ViewHolder extends RecyclerView.ViewHolder {
-//            TextView routeTextView;
-//
-//            ViewHolder(View itemView) {
-//                super(itemView);
-//                routeTextView = itemView.findViewById(android.R.id.text1);
-//            }
-//        }
-//    }
 }

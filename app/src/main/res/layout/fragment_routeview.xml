@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/route"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/mainBackground"
@@ -69,7 +70,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="@font/albertsans6_semibold"
-                android:text="sampleText"
                 android:textColor="#FFFFFF"
                 android:textSize="18dp" />
 
@@ -96,7 +96,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="@font/albertsans6_semibold"
-                android:text="sampleText"
                 android:textColor="#FFFFFF"
                 android:textSize="18dp" />
         </LinearLayout>
@@ -130,7 +129,18 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="@font/albertsans6_semibold"
-                android:text="sampleText"
+                android:text="0"
+                android:textColor="#FFFFFF"
+                android:textSize="25dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/min"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/albertsans6_semibold"
+                android:text=" minutes"
                 android:textColor="#FFFFFF"
                 android:textSize="25dp"
                 android:textStyle="bold" />
@@ -161,7 +171,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="@font/albertsans6_semibold"
-                android:text="sampleText"
                 android:textColor="#FFFFFF"
                 android:textSize="18dp"
                 android:textStyle="bold" />
@@ -187,12 +196,11 @@
                 android:textSize="18dp" />
 
             <TextView
-                android:id="@+id/fare2"
+                android:id="@+id/endTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="@font/albertsans6_semibold"
-                android:text="sampleText"
                 android:textColor="#FFFFFF"
                 android:textSize="18dp"
                 android:textStyle="bold" />
@@ -213,7 +221,7 @@
                 android:fontFamily="@font/albertsans6_semibold"
                 android:gravity="center"
                 android:paddingLeft="8dp"
-                android:text="Fare: "
+                android:text="Fare: $"
                 android:textColor="#FFFFFF"
                 android:textSize="18dp" />
 
@@ -223,7 +231,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="@font/albertsans6_semibold"
-                android:text="sampleText"
+                android:text="0.00"
                 android:textColor="#FFFFFF"
                 android:textSize="18dp"
                 android:textStyle="bold" />
@@ -235,6 +243,7 @@
             android:layout_height="match_parent">
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/routeViewRV"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
