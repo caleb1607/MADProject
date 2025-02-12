@@ -51,6 +51,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class RouteView extends Fragment {
+
+    View rootView;
     Button backButton;
     TextView start;
     TextView end;
@@ -66,7 +68,7 @@ public class RouteView extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_routeview, container, false);
+        rootView = inflater.inflate(R.layout.fragment_routeview, container, false);
         backButton = rootView.findViewById(R.id.ReturnButton3);
         timeTakenV = rootView.findViewById(R.id.timeTaken);
         startTimeV = rootView.findViewById(R.id.startTime);
@@ -79,6 +81,9 @@ public class RouteView extends Fragment {
         end = rootView.findViewById(R.id.routeEnd);
         assert getArguments() != null;
         adapter = new LegAdapter(fullLegList, getContext());
+        // manage theme
+        manageTheme();
+        // input
         String TAG = "RouteView.javaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
         String lat1 = getArguments().getString("lat1");
         String lon1 = getArguments().getString("lon1");
@@ -142,6 +147,8 @@ public class RouteView extends Fragment {
                             ));
                         }
                         adapter.notifyDataSetChanged();
+                    } else {
+
                     }
                 }
 
@@ -215,6 +222,13 @@ public class RouteView extends Fragment {
                 TO = itemView.findViewById(R.id.TO);
                 MINS = itemView.findViewById(R.id.MINS);
             }
+        }
+    }
+    private void manageTheme() {
+        if (ThemeManager.isDarkTheme()) {
+            rootView.setBackgroundColor(getResources().getColor(R.color.mainBackground));
+        } else { // light
+            rootView.setBackgroundColor(getResources().getColor(R.color.nyoomGreen));
         }
     }
 }
