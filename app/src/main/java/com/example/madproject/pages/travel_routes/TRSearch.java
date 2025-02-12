@@ -107,7 +107,7 @@ public class TRSearch extends Fragment {
     }
     public void onSearch() {
         searchResultList.clear();
-        if (query.length() >= 1) {
+        if (query.length() > 0) {
             OnemapSearchApi onemapSearchApi = OnemapSearchClient.getApiService();
             onemapSearchApi.getSearchResults(APIReader.getAPIKey(), "Y", "Y", 1, query)
                 .enqueue(new Callback<OnemapSearchResponse>() {
