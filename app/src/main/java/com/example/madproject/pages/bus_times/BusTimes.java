@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
@@ -28,6 +29,7 @@ import java.util.List;
 
 import com.example.madproject.R;
 import com.example.madproject.datasets.BusStopsComplete;
+import com.example.madproject.helper.BusTimesRecentsDB;
 import com.example.madproject.helper.JSONReader;
 import com.example.madproject.pages.settings.ThemeManager;
 
@@ -41,6 +43,7 @@ public class BusTimes extends Fragment {
     Button busStopsButton;
     EditText searchBar;
     String query = "";
+    TextView RECENTLY_SEARCHED;
     // variables
     List<BTSearchResultItem> searchResultList = new ArrayList<>();
     ItemAdapter adapter;
@@ -70,11 +73,14 @@ public class BusTimes extends Fragment {
         searchResultsRV = rootView.findViewById(R.id.BusTimesRV);
         searchResultsRV.setLayoutManager(new LinearLayoutManager(getContext()));
         searchResultsRV.setAdapter(adapter);
+        RECENTLY_SEARCHED = rootView.findViewById(R.id.RECENTLY_SEARCHED);
         // manage theme
         manageTheme();
         // Read from datasets
         busServicesList = JSONReader.bus_services(getContext());
         busStopsList = JSONReader.bus_stops_complete(getContext());
+        // recents list
+        showRecentsList();
         return rootView;
     }
 
@@ -92,6 +98,7 @@ public class BusTimes extends Fragment {
             searchBar.setTextColor(getResources().getColor(R.color.white));
             searchBar.setHintTextColor(getResources().getColor(R.color.hintGray));
             searchBar.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.backgroundPanel));
+            RECENTLY_SEARCHED.setTextColor(getResources().getColor(R.color.hintGray));
         } else { // light
             rootView.setBackgroundColor(getResources().getColor(R.color.nyoomBlue));
             MAPICON.setImageTintList(ContextCompat.getColorStateList(getContext(), R.color.black));
@@ -104,6 +111,7 @@ public class BusTimes extends Fragment {
             searchBar.setTextColor(getResources().getColor(R.color.black));
             searchBar.setHintTextColor(getResources().getColor(R.color.LhintGray));
             searchBar.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.LbackgroundPanel));
+            RECENTLY_SEARCHED.setTextColor(getResources().getColor(R.color.nyoomLightBlue));
         }
     }
 
@@ -139,6 +147,39 @@ public class BusTimes extends Fragment {
                     }
                 }
             }
+            RECENTLY_SEARCHED.setVisibility(View.GONE);
+        } else {
+            showRecentsList();
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    private void showRecentsList() {
+        BusTimesRecentsDB busTimesRecentsDB = new BusTimesRecentsDB(getContext());
+        List<List<String>> records = busTimesRecentsDB.getAllRecords();
+        if (records.size() != 0) {
+            for (List<String> record : records) {
+                String type = record.get(1);
+                String value = record.get(2);
+                String header = record.get(3);
+                String subheader1 = record.get(4);
+                String subheader2 = record.get(5);
+                if (includeBusServices) {
+                    if (type.equals("busService")) {
+                        searchResultList.add(new BTSearchResultItem(
+                                type, value, header, subheader1, subheader2
+                        ));
+                    }
+                }
+                if (includeBusStops) {
+                    if (type.equals("busStop")) {
+                        searchResultList.add(new BTSearchResultItem(
+                                type, value, header, subheader1, subheader2
+                        ));
+                    }
+                }
+            }
+            RECENTLY_SEARCHED.setVisibility(View.VISIBLE);
         }
         adapter.notifyDataSetChanged();
     }
@@ -281,6 +322,17 @@ public class BusTimes extends Fragment {
     }
 
     private void transaction(int position) {
+        String recent_type = searchResultList.get(position).getType();
+        String recent_value = searchResultList.get(position).getValue();
+        String recent_header = searchResultList.get(position).getHeader();
+        String recent_subheader1 = searchResultList.get(position).getSubheader1();
+        String recent_subheader2 = searchResultList.get(position).getSubheader2();
+        BusTimesRecentsDB busTimesRecentsDB = new BusTimesRecentsDB(getContext());
+        if (busTimesRecentsDB.doesTypeValueExist(recent_type, recent_value)) { // record alr exists
+            busTimesRecentsDB.deleteRecordByTypeValue(recent_type, recent_value);
+        }
+        busTimesRecentsDB.insert(recent_type, recent_value, recent_header, recent_subheader1, recent_subheader2);
+        busTimesRecentsDB.sliceRecordsByNumber(6); // caps recent by 6
         String type = searchResultList.get(position).getType();
         String value = searchResultList.get(position).getValue();
         Fragment selectedFragment = (type.equals("busService")) ? new BusStopsList() : new BusServicesList();

@@ -30,6 +30,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class Main extends AppCompatActivity {
 
+    View rootView;
     int currentFragmentId;
     int fragmentPosition;
     BottomNavigationView bottomNavigationView;
@@ -44,6 +45,7 @@ public class Main extends AppCompatActivity {
         fragmentPosition = 0;
         bottomNavigationView = findViewById(R.id.BottomNavigationView);
         menu = bottomNavigationView.getMenu();
+        rootView = findViewById(android.R.id.content);
         // manage theme
         manageTheme();
         // update font family
@@ -64,21 +66,25 @@ public class Main extends AppCompatActivity {
                     selectedFragment = new Bookmarks();
                     currentFragmentId = R.id.bookmarks;
                     animationGoesRight = (fragmentPosition < 0) ? true : false;
+                    if (!ThemeManager.isDarkTheme()) { rootView.setBackgroundColor(getResources().getColor(R.color.nyoomYellow)); }
                     fragmentPosition = 0;
                 } else if (itemID == R.id.busarrivaltimes) {
                     selectedFragment = new BusTimes();
                     currentFragmentId = R.id.busarrivaltimes;
                     animationGoesRight = (fragmentPosition < 1) ? true : false;
+                    if (!ThemeManager.isDarkTheme()) { rootView.setBackgroundColor(getResources().getColor(R.color.nyoomBlue)); }
                     fragmentPosition = 1;
                 } else if (itemID == R.id.travelroutes) {
                     selectedFragment = new TravelRoutes();
                     currentFragmentId = R.id.travelroutes;
                     animationGoesRight = (fragmentPosition < 2) ? true : false;
+                    if (!ThemeManager.isDarkTheme()) { rootView.setBackgroundColor(getResources().getColor(R.color.nyoomGreen)); }
                     fragmentPosition = 2;
                 } else if (itemID == R.id.settings) {
                     selectedFragment = new Settings();
                     currentFragmentId = R.id.settings;
                     animationGoesRight = (fragmentPosition < 3) ? true : false;
+                    if (!ThemeManager.isDarkTheme()) { rootView.setBackgroundColor(getResources().getColor(R.color.LhintGray)); }
                     fragmentPosition = 3;
                 }
                 updateNavbarColors();
@@ -92,12 +98,11 @@ public class Main extends AppCompatActivity {
     }
 
     public void manageTheme() {
-        View rootView = findViewById(android.R.id.content);
         if (ThemeManager.isDarkTheme()) {
             rootView.setBackgroundColor(getResources().getColor(R.color.mainBackground));
             bottomNavigationView.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.navBarPanel));
         } else { // light
-            rootView.setBackgroundColor(getResources().getColor(R.color.LmainBackground));
+            rootView.setBackgroundColor(getResources().getColor(R.color.nyoomYellow));
             bottomNavigationView.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.LnavBarPanel));
         }
         // defaults

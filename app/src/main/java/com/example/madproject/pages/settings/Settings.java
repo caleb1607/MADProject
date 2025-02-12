@@ -28,6 +28,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.madproject.R;
 import com.example.madproject.helper.BusTimesBookmarksDB;
+import com.example.madproject.helper.BusTimesRecentsDB;
 import com.example.madproject.helper.LocalStorageDB;
 import com.example.madproject.pages.Main;
 import com.example.madproject.pages.misc.Login;
@@ -41,7 +42,7 @@ public class Settings extends Fragment {
     LocalStorageDB localStorageDB;
     // views
     Button toggleThemeButton;
-    Button clearBookmarksButton;
+    Button clearCacheButton;
     Button deleteAccountButton;
     Space deleteAccountSpace;
     Button logoutButton;
@@ -67,8 +68,8 @@ public class Settings extends Fragment {
         // views setup
         toggleThemeButton = rootView.findViewById(R.id.ToggleThemeButton);
         toggleThemeButton.setOnClickListener(view -> toggleTheme());
-        clearBookmarksButton = rootView.findViewById(R.id.ClearBookmarksButton);
-        clearBookmarksButton.setOnClickListener(view -> clearBookmarks());
+        clearCacheButton = rootView.findViewById(R.id.ClearCacheButton);
+        clearCacheButton.setOnClickListener(view -> clearCache());
         deleteAccountButton = rootView.findViewById(R.id.DeleteAccountButton);
         deleteAccountButton.setOnClickListener(view -> onDeleteAccount());
         deleteAccountSpace = rootView.findViewById(R.id.DeleteAccountSpace);
@@ -125,8 +126,6 @@ public class Settings extends Fragment {
             rootView.setBackgroundColor(getResources().getColor(R.color.mainBackground));
             toggleThemeButton.setBackgroundTintList(getResources().getColorStateList(R.color.buttonPanel));
             toggleThemeButton.setTextColor(getResources().getColor(R.color.white));
-            clearBookmarksButton.setBackgroundTintList(getResources().getColorStateList(R.color.buttonPanel));
-            clearBookmarksButton.setTextColor(getResources().getColor(R.color.white));
             SETTINGS_ICON.setImageTintList(getResources().getColorStateList(R.color.white));
             SETTINGS.setTextColor(getResources().getColor(R.color.white));
             alertsButton.setBackgroundTintList(getResources().getColorStateList(R.color.buttonPanel));
@@ -143,8 +142,6 @@ public class Settings extends Fragment {
             rootView.setBackgroundColor(getResources().getColor(R.color.LhintGray));
             toggleThemeButton.setBackgroundTintList(getResources().getColorStateList(R.color.LdarkGray));
             toggleThemeButton.setTextColor(getResources().getColor(R.color.black));
-            clearBookmarksButton.setBackgroundTintList(getResources().getColorStateList(R.color.LdarkGray));
-            clearBookmarksButton.setTextColor(getResources().getColor(R.color.black));
             SETTINGS_ICON.setImageTintList(getResources().getColorStateList(R.color.white));
             SETTINGS.setTextColor(getResources().getColor(R.color.white));
             alertsButton.setBackgroundTintList(getResources().getColorStateList(R.color.nyoomBlue));
@@ -197,10 +194,12 @@ public class Settings extends Fragment {
         ThemeManager.setTheme(mainContext, !ThemeManager.isDarkTheme());
         manageTheme();
     }
-    private void clearBookmarks() {
+    private void clearCache() {
         BusTimesBookmarksDB busTimesBookmarksDB = new BusTimesBookmarksDB(getContext());
         busTimesBookmarksDB.deleteAllBookmarks();
-        Toast.makeText(getContext(), "Bookmarks Cleared", Toast.LENGTH_SHORT).show();
+        BusTimesRecentsDB busTimesRecentsDB = new BusTimesRecentsDB(getContext());
+        busTimesRecentsDB.deleteAllRecords();
+        Toast.makeText(getContext(), "Cache Cleared", Toast.LENGTH_SHORT).show();
     }
     private void onDeleteAccount() {
 

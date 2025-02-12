@@ -43,11 +43,13 @@ import java.util.concurrent.Future;
 public class Bookmarks extends Fragment {
 
     View rootView;
+    TextView bookmarkStopName;
     FrameLayout ConfirmationPopup;
+    FrameLayout sadBookmark;
     static List<BookmarkPanel> fullPanelList = new ArrayList<>(); // list of panel data
     BusTimesBookmarksDB busTimesBookmarks;
     private boolean isDataLoaded = false;
-    static Bookmarks.ItemAdapter adapter;
+    Bookmarks.ItemAdapter adapter;
     boolean confirmed;
     int bookmarkPosition;
 
@@ -65,8 +67,10 @@ public class Bookmarks extends Fragment {
         ConfirmationButton.setOnClickListener(view -> onDeletionConfirmed());
         ImageView CancellationButton = rootView.findViewById(R.id.CancellationButton);
         CancellationButton.setOnClickListener(view -> onDeletionCancelled());
+        sadBookmark = rootView.findViewById(R.id.SadBookmark);
         bookmarksPanels.setLayoutManager(new GridLayoutManager(getContext(), 2));
         busTimesBookmarks = new BusTimesBookmarksDB(getContext());
+        bookmarkStopName = rootView.findViewById(R.id.BookmarkStopName);
         // manage theme
         manageTheme();
         // Clear any previous data to avoid duplication
@@ -106,7 +110,6 @@ public class Bookmarks extends Fragment {
     private void manageTheme() {
         LinearLayout PopupPanel = rootView.findViewById(R.id.PopupPanel);
         TextView DELETE_BOOKMARK = rootView.findViewById(R.id.DELETE_BOOKMARK);
-        TextView bookmarkStopName = rootView.findViewById(R.id.BookmarkStopName);
         TextView YOUR_BOOKMARKS =  rootView.findViewById(R.id.YOUR_BOOKMARKS);
         ImageView BOOKMARK_ICON = rootView.findViewById(R.id.BOOKMARK_ICON);
         if (ThemeManager.isDarkTheme()) {
@@ -196,7 +199,7 @@ public class Bookmarks extends Fragment {
                 holder.busStopName.setTextColor(ContextCompat.getColor(context, R.color.nyoomLightYellow));
                 holder.RECTANGLE.setBackgroundColor(ContextCompat.getColor(context, R.color.darkGray));
                 holder.ARRIVING_IN.setTextColor(ContextCompat.getColor(context, R.color.hintGray));
-                holder.bookmarkIcon.setImageTintList(ContextCompat.getColorStateList(context, R.color.nyoomLightYellow));
+                holder.bookmarkIcon.setImageTintList(ContextCompat.getColorStateList(context, R.color.nyoomYellow));
             } else { // light
                 holder.BMPCardView.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.LbackgroundPanel));
                 holder.BUS.setTextColor(ContextCompat.getColor(context, R.color.LhintGray));
@@ -204,10 +207,8 @@ public class Bookmarks extends Fragment {
                 holder.busStopName.setTextColor(ContextCompat.getColor(context, R.color.nyoomDarkYellow));
                 holder.RECTANGLE.setBackgroundColor(ContextCompat.getColor(context, R.color.LdarkGray));
                 holder.ARRIVING_IN.setTextColor(ContextCompat.getColor(context, R.color.LhintGray));
-                holder.bookmarkIcon.setImageTintList(ContextCompat.getColorStateList(context, R.color.nyoomDarkYellow));
+                holder.bookmarkIcon.setImageTintList(ContextCompat.getColorStateList(context, R.color.nyoomYellow));
             }
-
-
         }
         // overrides size of recyclerview
         @Override
@@ -252,6 +253,7 @@ public class Bookmarks extends Fragment {
     private void onBookmarkClick(int position) {
         bookmarkPosition = position;
         if (!confirmed) {
+            bookmarkStopName.setText(fullPanelList.get(position).getBusStopName());
             ConfirmationPopup.setVisibility(View.VISIBLE);
         } else {
             BookmarkPanel bookmark = fullPanelList.get(position);
@@ -264,6 +266,9 @@ public class Bookmarks extends Fragment {
             // Remove from the list and update UI
             fullPanelList.remove(position);
             adapter.notifyItemRemoved(position);
+
+            // set visibility
+            sadBookmark.setVisibility(busTimesBookmarks.getAllBookmarks().size() == 0 ? View.VISIBLE : View.INVISIBLE);
 
             confirmed = false;
         }
@@ -284,7 +289,8 @@ public class Bookmarks extends Fragment {
         // Only load the bookmarks if they haven't been loaded yet
         if (!isDataLoaded) {
             List<List<String>> sqlitedata = busTimesBookmarks.getAllBookmarks();
-
+            // set visibility
+            sadBookmark.setVisibility(sqlitedata.size() == 0 ? View.VISIBLE : View.INVISIBLE);
             // Clear previous data if any (if you want to refresh the list)
             fullPanelList.clear();
 
