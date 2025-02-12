@@ -1,14 +1,22 @@
 package com.example.madproject.pages.travel_routes;
 
+import android.animation.Animator;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ViewAnimationUtils;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -29,6 +37,10 @@ import com.example.madproject.helper.API.OnemapRoute.OnemapRouteResponse;
 import com.example.madproject.helper.API.OnemapSearch.OnemapSearchResponse;
 import com.example.madproject.helper.APIReader;
 import com.example.madproject.helper.Helper;
+import com.example.madproject.pages.bus_times.BusServicesList;
+import com.example.madproject.pages.bus_times.BusStopPanel;
+import com.example.madproject.pages.bus_times.BusStopsList;
+import com.example.madproject.pages.settings.ThemeManager;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,6 +50,7 @@ public class RouteView extends Fragment {
     Button backButton;
     TextView start;
     TextView end;
+    ItemAdapter adapter;
     List<LegPanel> fullLegList = new ArrayList<>();
     @Nullable
     @Override
@@ -50,7 +63,7 @@ public class RouteView extends Fragment {
         start = rootView.findViewById(R.id.routeStart);
         end = rootView.findViewById(R.id.routeEnd);
         assert getArguments() != null;
-        TRSearch.ItemAdapter adapter;
+        adapter = new LegAdapter(fullLegList, getContext());
         String TAG = "RouteView.javaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
         String lat1 = getArguments().getString("lat1");
         String lon1 = getArguments().getString("lon1");
@@ -116,6 +129,65 @@ public class RouteView extends Fragment {
 
         return rootView;
     }
+
+    public static class LegAdapter extends RecyclerView.Adapter<RouteView.LegAdapter.ItemViewHolder> {
+        private List<LegPanel> panelList;
+        private Context context;
+
+        public LegAdapter(
+                List<LegPanel> panelList,
+                Context context) {
+            // constructor
+            this.panelList = panelList;
+            this.context = context;
+        }
+        public interface OnItemClickListener {
+            void onItemClick(int position);
+        }
+
+        // changes layout view to our version
+        @Override
+        public RouteView.LegAdapter.ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.leg_panel, parent, false);
+            return new RouteView.LegAdapter.ItemViewHolder(view);
+        }
+        // changes what each item of recyclerview's value should be
+        @Override
+        public void onBindViewHolder(RouteView.LegAdapter.ItemViewHolder holder, int position) {
+            LegPanel item = panelList.get(position);
+            
+            manageThemeRV(holder); // light mode
+        }
+
+        private void manageThemeRV(RouteView.LegAdapter.ItemViewHolder holder) {
+            // lighht mode code will go here eventually
+            if (ThemeManager.isDarkTheme()) {
+            } else { // light
+            }
+        }
+        @Override
+        public int getItemCount() {
+            return panelList.size();
+        }
+        // contains the reference of views (UI) of a single item in recyclerview
+        public class ItemViewHolder extends RecyclerView.ViewHolder {
+            LinearLayout panelBG;
+            TextView fromTextView, modeTextView, toTextView, timeTextView;
+            TextView TAKE, TO, MINS;
+            public ItemViewHolder(View itemView) {
+                super(itemView);
+                //panelBG = itemView.findViewById(R.id.) no name yet
+                fromTextView = itemView.findViewById(R.id.FromTextView);
+                modeTextView = itemView.findViewById(R.id.ModeTextView);
+                toTextView = itemView.findViewById(R.id.ToTextView);
+                timeTextView = itemView.findViewById(R.id.TimeTextView);
+                TAKE = itemView.findViewById(R.id.TAKE);
+                TO = itemView.findViewById(R.id.TO);
+                MINS = itemView.findViewById(R.id.MINS);
+            }
+        }
+    }
+
 
 //    private void onBack() {
 //
