@@ -55,19 +55,13 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/slideDownButton"
-                    android:layout_width="36dp"
-                    android:layout_height="48dp"
-                    android:background="@drawable/arrow_down"
-                    android:text="@string/blank" />
-
                 <Space
                     android:layout_width="12dp"
-                    android:layout_height="47dp" />
+                    android:layout_height="47dp"
+                    android:layout_weight="0" />
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="386dp"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
@@ -90,15 +84,23 @@
                         android:textSize="32sp"
                         android:transitionName="BusStopNameTextt" />
 
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/BusServicesBT"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical" />
+
                 </LinearLayout>
 
-            </LinearLayout>
+                <Space
+                    android:id="@+id/weight"
+                    android:layout_width="11dp"
+                    android:layout_height="47dp"
+                    android:layout_weight="0"
+                    android:rotationX="0"
+                    android:scaleX="0" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/BusServicesBT"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical" />
+            </LinearLayout>
 
         </LinearLayout>
 

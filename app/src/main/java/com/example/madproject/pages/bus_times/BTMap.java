@@ -32,6 +32,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import com.example.madproject.MapView;
 import com.example.madproject.R;
@@ -59,12 +62,14 @@ public class BTMap extends Fragment {
     View rootView;
     Button backButton;
     TextView busStopNameTextt;
+    String busStopName;
+    String busStopCode;
     BusTimesBookmarksDB busTimesBookmarksDB;
     List<BusServicePanel> fullPanelList = new ArrayList<>(); // list of panel data
     RecyclerView BusServicesBT;
     List<BusStopsComplete> busStopsCompleteList;
 
-    BusServicesList.ItemAdapter adapter;
+    ItemAdapter adapter;
 
     static TextView clickedTextView;
     boolean markerFlag = false; // this flag is so that marker click overrides map click
@@ -115,7 +120,7 @@ public class BTMap extends Fragment {
 
         LatLng singaporeLocation = new LatLng(1.3500, 103.7044);
         mapView.moveCamera(singaporeLocation, 16f);  // Zoom level 15
-        updateVisibleMarkers(mapView.getCameraPosition());
+        updateVisibleMarkers(new LatLng(1.3500, 103.7044));
         mapView.addMarker(singaporeLocation, "My Bookmark", BitmapDescriptorFactory.HUE_RED);
 
 
@@ -231,9 +236,19 @@ public class BTMap extends Fragment {
                         break; // Once we find the matching bus stop code, no need to continue the loop
                     }
                 }
+                executor.shutdown();
                 break; // Exit the outer loop once we find the clicked bus stop
             }
         }
+
+
+        // adapter setup
+        adapter = new ItemAdapter(fullPanelList,
+                position -> onPanelClick(position),
+                position -> onBookmarkClick(position),
+                getContext());
+        BusServicesBT.setAdapter(adapter);
+
 
         if (busStopCode != null && busStopName != null) {
             // Show bus stop code, name & services using a Toast
@@ -261,6 +276,181 @@ public class BTMap extends Fragment {
             backButton.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.black));
             busStopNameTextt.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
         }
+    }
+
+    public static class ItemAdapter extends RecyclerView.Adapter<BTMap.ItemAdapter.ItemViewHolder> {
+        private List<BusServicePanel> panelList;
+        private BTMap.ItemAdapter.OnItemClickListener clickListener;
+        private BTMap.ItemAdapter.OnItemClickListener bookmarkClickListener;
+        private Context context;
+
+        public ItemAdapter(
+                List<BusServicePanel> panelList,
+                OnItemClickListener clickListener,
+                OnItemClickListener bookmarkClickListener,
+                Context context) {
+            // constructor
+            this.panelList = panelList;
+            this.clickListener = clickListener;
+            this.bookmarkClickListener = bookmarkClickListener;
+            this.context = context;
+        }
+        public interface OnItemClickListener {
+            void onItemClick(int position);
+        }
+        // changes layout view to our version
+        @Override
+        public BTMap.ItemAdapter.ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.bus_service_panel, parent, false);
+            return new BTMap.ItemAdapter.ItemViewHolder(view);
+        }
+        // changes what each item of recyclerview's value should be
+        @Override
+        public void onBindViewHolder(BTMap.ItemAdapter.ItemViewHolder holder, int position) {
+            BusServicePanel item = panelList.get(position);
+            holder.busNumber.setText(item.getBusNumber());
+            if (item.getAT() != null) {
+                holder.unavailableText.setVisibility(View.INVISIBLE);
+                holder.AT1.setVisibility(View.VISIBLE);
+                holder.AT2.setVisibility(View.VISIBLE);
+                holder.AT3.setVisibility(View.VISIBLE);
+                holder.MINS.setVisibility(View.VISIBLE);
+                holder.NOW.setVisibility(View.INVISIBLE);
+                if (item.getAT()[0].equals("0")) {
+                    holder.AT1.setVisibility(View.INVISIBLE);
+                    holder.MINS.setVisibility(View.INVISIBLE);
+                    holder.NOW.setVisibility(View.VISIBLE);
+                }
+                holder.AT1.setText(item.getAT()[0]);
+                holder.AT2.setText(item.getAT()[1]);
+                holder.AT3.setText(item.getAT()[2]);
+            } else {
+                holder.unavailableText.setVisibility(View.VISIBLE);
+                holder.AT1.setVisibility(View.INVISIBLE);
+                holder.AT2.setVisibility(View.INVISIBLE);
+                holder.AT3.setVisibility(View.INVISIBLE);
+                holder.MINS.setVisibility(View.INVISIBLE);
+            }
+            if (!item.getIsBookmarked()) {
+                holder.bookmarkIcon.setVisibility(View.VISIBLE);
+                holder.enabledBookmarkIcon.setVisibility(View.INVISIBLE);
+                item.setBMAnimDone(false);
+            } else {
+                if (!item.bookmarkAnimDone()) {
+                    holder.bookmarkIcon.setVisibility(View.INVISIBLE);
+                    holder.enabledBookmarkIcon.setVisibility(View.VISIBLE);
+                    int cx = holder.enabledBookmarkIcon.getWidth() / 2; // Center horizontally
+                    int cy = 0; // Start from the top edge
+                    float startRadius = 0f;
+                    float endRadius = (float) Math.hypot(holder.enabledBookmarkIcon.getWidth(), holder.enabledBookmarkIcon.getHeight());
+                    holder.enabledBookmarkIcon.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                        @Override
+                        public boolean onPreDraw() {
+                            holder.enabledBookmarkIcon.getViewTreeObserver().removeOnPreDrawListener(this);
+                            Animator revealAnim = ViewAnimationUtils.createCircularReveal(holder.enabledBookmarkIcon, cx, cy, startRadius, endRadius);
+                            revealAnim.setDuration(400);
+                            revealAnim.start();
+                            return true;
+                        }
+                    });
+                    item.setBMAnimDone(true);
+                }
+            }
+            manageThemeRV(holder);
+        }
+
+        private void manageThemeRV(BTMap.ItemAdapter.ItemViewHolder holder) {
+            if (ThemeManager.isDarkTheme()) {
+                holder.BSVPCardView.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.backgroundPanel));
+                holder.BUS.setTextColor(ContextCompat.getColor(context, R.color.hintGray));
+                holder.busNumber.setTextColor(ContextCompat.getColor(context, R.color.nyoomYellow));
+                holder.RECTANGLE.setBackgroundColor(ContextCompat.getColor(context, R.color.darkGray));
+                holder.ARRIVING_IN.setTextColor(ContextCompat.getColor(context, R.color.hintGray));
+                holder.bookmarkIcon.setImageTintList(ContextCompat.getColorStateList(context, R.color.buttonPanel));
+                //holder.enabledBookmarkIcon.setImageTintList(ContextCompat.getColorStateList(context, R.color.nyoomLightYellow));
+            } else { // light
+                holder.BSVPCardView.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.LbackgroundPanel));
+                holder.BUS.setTextColor(ContextCompat.getColor(context, R.color.LhintGray));
+                holder.busNumber.setTextColor(ContextCompat.getColor(context, R.color.black));
+                holder.RECTANGLE.setBackgroundColor(ContextCompat.getColor(context, R.color.LdarkGray));
+                holder.ARRIVING_IN.setTextColor(ContextCompat.getColor(context, R.color.LhintGray));
+                holder.bookmarkIcon.setImageTintList(ContextCompat.getColorStateList(context, R.color.LbuttonPanel));
+                //holder.enabledBookmarkIcon.setImageTintList(ContextCompat.getColorStateList(context, R.color.nyoomDarkYellow));
+            }
+        }
+        // overrides size of recyclerview
+        @Override
+        public int getItemCount() {
+            return panelList.size();
+        }
+        // contains the reference of views (UI) of a single item in recyclerview
+        public class ItemViewHolder extends RecyclerView.ViewHolder {
+            CardView BSVPCardView;
+            TextView busNumber, BUS, AT1, AT2, AT3, MINS, NOW, unavailableText, ARRIVING_IN;
+            Button bookmarkButton;
+            ImageView bookmarkIcon, enabledBookmarkIcon;
+            View RECTANGLE;
+            public ItemViewHolder(View itemView) {
+                super(itemView);
+                BSVPCardView = itemView.findViewById(R.id.BSVPCardView);
+                busNumber = itemView.findViewById(R.id.BusNumber);
+                BUS = itemView.findViewById(R.id.BUS);
+                AT1 = itemView.findViewById(R.id.AT1a);
+                AT2 = itemView.findViewById(R.id.AT2a);
+                AT3 = itemView.findViewById(R.id.AT3a);
+                MINS = itemView.findViewById(R.id.MINS);
+                NOW = itemView.findViewById(R.id.NOWa);
+                unavailableText = itemView.findViewById(R.id.UnavailableTexta);
+                ARRIVING_IN = itemView.findViewById(R.id.ARRIVING_IN);
+                itemView.setOnClickListener(v -> {
+                    if (clickListener != null) {
+                        clickedTextView = itemView.findViewById(R.id.BusNumber);
+                        clickListener.onItemClick(getAdapterPosition());
+                    }
+                });
+                bookmarkIcon = itemView.findViewById(R.id.BookmarkIcon);
+                enabledBookmarkIcon = itemView.findViewById(R.id.EnabledBookmarkIcon);
+                bookmarkButton = itemView.findViewById(R.id.BookmarkButton);
+                bookmarkButton.setOnClickListener(v -> {
+                    if (bookmarkClickListener != null) {
+                        bookmarkClickListener.onItemClick(getAdapterPosition());
+                    }
+                });
+                RECTANGLE = itemView.findViewById(R.id.RECTANGLE);
+            }
+        }
+    }
+
+    private void onPanelClick(int position) {
+        Fragment selectedFragment = new BusStopsList();
+        ItemAdapter.ItemViewHolder holder = (ItemAdapter.ItemViewHolder) BusServicesBT.findViewHolderForAdapterPosition(position);
+        holder.busNumber.setTransitionName("BusServiceText");
+        holder.BUS.setTransitionName("BUS");
+        Bundle bundle = new Bundle();
+        bundle.putString("value", fullPanelList.get(position).getBusNumber());
+        selectedFragment.setArguments(bundle);
+        getActivity()
+                .getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, selectedFragment)
+                .addSharedElement(holder.BUS, "BUS")
+                .addSharedElement(holder.busNumber, "BusServiceText")
+                .addToBackStack(null)
+                .commit();
+    }
+
+    private void onBookmarkClick(int position) {
+        String busStopName = this.busStopName;
+        String busStopCode = this.busStopCode;
+        String busService = fullPanelList.get(position).getBusNumber();
+        if (!fullPanelList.get(position).getIsBookmarked()) {
+            busTimesBookmarksDB.insert(busStopName,busStopCode, busService);
+
+        } else {
+            busTimesBookmarksDB.deleteBookmarkByService(busService);
+        }
+        fullPanelList.get(position).toggleIsBookmarked();
+        adapter.notifyDataSetChanged();
     }
 
     private void onMapClick(LatLng position) {
@@ -305,5 +495,17 @@ public class BTMap extends Fragment {
     }
     private void onReturn() {
         getParentFragmentManager().popBackStack("BusTimes", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+    }
+    private void goBack() {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        fragmentManager
+                .beginTransaction()
+                .setCustomAnimations(
+                        R.anim.fade_in,  // Enter animation for the fragment being revealed
+                        R.anim.fade_out // Exit animation for the current fragmen
+                )
+                .addSharedElement(busStopNameTextt, "BusStopNameText")
+                .commit();
+        fragmentManager.popBackStack();
     }
 }
