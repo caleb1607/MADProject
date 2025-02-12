@@ -1,5 +1,6 @@
 package com.example.madproject.pages.settings;
 
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +18,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,6 +26,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.madproject.R;
+import com.example.madproject.helper.BusTimesBookmarksDB;
 import com.example.madproject.helper.LocalStorageDB;
 import com.example.madproject.pages.Main;
 import com.example.madproject.pages.misc.Login;
@@ -34,8 +37,10 @@ public class Settings extends Fragment {
 
     View rootView;
     Context mainContext;
+    LocalStorageDB localStorageDB;
     // views
     Button toggleThemeButton;
+    Button clearBookmarksButton;
     Button logoutButton;
     LinearLayout alertsButton;
     LinearLayout MRTMapButton;
@@ -59,6 +64,8 @@ public class Settings extends Fragment {
         // views setup
         toggleThemeButton = rootView.findViewById(R.id.ToggleThemeButton);
         toggleThemeButton.setOnClickListener(view -> toggleTheme());
+        clearBookmarksButton = rootView.findViewById(R.id.ClearBookmarksButton);
+        clearBookmarksButton.setOnClickListener(view -> clearBookmarks());
         logoutButton = rootView.findViewById(R.id.LogOutButton);
         logoutButton.setOnClickListener(view -> onLogout());
         alertsButton = rootView.findViewById(R.id.AlertsButton);
@@ -81,17 +88,26 @@ public class Settings extends Fragment {
         });
         SETTINGS_ICON = rootView.findViewById(R.id.SETTINGS_ICON);
         SETTINGS = rootView.findViewById(R.id.SETTINGS);
-        ALERTS_ICON = rootView.findViewById(R.id.ALERTS_ICON);;
-        ALERTS = rootView.findViewById(R.id.ALERTS);;
-        MRTMAP_ICON = rootView.findViewById(R.id.MRTMAP_ICON);;
-        MRTMAP = rootView.findViewById(R.id.MRTMAP);;
-        FEEDBACK_ICON = rootView.findViewById(R.id.FEEDBACK_ICON);;
-        FEEDBACK = rootView.findViewById(R.id.FEEDBACK);;
+        ALERTS_ICON = rootView.findViewById(R.id.ALERTS_ICON);
+        ALERTS = rootView.findViewById(R.id.ALERTS);
+        MRTMAP_ICON = rootView.findViewById(R.id.MRTMAP_ICON);
+        MRTMAP = rootView.findViewById(R.id.MRTMAP);
+        FEEDBACK_ICON = rootView.findViewById(R.id.FEEDBACK_ICON);
+        FEEDBACK = rootView.findViewById(R.id.FEEDBACK);
+        localStorageDB = new LocalStorageDB(getContext());
+        if (localStorageDB.getValue("LoginToken").equals("0")) {
+            logoutButton.setText("Sign In");
+        } else { // equals("1")
+            logoutButton.setText("Log Out");
+        }
         // transition
         Transition transition = TransitionInflater.from(requireContext()).inflateTransition(R.transition.shared_textview);
         setSharedElementEnterTransition(transition);
         // manage theme
         manageTheme();
+        if (true) { // announcement got
+            activateAlertsButton(true);
+        }
         return rootView;
     }
     public void manageTheme() {
@@ -99,6 +115,8 @@ public class Settings extends Fragment {
             rootView.setBackgroundColor(getResources().getColor(R.color.mainBackground));
             toggleThemeButton.setBackgroundTintList(getResources().getColorStateList(R.color.buttonPanel));
             toggleThemeButton.setTextColor(getResources().getColor(R.color.white));
+            clearBookmarksButton.setBackgroundTintList(getResources().getColorStateList(R.color.buttonPanel));
+            clearBookmarksButton.setTextColor(getResources().getColor(R.color.white));
             SETTINGS_ICON.setImageTintList(getResources().getColorStateList(R.color.white));
             SETTINGS.setTextColor(getResources().getColor(R.color.white));
             alertsButton.setBackgroundTintList(getResources().getColorStateList(R.color.buttonPanel));
@@ -115,6 +133,8 @@ public class Settings extends Fragment {
             rootView.setBackgroundColor(getResources().getColor(R.color.LhintGray));
             toggleThemeButton.setBackgroundTintList(getResources().getColorStateList(R.color.LdarkGray));
             toggleThemeButton.setTextColor(getResources().getColor(R.color.black));
+            clearBookmarksButton.setBackgroundTintList(getResources().getColorStateList(R.color.LdarkGray));
+            clearBookmarksButton.setTextColor(getResources().getColor(R.color.black));
             SETTINGS_ICON.setImageTintList(getResources().getColorStateList(R.color.white));
             SETTINGS.setTextColor(getResources().getColor(R.color.white));
             alertsButton.setBackgroundTintList(getResources().getColorStateList(R.color.nyoomBlue));
@@ -128,15 +148,37 @@ public class Settings extends Fragment {
             FEEDBACK.setTextColor(getResources().getColor(R.color.white));
             MRT_MAP.setImageResource(R.drawable.mrtlight2048);
         }
+        if (true) { // announcement got
+            activateAlertsButton(true);
+        }
+    }
+    private void activateAlertsButton(boolean activate) {
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(alertsButton, "scaleX", 1.0f, 0.9f, 1.0f, 0.9f);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(alertsButton, "scaleY", 1.0f, 0.9f, 1.0f, 0.9f);
+        if (activate) {
+            alertsButton.setBackgroundTintList(getResources().getColorStateList(R.color.redError));
+            ALERTS_ICON.setImageTintList(getResources().getColorStateList(R.color.white));
+            ALERTS.setTextColor(getResources().getColor(R.color.white));
+            scaleX.setDuration(750);
+            scaleY.setDuration(750);
+            scaleX.setRepeatCount(ObjectAnimator.INFINITE);
+            scaleX.setRepeatMode(ObjectAnimator.REVERSE);
+            scaleY.setRepeatCount(ObjectAnimator.INFINITE);
+            scaleY.setRepeatMode(ObjectAnimator.REVERSE);
+            scaleX.start();
+            scaleY.start();
+            return;
+        }
+        manageTheme(); // update to default
+        scaleX.end();
+        scaleY.end();
     }
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        // Store the activity reference
         mainContext = context;
     }
     private void toggleTheme() {
-        LocalStorageDB localStorageDB = new LocalStorageDB(getContext());
         if (localStorageDB.getValue("theme_preference").equals("light")) {
             localStorageDB.insertOrUpdate("theme_preference", "dark");
         } else {
@@ -145,8 +187,12 @@ public class Settings extends Fragment {
         ThemeManager.setTheme(mainContext, !ThemeManager.isDarkTheme());
         manageTheme();
     }
+    private void clearBookmarks() {
+        BusTimesBookmarksDB busTimesBookmarksDB = new BusTimesBookmarksDB(getContext());
+        busTimesBookmarksDB.deleteAllBookmarks();
+        Toast.makeText(getContext(), "Bookmarks Cleared", Toast.LENGTH_SHORT).show();
+    }
     private void onLogout() {
-        LocalStorageDB localStorageDB = new LocalStorageDB(getContext());
         localStorageDB.insertOrUpdate("LoginToken", "0");
         Intent logout = new Intent(mainContext, Login.class);
         startActivity(logout);
@@ -157,7 +203,7 @@ public class Settings extends Fragment {
         }
     }
     private void onAlertsView() {
-
+        activateAlertsButton(false);
     }
     private void onMRTMapView() {
         mapFL.setVisibility(View.VISIBLE);

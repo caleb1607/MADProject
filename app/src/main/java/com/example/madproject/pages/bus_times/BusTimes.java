@@ -250,7 +250,6 @@ public class BusTimes extends Fragment {
                 holder.bookmarkButton.setImageTintList(ContextCompat.getColorStateList(context, R.color.LbuttonPanel));
                 holder.BUS.setTextColor(ContextCompat.getColorStateList(context, R.color.nyoomDarkYellow));
                 holder.header.setTextColor(ContextCompat.getColorStateList(context, R.color.nyoomDarkYellow));
-
             }
         }
 
