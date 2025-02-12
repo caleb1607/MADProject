@@ -34,10 +34,6 @@ public class Logout extends AppCompatActivity {
 
 
 
-
-
-
-
     private View.OnClickListener onLogout = view -> {
         logoutUser();
     };
