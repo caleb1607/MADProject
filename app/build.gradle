@@ -17,6 +17,10 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+    packagingOptions {
+        merge 'META-INF/NOTICE.md'
+        merge 'META-INF/LICENSE.md'
+    }
 
     buildTypes {
         release {
@@ -65,7 +69,8 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'io.github.baseflow:PhotoView:2.3.0'
     implementation 'androidx.legacy:legacy-support-core-ui:1.0.0'
-
+    implementation 'com.sun.mail:android-mail:1.6.7'
+    implementation 'com.sun.mail:android-activation:1.6.7'
 
 
     // Import the Firebase BoM
