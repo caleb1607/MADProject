@@ -50,7 +50,7 @@ public class RouteView extends Fragment {
     Button backButton;
     TextView start;
     TextView end;
-    ItemAdapter adapter;
+    LegAdapter adapter;
     List<LegPanel> fullLegList = new ArrayList<>();
     @Nullable
     @Override
@@ -155,14 +155,16 @@ public class RouteView extends Fragment {
         @Override
         public void onBindViewHolder(RouteView.LegAdapter.ItemViewHolder holder, int position) {
             LegPanel item = panelList.get(position);
-            
+
             manageThemeRV(holder); // light mode
         }
 
         private void manageThemeRV(RouteView.LegAdapter.ItemViewHolder holder) {
             // lighht mode code will go here eventually
             if (ThemeManager.isDarkTheme()) {
+                
             } else { // light
+
             }
         }
         @Override
