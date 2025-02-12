@@ -96,7 +96,8 @@ public class BusServicesList extends Fragment {
                     fullPanelList.add(new BusServicePanel(
                             busService,
                             new String[]{" ", " ", " "},
-                            busTimesBookmarksDB.doesBusServiceExist(busService)
+                            busTimesBookmarksDB.doesBusServiceExist(busService),
+                            !busTimesBookmarksDB.doesBusServiceExist(busService)
                     ));
                 }
             }

@@ -101,7 +101,8 @@ public class BusStopsList extends Fragment {
                             busStopData.getBusStopCode(),
                             busStopInfo.getRoadName(),
                             new String[]{" ", " ", " "},
-                            busTimesBookmarksDB.doesBusStopCodeExist(busStopData.getBusStopCode())
+                            busTimesBookmarksDB.doesBusStopCodeExist(busStopData.getBusStopCode()),
+                            !busTimesBookmarksDB.doesBusStopCodeExist(busStopData.getBusStopCode())
                     ));
                 }
             }
