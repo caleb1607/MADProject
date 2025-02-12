@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/RegisterBG"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/mainBackground"
+    android:background="@drawable/slide1blurdark"
     android:elevation="20dp"
     tools:context=".pages.Main">
 
@@ -20,15 +21,23 @@
             android:layout_gravity="center_horizontal"
             android:paddingTop="32dp"
             android:paddingBottom="32dp"
-            android:src="@drawable/nyoomtext" />
+            android:src="@drawable/nyoomtext"
+            app:srcCompat="@drawable/nyoomtextshadow" />
 
         <FrameLayout
             android:layout_width="360dp"
-            android:layout_height="wrap_content"
+            android:layout_height="70dp"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/round_box"
-            android:backgroundTint="@color/backgroundPanel"
             android:orientation="vertical">
+
+            <View
+                android:id="@+id/UsernameBG2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha="0.65"
+                android:background="@drawable/round_box"
+                android:backgroundTint="@color/black"
+                android:orientation="vertical" />
 
             <TextView
                 android:id="@+id/USERNAME"
@@ -67,14 +76,21 @@
 
         <FrameLayout
             android:layout_width="360dp"
-            android:layout_height="wrap_content"
+            android:layout_height="70dp"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/round_box"
-            android:backgroundTint="@color/backgroundPanel"
             android:orientation="vertical">
 
+            <View
+                android:id="@+id/EmailBG2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha="0.65"
+                android:background="@drawable/round_box"
+                android:backgroundTint="@color/black"
+                android:orientation="vertical" />
+
             <TextView
-                android:id="@+id/STARTING_POINT"
+                android:id="@+id/EMAIL2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
@@ -86,7 +102,7 @@
                 android:textSize="13sp" />
 
             <EditText
-                android:id="@+id/Email_InputField"
+                android:id="@+id/Email_InputField2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -110,14 +126,21 @@
 
         <FrameLayout
             android:layout_width="360dp"
-            android:layout_height="wrap_content"
+            android:layout_height="70dp"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/round_box"
-            android:backgroundTint="@color/backgroundPanel"
             android:orientation="vertical">
 
+            <View
+                android:id="@+id/PasswordBG2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha="0.65"
+                android:background="@drawable/round_box"
+                android:backgroundTint="@color/black"
+                android:orientation="vertical" />
+
             <TextView
-                android:id="@+id/DESTINATION"
+                android:id="@+id/PASSWORD2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
@@ -129,7 +152,7 @@
                 android:textSize="13sp" />
 
             <EditText
-                android:id="@+id/Password_InputField"
+                android:id="@+id/Password_InputField2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -156,11 +179,14 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:backgroundTint="@color/nyoomBlue"
-            android:fontFamily="sans-serif-medium"
-            android:text="register"
+            android:background="@drawable/round_button"
+            android:fontFamily="@font/albertsans7_bold"
+            android:letterSpacing="0.04"
+            android:text="Register"
+            android:textAllCaps="false"
             android:textColor="#FFFFFF"
-            android:textSize="20sp" />
+            android:textSize="24sp"
+            app:backgroundTint="@color/nyoomBlue" />
 
         <Button
             android:id="@+id/LoginRedirect"
@@ -174,15 +200,16 @@
             android:textColor="@color/hintGray"
             android:textSize="14sp" />
 
-        TextView
-            android:id="@+id/helloworld2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Hello World"
-            android:textColor="#FF0000"
-            android:textSize="28sp"
-            android:transitionName="helloworld" />
 
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageView
+        android:id="@+id/DownButton2"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_gravity="bottom"
+        android:alpha="0.4"
+        app:srcCompat="@drawable/arrow_down"
+        app:tint="@color/hintGray" />
+
+</FrameLayout>

@@ -56,4 +56,84 @@
             android:layout_height="wrap_content" />
 
     </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/ConfirmationPopup"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <View
+            android:id="@+id/blackBG"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0.4"
+            android:background="@color/black" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="320dp"
+                android:layout_height="160dp"
+                android:layout_gravity="center"
+                android:background="@drawable/rounder_box"
+                android:backgroundTint="@color/buttonPanel"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingTop="16dp">
+
+                <TextView
+                    android:id="@+id/DELETE_BOOKMARK"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/albertsans5_medium"
+                    android:text="Delete Bookmark?"
+                    android:textColor="@color/hintGray"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="280dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:autoSizeMaxTextSize="32sp"
+                    android:autoSizeMinTextSize="20sp"
+                    android:autoSizeTextType="uniform"
+                    android:fontFamily="@font/albertsans6_semibold"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:text="Choa Chu Kang/Lot 1"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/ConfirmationButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@color/transparent"
+                    android:fontFamily="@font/albertsans8_extrabold"
+                    android:letterSpacing="0.02"
+                    android:text="Confirm"
+                    android:textAllCaps="false"
+                    android:textColor="@color/redError"
+                    android:textSize="28sp" />
+
+            </LinearLayout>
+        </FrameLayout>
+
+        <ImageView
+            android:id="@+id/CancellationButton"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_gravity="right"
+            android:paddingTop="10dp"
+            android:paddingRight="10dp"
+            app:srcCompat="@drawable/the_x"
+            app:tint="@color/white" />
+
+    </FrameLayout>
+
 </FrameLayout>

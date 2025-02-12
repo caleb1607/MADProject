@@ -73,7 +73,7 @@
                             android:layout_height="40dp"
                             android:layout_gravity="end"
                             app:srcCompat="@drawable/ic_bookmark"
-                            app:tint="@color/darkGray" />
+                            app:tint="@color/buttonPanel" />
 
                         <ImageView
                             android:id="@+id/EnabledBookmarkIcon2"

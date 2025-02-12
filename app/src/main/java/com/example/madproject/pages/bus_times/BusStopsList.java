@@ -1,5 +1,6 @@
 package com.example.madproject.pages.bus_times;
 
+import android.animation.Animator;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 
@@ -16,9 +17,12 @@ import android.os.Handler;
 import android.os.Looper;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,6 +33,7 @@ import com.example.madproject.helper.APIReader;
 import com.example.madproject.helper.BusTimesBookmarksDB;
 import com.example.madproject.helper.Helper;
 import com.example.madproject.helper.JSONReader;
+import com.example.madproject.pages.bookmarks.Bookmarks;
 import com.example.madproject.pages.settings.ThemeManager;
 
 import java.util.ArrayList;
@@ -46,8 +51,9 @@ public class BusStopsList extends Fragment {
     RecyclerView busStopPanelsRV;
     Button backButton;
     TextView busServiceText;
+    TextView BUS;
     BusTimesBookmarksDB busTimesBookmarksDB;
-    String busService; // bus stop code of bus stop
+    String busService;
     List<BusStopPanel> fullPanelList = new ArrayList<>(); // list of panel data
     ItemAdapter adapter;
 
@@ -62,6 +68,7 @@ public class BusStopsList extends Fragment {
         busStopPanelsRV.setLayoutManager(new GridLayoutManager(getContext(), 1));
         backButton = rootView.findViewById(R.id.ReturnButton3);
         backButton.setOnClickListener(view -> { goBack(); });
+        BUS = rootView.findViewById(R.id.BUS);
         // transition
         Transition transition = TransitionInflater.from(requireContext()).inflateTransition(R.transition.shared_textview);
         setSharedElementEnterTransition(transition);
@@ -94,7 +101,7 @@ public class BusStopsList extends Fragment {
                             busStopData.getBusStopCode(),
                             busStopInfo.getRoadName(),
                             new String[]{" ", " ", " "},
-                            false
+                            busTimesBookmarksDB.doesBusStopCodeExist(busStopData.getBusStopCode())
                     ));
                 }
             }
@@ -121,7 +128,6 @@ public class BusStopsList extends Fragment {
         return rootView;
     }
     private void manageTheme() {
-        TextView BUS =  rootView.findViewById(R.id.BUS);
         TextView ROUTE = rootView.findViewById(R.id.ROUTE);
         if (ThemeManager.isDarkTheme()) {
             rootView.setBackgroundColor(getResources().getColor(R.color.mainBackground));
@@ -196,21 +202,29 @@ public class BusStopsList extends Fragment {
                 holder.MINS.setVisibility(View.INVISIBLE);
             }
             if (!item.getIsBookmarked()) {
-                holder.bookmarkIcon.setImageTintList(ColorStateList.valueOf(
-                        ContextCompat.getColor(holder.itemView.getContext(), R.color.darkGray)
-                ));
+                holder.bookmarkIcon.setVisibility(View.VISIBLE);
+                holder.enabledBookmarkIcon.setVisibility(View.INVISIBLE);
+                item.setBMAnimDone(false);
             } else {
-//                int cx = holder.enabledBookmarkIcon.getWidth() / 2; // Center horizontally
-//                int cy = 0; // Start from the top edge
-//                float startRadius = 0f;
-//                float endRadius = (float) Math.hypot(holder.enabledBookmarkIcon.getWidth(), holder.enabledBookmarkIcon.getHeight());
-//                Animator revealAnim = ViewAnimationUtils.createCircularReveal(holder.enabledBookmarkIcon, cx, cy, startRadius, endRadius);
-//                holder.enabledBookmarkIcon.setVisibility(View.VISIBLE);
-//                revealAnim.setDuration(500);
-//                revealAnim.start();
-                holder.bookmarkIcon.setImageTintList(ColorStateList.valueOf(
-                        ContextCompat.getColor(holder.itemView.getContext(), R.color.nyoomLightYellow)
-                ));
+                if (!item.bookmarkAnimDone()) {
+                    holder.bookmarkIcon.setVisibility(View.INVISIBLE);
+                    holder.enabledBookmarkIcon.setVisibility(View.VISIBLE);
+                    int cx = holder.enabledBookmarkIcon.getWidth() / 2; // Center horizontally
+                    int cy = 0; // Start from the top edge
+                    float startRadius = 0f;
+                    float endRadius = (float) Math.hypot(holder.enabledBookmarkIcon.getWidth(), holder.enabledBookmarkIcon.getHeight());
+                    holder.enabledBookmarkIcon.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                        @Override
+                        public boolean onPreDraw() {
+                            holder.enabledBookmarkIcon.getViewTreeObserver().removeOnPreDrawListener(this);
+                            Animator revealAnim = ViewAnimationUtils.createCircularReveal(holder.enabledBookmarkIcon, cx, cy, startRadius, endRadius);
+                            revealAnim.setDuration(400);
+                            revealAnim.start();
+                            return true;
+                        }
+                    });
+                    item.setBMAnimDone(true);
+                }
             }
             manageThemeRV(holder);
         }
@@ -223,6 +237,8 @@ public class BusStopsList extends Fragment {
                 holder.busStopCode.setTextColor(ContextCompat.getColor(context, R.color.hintGray));
                 holder.RECTANGLE.setBackgroundColor(ContextCompat.getColor(context, R.color.darkGray));
                 holder.ARRIVING_IN.setTextColor(ContextCompat.getColor(context, R.color.hintGray));
+                holder.bookmarkIcon.setImageTintList(ContextCompat.getColorStateList(context, R.color.buttonPanel));
+                holder.enabledBookmarkIcon.setImageTintList(ContextCompat.getColorStateList(context, R.color.nyoomLightYellow));
             } else { // light
                 holder.BSPCardView.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.LbackgroundPanel));
                 holder.busStopName.setTextColor(ContextCompat.getColor(context, R.color.LnyoomYellow));
@@ -230,6 +246,8 @@ public class BusStopsList extends Fragment {
                 holder.busStopCode.setTextColor(ContextCompat.getColor(context, R.color.LhintGray));
                 holder.RECTANGLE.setBackgroundColor(ContextCompat.getColor(context, R.color.LdarkGray));
                 holder.ARRIVING_IN.setTextColor(ContextCompat.getColor(context, R.color.LhintGray));
+                holder.bookmarkIcon.setImageTintList(ContextCompat.getColorStateList(context, R.color.LbuttonPanel));
+                holder.enabledBookmarkIcon.setImageTintList(ContextCompat.getColorStateList(context, R.color.nyoomDarkYellow));
             }
         }
         // overrides size of recyclerview
@@ -296,10 +314,8 @@ public class BusStopsList extends Fragment {
         String busService = this.busService;
         if (!fullPanelList.get(position).getIsBookmarked()) {
             busTimesBookmarksDB.insert(busStopName, busStopCode, busService);
-
         } else {
            busTimesBookmarksDB.deleteBookmarksbyBusStop(busStopName, busStopCode);
-
         }
         fullPanelList.get(position).toggleIsBookmarked();
         adapter.notifyDataSetChanged();
@@ -309,11 +325,13 @@ public class BusStopsList extends Fragment {
         fragmentManager
                 .beginTransaction()
                 .setCustomAnimations(
-                        R.anim.slidefade_in_left,  // Enter animation for the fragment being revealed
-                        R.anim.slidefade_out_right // Exit animation for the current fragment
+                        R.anim.fade_in,  // Enter animation for the fragment being revealed
+                        R.anim.fade_out // Exit animation for the current fragment
                 )
+                .addSharedElement(BUS, "BUS")
+                .addSharedElement(busServiceText, "BusServiceText")
                 .commit();
-        fragmentManager.popBackStack("BusTimes", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        fragmentManager.popBackStack();
     }
 }
 

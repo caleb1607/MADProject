@@ -79,8 +79,10 @@ public class BusTimes extends Fragment {
     }
 
     private void manageTheme() {
+        ImageView MAPICON = rootView.findViewById(R.id.MAPICON);
         if (ThemeManager.isDarkTheme()) {
             rootView.setBackgroundColor(getResources().getColor(R.color.mainBackground));
+            MAPICON.setImageTintList(ContextCompat.getColorStateList(getContext(), R.color.white));
             viewMapButton.setTextColor(getResources().getColor(R.color.white));
             viewMapButton.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.buttonPanel));
             busServicesButton.setTextColor(getResources().getColor(R.color.white));
@@ -92,6 +94,7 @@ public class BusTimes extends Fragment {
             searchBar.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.backgroundPanel));
         } else { // light
             rootView.setBackgroundColor(getResources().getColor(R.color.LmainBackground));
+            MAPICON.setImageTintList(ContextCompat.getColorStateList(getContext(), R.color.black));
             viewMapButton.setTextColor(getResources().getColor(R.color.black));
             viewMapButton.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.LbuttonPanel));
             busServicesButton.setTextColor(getResources().getColor(R.color.black));

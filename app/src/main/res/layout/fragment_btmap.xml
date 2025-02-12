@@ -48,9 +48,6 @@
             app:cardBackgroundColor="#1E1A1A"
             app:cardCornerRadius="48dp">
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
 
             </FrameLayout>
         </androidx.cardview.widget.CardView>

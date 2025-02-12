@@ -100,7 +100,7 @@
                         android:ellipsize="end"
                         android:fontFamily="@font/albertsans5_medium"
                         android:gravity="center"
-                        android:maxLines="2"
+                        android:maxLines="1"
                         android:text="Woodlands Int"
                         android:textAlignment="center"
                         android:textColor="@color/nyoomLightYellow" />
