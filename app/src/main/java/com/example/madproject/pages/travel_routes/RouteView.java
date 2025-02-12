@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -24,6 +26,7 @@ import com.example.madproject.R;
 import com.example.madproject.helper.API.OnemapRoute.OnemapRouteApi;
 import com.example.madproject.helper.API.OnemapRoute.OnemapRouteClient;
 import com.example.madproject.helper.API.OnemapRoute.OnemapRouteResponse;
+import com.example.madproject.helper.API.OnemapSearch.OnemapSearchResponse;
 import com.example.madproject.helper.APIReader;
 import com.example.madproject.helper.Helper;
 
@@ -35,6 +38,7 @@ public class RouteView extends Fragment {
     Button backButton;
     TextView start;
     TextView end;
+    List<LegPanel> fullLegList = new ArrayList<>();
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -70,14 +74,23 @@ public class RouteView extends Fragment {
         start.setText(name1);
         end.setText(name2);
         OnemapRouteApi onemapRouteApi = OnemapRouteClient.getApiService();
-        onemapRouteApi.getRouteResults(APIReader.getAPIKey(), startCoords, endCoords, "pt", formattedDate, encodedTime, "TRANSIT", "2")
+        onemapRouteApi.getRouteResults(APIReader.getAPIKey(), startCoords, endCoords, "pt", formattedDate, "15%253A05%253A40", "TRANSIT", "1")
             .enqueue(new Callback<OnemapRouteResponse>() {
                 @Override
                 public void onResponse(Call<OnemapRouteResponse> call, Response<OnemapRouteResponse> response) {
 
                     if (response.isSuccessful()) {
                         OnemapRouteResponse OnemapResponse = response.body();
-                        for (OnemapRouteResponse.Itinerary Itinerary;;) {
+                        OnemapRouteResponse.Plan plan = OnemapResponse.getPlan();
+                        List<OnemapRouteResponse.Itinerary> itinerary = plan.getItineraries();
+                        float duration = itinerary.get(0).getDuration();
+                        float durationInMin = Math.round(duration/60);
+                        String fare = itinerary.get(0).getFare();
+                        long startTime = itinerary.get(0).getStartTime();
+                        long endTime = itinerary.get(0).getEndTime();
+
+                        for (OnemapRouteResponse.Leg leg: itinerary.get(0).getLegs()) {
+
                         }
                     }
                 }
@@ -92,43 +105,43 @@ public class RouteView extends Fragment {
         return rootView;
     }
 
-    private void onBack() {
-
-    }
-
-    public static class RouteViewAdapter extends RecyclerView.Adapter<RouteViewAdapter.ViewHolder> {
-        private List<OnemapRouteResponse.Itinerary> itineraries;
-
-        public RouteViewAdapter(List<OnemapRouteResponse.Itinerary> itineraries) {
-            this.itineraries = itineraries;
-        }
-
-        @NonNull
-        @Override
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_list_item_2, parent, false);
-            return new ViewHolder(view);
-        }
-
-        @SuppressLint("SetTextI18n")
-        @Override
-        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            OnemapRouteResponse.Itinerary itinerary = itineraries.get(position);
-            holder.routeTextView.setText("Duration: " + itinerary.getDuration() + " seconds");
-        }
-
-        @Override
-        public int getItemCount() {
-            return itineraries.size();
-        }
-
-        static class ViewHolder extends RecyclerView.ViewHolder {
-            TextView routeTextView;
-
-            ViewHolder(View itemView) {
-                super(itemView);
-                routeTextView = itemView.findViewById(android.R.id.text1);
-            }
-        }
-    }
+//    private void onBack() {
+//
+//    }
+//
+//    public static class RouteViewAdapter extends RecyclerView.Adapter<RouteViewAdapter.ViewHolder> {
+//        private List<OnemapRouteResponse.Itinerary> itineraries;
+//
+//        public RouteViewAdapter(List<OnemapRouteResponse.Itinerary> itineraries) {
+//            this.itineraries = itineraries;
+//        }
+//
+//        @NonNull
+//        @Override
+//        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+//            View view = LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_list_item_2, parent, false);
+//            return new ViewHolder(view);
+//        }
+//
+//        @SuppressLint("SetTextI18n")
+//        @Override
+//        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+//            OnemapRouteResponse.Itinerary itinerary = itineraries.get(position);
+//            holder.routeTextView.setText("Duration: " + itinerary.getDuration() + " seconds");
+//        }
+//
+//        @Override
+//        public int getItemCount() {
+//            return itineraries.size();
+//        }
+//
+//        static class ViewHolder extends RecyclerView.ViewHolder {
+//            TextView routeTextView;
+//
+//            ViewHolder(View itemView) {
+//                super(itemView);
+//                routeTextView = itemView.findViewById(android.R.id.text1);
+//            }
+//        }
+//    }
 }
