@@ -76,7 +76,7 @@ public class Register extends AppCompatActivity {
     private void goBack() {
         Intent goback = new Intent(Register.this, Startup.class);
         startActivity(goback);
-        overridePendingTransition(R.anim.slidefade_in_top, R.anim.slidefade_out_bottom);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
     private void onLoginRedirect() {

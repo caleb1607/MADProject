@@ -82,7 +82,7 @@
                             android:layout_gravity="end"
                             android:visibility="invisible"
                             app:srcCompat="@drawable/ic_bookmark"
-                            app:tint="@color/nyoomLightYellow" />
+                            app:tint="@color/nyoomYellow" />
 
                     </FrameLayout>
                 </LinearLayout>

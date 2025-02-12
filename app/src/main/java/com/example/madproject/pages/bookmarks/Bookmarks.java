@@ -16,6 +16,7 @@ import com.example.madproject.helper.BusTimesBookmarksDB;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -103,17 +104,25 @@ public class Bookmarks extends Fragment {
         return rootView;
     }
     private void manageTheme() {
+        LinearLayout PopupPanel = rootView.findViewById(R.id.PopupPanel);
+        TextView DELETE_BOOKMARK = rootView.findViewById(R.id.DELETE_BOOKMARK);
+        TextView bookmarkStopName = rootView.findViewById(R.id.BookmarkStopName);
         TextView YOUR_BOOKMARKS =  rootView.findViewById(R.id.YOUR_BOOKMARKS);
         ImageView BOOKMARK_ICON = rootView.findViewById(R.id.BOOKMARK_ICON);
         if (ThemeManager.isDarkTheme()) {
             rootView.setBackgroundColor(getResources().getColor(R.color.mainBackground));
+            PopupPanel.setBackgroundTintList(getResources().getColorStateList(R.color.buttonPanel));
+            DELETE_BOOKMARK.setTextColor(getResources().getColor(R.color.hintGray));
+            bookmarkStopName.setTextColor(getResources().getColor(R.color.white));
             YOUR_BOOKMARKS.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
             BOOKMARK_ICON.setImageTintList(ContextCompat.getColorStateList(getContext(), R.color.white));
         } else { // light
             rootView.setBackgroundColor(getResources().getColor(R.color.LmainBackground));
+            PopupPanel.setBackgroundTintList(getResources().getColorStateList(R.color.LbuttonPanel));
+            DELETE_BOOKMARK.setTextColor(getResources().getColor(R.color.LhintGray));
+            bookmarkStopName.setTextColor(getResources().getColor(R.color.black));
             YOUR_BOOKMARKS.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
             BOOKMARK_ICON.setImageTintList(ContextCompat.getColorStateList(getContext(), R.color.black));
-
         }
     }
     // adapter for recycler view
@@ -173,7 +182,7 @@ public class Bookmarks extends Fragment {
                 ));
             } else {
                 holder.bookmarkIcon.setImageTintList(ColorStateList.valueOf(
-                        ContextCompat.getColor(holder.itemView.getContext(), R.color.nyoomLightYellow)
+                        ContextCompat.getColor(holder.itemView.getContext(), R.color.nyoomYellow)
                 ));
             }
             manageThemeRV(holder);

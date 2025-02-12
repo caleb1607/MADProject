@@ -14,6 +14,7 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
 import com.example.madproject.R;
@@ -29,7 +30,8 @@ public class Splash extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         init();
-        ImageView nyoomEffect = findViewById(R.id.NyoomEffect);
+        // manageTheme
+        manageTheme();
         ImageView NYOOM = findViewById(R.id.NYOOM);
         Glide.with(this)
                 .load(R.drawable.nyoom_effect)
@@ -54,6 +56,14 @@ public class Splash extends AppCompatActivity {
                 finish();
             }, 600);
         }, 600);
+    }
+    private void manageTheme() {
+        ConstraintLayout splashBackground = findViewById(R.id.SplashBackground);
+        if (ThemeManager.isDarkTheme()) {
+            splashBackground.setBackgroundResource(R.drawable.splash_dark);
+        } else { // light
+            splashBackground.setBackgroundResource(R.drawable.splash_light);
+        }
     }
     private void init() {
         localStorageDB = new LocalStorageDB(this);

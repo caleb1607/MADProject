@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,9 +33,11 @@ public class Feedback extends Fragment {
     TextView SETTINGS;
     TextView FEEDBACK;
     ImageView FEEDBACK_ICON;
+    TextView SUBTITLE1;
+    TextView SUBTITLE2;
     ImageView returnButton;
-    Button submitButton;
     EditText feedbackTextBox;
+    Button submitButton;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -47,21 +48,42 @@ public class Feedback extends Fragment {
         SETTINGS = rootView.findViewById(R.id.SETTINGS);
         FEEDBACK = rootView.findViewById(R.id.FEEDBACK2);
         FEEDBACK_ICON = rootView.findViewById(R.id.FEEDBACK_ICON2);
-        returnButton = rootView.findViewById(R.id.returnButton);
+        SUBTITLE1 = rootView.findViewById(R.id.SUBTITLE1);
+        SUBTITLE2 = rootView.findViewById(R.id.SUBTITLE2);
+        returnButton = rootView.findViewById(R.id.ReturnButton5);
         returnButton.setOnClickListener(view -> goBack());
+        feedbackTextBox = rootView.findViewById(R.id.FeedbackTextBox);
         submitButton = rootView.findViewById(R.id.SubmitButton);
         submitButton.setOnClickListener(view -> {
             onSubmit(generateMSG());
             goBack();
             Toast.makeText(getContext(), "Thanks for your time!", Toast.LENGTH_SHORT).show();
         });
-        feedbackTextBox = rootView.findViewById(R.id.FeedbackTextBox);
-
         // transition
         Transition transition = TransitionInflater.from(requireContext()).inflateTransition(R.transition.shared_textview);
         setSharedElementEnterTransition(transition);
-
+        // manage theme
+        manageTheme();
         return rootView;
+    }
+    public void manageTheme() {
+        if (ThemeManager.isDarkTheme()) {
+            rootView.setBackgroundColor(getResources().getColor(R.color.mainBackground));
+            SETTINGS.setTextColor(getResources().getColor(R.color.hintGray));
+            returnButton.setImageTintList(getResources().getColorStateList(R.color.hintGray));
+            FEEDBACK_ICON.setImageTintList(getResources().getColorStateList(R.color.nyoomYellow));
+            FEEDBACK.setTextColor(getResources().getColorStateList(R.color.nyoomYellow));
+            feedbackTextBox.setBackgroundTintList(getResources().getColorStateList(R.color.backgroundPanel));
+            feedbackTextBox.setHintTextColor(getResources().getColor(R.color.hintGray));
+        } else { // light
+            rootView.setBackgroundColor(getResources().getColor(R.color.LmainBackground));
+            SETTINGS.setTextColor(getResources().getColor(R.color.LhintGray));
+            returnButton.setImageTintList(getResources().getColorStateList(R.color.LhintGray));
+            FEEDBACK_ICON.setImageTintList(getResources().getColorStateList(R.color.LnyoomYellow));
+            FEEDBACK.setTextColor(getResources().getColorStateList(R.color.LnyoomYellow));
+            feedbackTextBox.setBackgroundTintList(getResources().getColorStateList(R.color.LbackgroundPanel));
+            feedbackTextBox.setHintTextColor(getResources().getColor(R.color.LhintGray));
+        }
     }
 
     private void goBack() {

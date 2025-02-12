@@ -78,7 +78,7 @@
                     android:paddingTop="4dp"
                     android:paddingBottom="6dp"
                     app:srcCompat="@drawable/caution"
-                    app:tint="@color/nyoomLightBlue" />
+                    app:tint="@color/nyoomBlue" />
 
                 <TextView
                     android:id="@+id/ALERTS"
@@ -87,7 +87,7 @@
                     android:fontFamily="@font/albertsans5_medium"
                     android:paddingBottom="7dp"
                     android:text="Alerts"
-                    android:textColor="@color/nyoomLightBlue"
+                    android:textColor="@color/nyoomBlue"
                     android:textSize="14sp" />
 
             </LinearLayout>
@@ -117,7 +117,7 @@
                     android:paddingTop="4dp"
                     android:paddingBottom="8dp"
                     app:srcCompat="@drawable/mrt"
-                    app:tint="@color/nyoomLightGreen" />
+                    app:tint="@color/nyoomGreen" />
 
                 <TextView
                     android:id="@+id/MRTMAP"
@@ -126,7 +126,7 @@
                     android:fontFamily="@font/albertsans5_medium"
                     android:paddingBottom="7dp"
                     android:text="MRT Map"
-                    android:textColor="@color/nyoomLightGreen"
+                    android:textColor="@color/nyoomGreen"
                     android:textSize="14sp" />
 
             </LinearLayout>
@@ -157,7 +157,7 @@
                     android:paddingBottom="8dp"
                     android:transitionName="FeedbackIcon"
                     app:srcCompat="@drawable/megaphone"
-                    app:tint="@color/nyoomLightYellow" />
+                    app:tint="@color/nyoomYellow" />
 
                 <TextView
                     android:id="@+id/FEEDBACK"
@@ -166,7 +166,7 @@
                     android:fontFamily="@font/albertsans5_medium"
                     android:paddingBottom="7dp"
                     android:text="Feedback"
-                    android:textColor="@color/nyoomLightYellow"
+                    android:textColor="@color/nyoomYellow"
                     android:textSize="14sp"
                     android:transitionName="FeedbackText" />
 

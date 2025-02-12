@@ -95,11 +95,10 @@ public class Login extends AppCompatActivity {
     private void goBack() {
         Intent goback = new Intent(Login.this, Startup.class);
         startActivity(goback);
-        overridePendingTransition(R.anim.slidefade_in_top, R.anim.slidefade_out_bottom);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
-    private void onRegisterRedirect() {}
-    private View.OnClickListener onRegisterRedirect = view -> {
+    private void onRegisterRedirect() {
         Intent redirect = new Intent(Login.this, Register.class);
         startActivity(redirect);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
@@ -108,7 +107,6 @@ public class Login extends AppCompatActivity {
     private View.OnClickListener onLogin = view -> {
         loginUser();
     };
-
 
 
     private void loginUser() {

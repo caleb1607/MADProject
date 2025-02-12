@@ -20,7 +20,7 @@
             android:padding="2dp">
 
             <ImageView
-                android:id="@+id/returnButton"
+                android:id="@+id/ReturnButton5"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_gravity="center_vertical"
@@ -52,7 +52,7 @@
             android:paddingBottom="8dp"
             android:transitionName="FeedbackIcon"
             app:srcCompat="@drawable/megaphone"
-            app:tint="@color/nyoomLightYellow" />
+            app:tint="@color/nyoomYellow" />
 
         <TextView
             android:id="@+id/FEEDBACK2"
@@ -65,7 +65,7 @@
             android:paddingRight="8dp"
             android:paddingBottom="8dp"
             android:text="Feedback"
-            android:textColor="@color/nyoomLightYellow"
+            android:textColor="@color/nyoomYellow"
             android:textSize="32sp"
             android:transitionName="FeedbackText" />
 
@@ -79,7 +79,7 @@
             android:paddingRight="8dp"
             android:text="Any bugs? Any issues?"
             android:textAlignment="center"
-            android:textColor="@color/nyoomLightGreen"
+            android:textColor="@color/nyoomGreen"
             android:textSize="20sp"
             android:transitionName="SettingsText" />
 
@@ -93,7 +93,7 @@
             android:paddingRight="8dp"
             android:text="Let us know!"
             android:textAlignment="center"
-            android:textColor="@color/nyoomLightGreen"
+            android:textColor="@color/nyoomGreen"
             android:textSize="20sp"
             android:transitionName="SettingsText" />
 
@@ -113,7 +113,7 @@
             android:hint="Type here..."
             android:inputType="text"
             android:padding="12dp"
-            android:textColor="@color/nyoomLightGreen"
+            android:textColor="@color/nyoomBlue"
             android:textColorHint="@color/hintGray"
             android:textSize="16sp" />
 

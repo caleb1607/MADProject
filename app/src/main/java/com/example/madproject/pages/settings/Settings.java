@@ -42,6 +42,7 @@ public class Settings extends Fragment {
     LinearLayout feedbackButton;
     FrameLayout mapFL;
     PhotoView MRT_MAP;
+    ImageView SETTINGS_ICON;
     TextView SETTINGS;
     ImageView ALERTS_ICON;
     TextView ALERTS;
@@ -78,6 +79,7 @@ public class Settings extends Fragment {
             }
             MRT_MAP.setLayoutParams(layoutParams);
         });
+        SETTINGS_ICON = rootView.findViewById(R.id.SETTINGS_ICON);
         SETTINGS = rootView.findViewById(R.id.SETTINGS);
         ALERTS_ICON = rootView.findViewById(R.id.ALERTS_ICON);;
         ALERTS = rootView.findViewById(R.id.ALERTS);;
@@ -95,8 +97,26 @@ public class Settings extends Fragment {
     public void manageTheme() {
         if (ThemeManager.isDarkTheme()) {
             rootView.setBackgroundColor(getResources().getColor(R.color.mainBackground));
+            toggleThemeButton.setBackgroundTintList(getResources().getColorStateList(R.color.buttonPanel));
+            toggleThemeButton.setTextColor(getResources().getColor(R.color.white));
+            SETTINGS_ICON.setImageTintList(getResources().getColorStateList(R.color.white));
+            SETTINGS.setTextColor(getResources().getColor(R.color.white));
+            alertsButton.setBackgroundTintList(getResources().getColorStateList(R.color.buttonPanel));
+            MRTMapButton.setBackgroundTintList(getResources().getColorStateList(R.color.buttonPanel));
+            feedbackButton.setBackgroundTintList(getResources().getColorStateList(R.color.buttonPanel));
+            FEEDBACK_ICON.setImageTintList(getResources().getColorStateList(R.color.nyoomYellow));
+            FEEDBACK.setTextColor(getResources().getColor(R.color.nyoomYellow));
         } else { // light
             rootView.setBackgroundColor(getResources().getColor(R.color.LmainBackground));
+            toggleThemeButton.setBackgroundTintList(getResources().getColorStateList(R.color.LbuttonPanel));
+            toggleThemeButton.setTextColor(getResources().getColor(R.color.black));
+            SETTINGS_ICON.setImageTintList(getResources().getColorStateList(R.color.black));
+            SETTINGS.setTextColor(getResources().getColor(R.color.black));
+            alertsButton.setBackgroundTintList(getResources().getColorStateList(R.color.LbuttonPanel));
+            MRTMapButton.setBackgroundTintList(getResources().getColorStateList(R.color.LbuttonPanel));
+            feedbackButton.setBackgroundTintList(getResources().getColorStateList(R.color.LbuttonPanel));
+            FEEDBACK_ICON.setImageTintList(getResources().getColorStateList(R.color.LnyoomYellow));
+            FEEDBACK.setTextColor(getResources().getColor(R.color.LnyoomYellow));
         }
     }
     @Override

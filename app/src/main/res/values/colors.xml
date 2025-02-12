@@ -36,11 +36,11 @@
 
 
     <color name="LnyoomYellow">#AF8320</color>
-    <color name="LbuttonPanel">#D9D7D2</color>
-    <color name="LbackgroundPanel">#E0DFDC</color>
-    <color name="LmainBackground">#E5E4E0</color>
-    <color name="LnavBarPanel">#E0DFDA</color>
-    <color name="LhintGray">#6A6657</color>
-    <color name="LdarkGray">#C8C6BD</color>
-    <color name="LbuttonPanelPressed">#DFDEDA</color>
+    <color name="LbuttonPanel">#D2D5D9</color>
+    <color name="LbackgroundPanel">#DCDDE0</color>
+    <color name="LmainBackground">#E0E1E5</color>
+    <color name="LnavBarPanel">#DADDE0</color>
+    <color name="LhintGray">#575E6A</color>
+    <color name="LdarkGray">#BDC1C8</color>
+    <color name="LbuttonPanelPressed">#DADCDF</color>
 </resources>
