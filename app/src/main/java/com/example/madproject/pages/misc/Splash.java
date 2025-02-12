@@ -1,16 +1,21 @@
 package com.example.madproject.pages.misc;
 
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.bumptech.glide.Glide;
 import com.example.madproject.R;
 import com.example.madproject.helper.LocalStorageDB;
 import com.example.madproject.pages.Main;
@@ -23,37 +28,32 @@ public class Splash extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        Log.d("test1", "");
         init();
-        // manage theme
-        Log.d("test2", "");
-        manageTheme();
+        ImageView nyoomEffect = findViewById(R.id.NyoomEffect);
         ImageView NYOOM = findViewById(R.id.NYOOM);
-        Log.d("test3", "");
+        Glide.with(this)
+                .load(R.drawable.nyoom_effect)
+                .into((ImageView) findViewById(R.id.NyoomEffect));
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(NYOOM, "scaleX", 0f, 5f);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(NYOOM, "scaleY", 0f, 5f);
+        scaleX.setDuration(4000);
+        scaleY.setDuration(4000);
+        scaleX.start();
+        scaleY.start();
+        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.nyoom);
+        mediaPlayer.setOnCompletionListener(MediaPlayer::release);
+        mediaPlayer.start();
         Handler handler = new Handler();
-        Log.d("test4", "");
         handler.postDelayed(() -> {
-            Log.d("test5", "");
             Intent intent = (localStorageDB.getValue("LoginToken").equals("0")) ?
                     new Intent(Splash.this, Startup.class) :
                     new Intent(Splash.this, Main.class);
-            Log.d("test6", "");
             handler.postDelayed(() -> {
                 startActivity(intent);
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                Log.d("test7", "");
                 finish();
-                Log.d("test8", "");
-            }, 400);
-        }, 400);
-    }
-    private void manageTheme() {
-        ConstraintLayout layout = findViewById(R.id.SplashBackground);
-        if (ThemeManager.isDarkTheme()) {
-            layout.setBackgroundResource(R.drawable.splash_dark);
-        } else {
-            layout.setBackgroundResource(R.drawable.splash_light);
-        }
+            }, 600);
+        }, 600);
     }
     private void init() {
         localStorageDB = new LocalStorageDB(this);

@@ -8,7 +8,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,6 +33,10 @@ public class Settings extends Fragment {
     // views
     Button toggleThemeButton;
     Button logoutButton;
+    LinearLayout alertsButton;
+    LinearLayout MRTMapButton;
+    LinearLayout feedbackButton;
+    FrameLayout mapFL;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -39,8 +47,13 @@ public class Settings extends Fragment {
         toggleThemeButton.setOnClickListener(view -> toggleTheme());
         logoutButton = rootView.findViewById(R.id.LogOutButton);
         logoutButton.setOnClickListener(view -> onLogout());
-        PhotoView photoView = rootView.findViewById(R.id.photoView);
-        photoView.setImageResource(R.drawable.mrtmap6756);
+        alertsButton = rootView.findViewById(R.id.AlertsButton);
+        alertsButton.setOnClickListener(view -> onAlertsView());
+        MRTMapButton = rootView.findViewById(R.id.MRTMapButton);
+        MRTMapButton.setOnClickListener(view -> onMRTMapView());
+        feedbackButton = rootView.findViewById(R.id.FeedbackButton);
+        feedbackButton.setOnClickListener(view -> onFeedbackView());
+        mapFL = rootView.findViewById(R.id.MapFL);
         // manage theme
         manageTheme();
         return rootView;
@@ -78,5 +91,18 @@ public class Settings extends Fragment {
             activity.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             activity.finish();
         }
+    }
+    private void onAlertsView() {
+
+    }
+    private void onMRTMapView() {
+        mapFL.setVisibility(View.VISIBLE);
+        Animation fadeIn = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
+        mapFL.startAnimation(fadeIn);
+        View mapBG = rootView.findViewById(R.id.MapBG);
+        mapBG.setOnClickListener(view -> mapFL.setVisibility(View.GONE));
+    }
+    private void onFeedbackView() {
+
     }
 }
