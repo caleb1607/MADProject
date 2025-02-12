@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.SimpleDateFormat;
@@ -58,6 +59,7 @@ public class RouteView extends Fragment {
     TextView startTimeV;
     TextView endTimeV;
     TextView fareV;
+    RecyclerView routeRV;
     List<LegPanel> fullLegList = new ArrayList<>();
     @Nullable
     @Override
@@ -71,6 +73,8 @@ public class RouteView extends Fragment {
         endTimeV = rootView.findViewById(R.id.endTime);
         fareV = rootView.findViewById(R.id.fare);
         backButton.setOnClickListener(view -> {getParentFragmentManager().popBackStack();});
+        routeRV = rootView.findViewById(R.id.routeViewRV);
+        routeRV.setLayoutManager(new LinearLayoutManager(getContext()));
         start = rootView.findViewById(R.id.routeStart);
         end = rootView.findViewById(R.id.routeEnd);
         assert getArguments() != null;
@@ -130,10 +134,6 @@ public class RouteView extends Fragment {
                             String fromLocation = from.getName();
                             String toLocation = to.getName();
                             int durationPerLeg = leg.getDuration();
-                            Log.d(TAG, "onResponse: "+fromLocation);
-                            Log.d(TAG, "onResponse: "+mode);
-                            Log.d(TAG, "onResponse: "+toLocation);
-                            Log.d(TAG, "onResponse: "+durationPerLeg);
                             fullLegList.add(new LegPanel(
                                     fromLocation,
                                     mode,
@@ -141,6 +141,7 @@ public class RouteView extends Fragment {
                                     durationPerLeg
                             ));
                         }
+                        adapter.notifyDataSetChanged();
                     }
                 }
 
@@ -182,7 +183,7 @@ public class RouteView extends Fragment {
             holder.fromTextView.setText(item.getFromLocation());
             holder.modeTextView.setText(item.getMode());
             holder.toTextView.setText(item.getToLocation());
-            holder.timeTextView.setText(item.getDuration());
+            holder.timeTextView.setText(String.valueOf(item.getDuration()));
             manageThemeRV(holder); // light mode
         }
 
