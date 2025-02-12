@@ -203,7 +203,7 @@
             android:layout_height="10dp" />
 
         <Button
-            android:id="@+id/ClearBookmarksButton"
+            android:id="@+id/ClearCacheButton"
             android:layout_width="275dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -211,12 +211,12 @@
             android:fontFamily="@font/albertsans6_semibold"
             android:gravity="center_horizontal|center_vertical"
             android:letterSpacing="0.04"
-            android:text="Clear Bookmarks"
+            android:text="Clear All Data"
             android:textAlignment="center"
             android:textAllCaps="false"
             android:textColor="#FFFFFF"
             android:textSize="20sp"
-            app:backgroundTint="@color/buttonPanel" />
+            app:backgroundTint="@color/redError" />
 
         <Space
             android:layout_width="match_parent"

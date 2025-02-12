@@ -58,6 +58,45 @@
     </LinearLayout>
 
     <FrameLayout
+        android:id="@+id/SadBookmark"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.6">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingBottom="100dp"
+            app:srcCompat="@drawable/sadbookmark_dark" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/albertsans7_bold"
+            android:gravity="center"
+            android:paddingTop="150dp"
+            android:text="No Bookmarks"
+            android:textColor="@color/white"
+            android:textSize="32sp" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/albertsans7_bold"
+            android:gravity="center"
+            android:paddingTop="210dp"
+            android:text="at the moment!"
+            android:textColor="@color/white"
+            android:textSize="24sp" />
+    </FrameLayout>
+
+    <FrameLayout
         android:id="@+id/ConfirmationPopup"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

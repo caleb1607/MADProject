@@ -62,6 +62,9 @@
             android:name=".pages.settings.Settings"
             android:exported="false" />
         <activity
+            android:name=".pages.settings.Alerts"
+            android:exported="false" />
+        <activity
             android:name=".pages.bus_times.BusTimes"
             android:exported="false" />
         <activity

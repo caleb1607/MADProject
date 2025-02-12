@@ -207,9 +207,9 @@ public class BusStopsList extends Fragment {
                 holder.enabledBookmarkIcon.setVisibility(View.INVISIBLE);
                 item.setBMAnimDone(false);
             } else {
+                holder.bookmarkIcon.setVisibility(View.INVISIBLE);
+                holder.enabledBookmarkIcon.setVisibility(View.VISIBLE);
                 if (!item.bookmarkAnimDone()) {
-                    holder.bookmarkIcon.setVisibility(View.INVISIBLE);
-                    holder.enabledBookmarkIcon.setVisibility(View.VISIBLE);
                     int cx = holder.enabledBookmarkIcon.getWidth() / 2; // Center horizontally
                     int cy = 0; // Start from the top edge
                     float startRadius = 0f;

@@ -13,7 +13,7 @@ public class OnemapRouteResponse {
         return plan;
     }
 
-    public static class Plan {
+    public class Plan {
         @SerializedName("itineraries")
         private List<Itinerary> itineraries;
 
@@ -22,7 +22,7 @@ public class OnemapRouteResponse {
         }
     }
 
-    public static class Itinerary {
+    public class Itinerary {
         @SerializedName("duration")
         private int duration;
         @SerializedName("legs")
@@ -56,7 +56,7 @@ public class OnemapRouteResponse {
 
     }
 
-    public static class Leg {
+    public class Leg {
         @SerializedName("mode")
         private String mode;
         @SerializedName("route")
@@ -67,6 +67,8 @@ public class OnemapRouteResponse {
         private from from;
         @SerializedName("to")
         private to to;
+        @SerializedName("duration")
+        private int Duration;
 
         public String getMode() {
             return mode;
@@ -82,19 +84,28 @@ public class OnemapRouteResponse {
 
         public from getFrom() { return from;}
         public to getTo() { return to;}
+        public int getDuration() {return Duration;}
     }
 
-    public static class from {
+    public class from {
         @SerializedName("name")
         private String name;
         @SerializedName("stopIndex")
         private String stopIndex;
+
+        public String getName() {return name;}
+
+        public String getStopIndex() {return stopIndex;}
     }
 
-    public static class to {
+    public class to {
         @SerializedName("name")
         private String name;
         @SerializedName("stopIndex")
         private String stopIndex;
+
+        public String getName() {return name;}
+
+        public String getStopIndex() {return stopIndex;}
     }
 }
