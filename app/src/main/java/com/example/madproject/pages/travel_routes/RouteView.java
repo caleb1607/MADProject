@@ -75,10 +75,16 @@ public class RouteView extends Fragment {
                 @Override
                 public void onResponse(Call<OnemapRouteResponse> call, Response<OnemapRouteResponse> response) {
 
+                    Log.d("call", call.toString());
+                    Log.d("response", response.toString());
                     if (response.isSuccessful()) {
                         OnemapRouteResponse OnemapResponse = response.body();
-                        for (OnemapRouteResponse.Itinerary Itinerary;;) {
-                        }
+                        Log.d("is OnemapResponse null", (OnemapResponse == null) ? "yes" : "no");
+                        OnemapRouteResponse.Plan plan = OnemapResponse.getPlan();
+                        Log.d("is plan null", (plan == null) ? "yes" : "no");
+                        List<OnemapRouteResponse.Itinerary> itinerary = plan.getItineraries();
+                        int duration = itinerary.get(0).getDuration();
+                        Log.d("duration", Integer.toString(duration));
                     }
                 }
 
