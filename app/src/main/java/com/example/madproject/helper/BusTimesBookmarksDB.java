@@ -1,10 +1,15 @@
 package com.example.madproject.helper;
 
+import static java.security.AccessController.getContext;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.example.madproject.pages.bookmarks.Bookmarks;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,6 +20,8 @@ public class BusTimesBookmarksDB extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "bookmark.db";
     private static final int SCHEMA_VERSION = 1;
+    //BusTimesBookmarksDB busTimesBookmarks;
+
 
     public BusTimesBookmarksDB(Context context) {
         super(context, DATABASE_NAME, null, SCHEMA_VERSION);
@@ -22,6 +29,8 @@ public class BusTimesBookmarksDB extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+//        busTimesBookmarks = new BusTimesBookmarksDB(getContext(Bookmarks));
+
         db.execSQL("CREATE TABLE bookmarks( " +
                 "_id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "bus_stop_name TEXT," +
@@ -73,6 +82,8 @@ public class BusTimesBookmarksDB extends SQLiteOpenHelper {
         cv.put("bus_stop_name", bus_stop_name);
         cv.put("bus_stop_code", bus_stop_code);
         cv.put("bus_service", bus_service);
+
+        //List<List<String>> sqlitedata = busTimesBookmarks.getAllBookmarks();
 
         getWritableDatabase().insert("bookmarks", null, cv);
 

@@ -1,9 +1,12 @@
 package com.example.madproject.pages.settings;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
@@ -206,13 +209,20 @@ public class Settings extends Fragment {
     }
     private void onLogout() {
         localStorageDB.insertOrUpdate("LoginToken", "0");
+        SharedPreferences usernamepref = getActivity().getSharedPreferences("Usernamepref", MODE_PRIVATE);
+        usernamepref.edit().clear().apply();
+        SharedPreferences emailpref = getActivity().getSharedPreferences("Emailpref", MODE_PRIVATE);
+        emailpref.edit().clear().apply();
+
         Intent logout = new Intent(mainContext, Login.class);
         startActivity(logout);
+
         if (mainContext instanceof Activity) {
             Activity activity = (Activity) mainContext;
             activity.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             activity.finish();
         }
+
     }
     private void onAlertsView() {
         //activateAlertsButton(false);

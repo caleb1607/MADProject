@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ public class Alerts extends AppCompatActivity {
     private Button add,delete;
     private FirebaseFirestore db;
     private SharedPreferences emailpref;
+    private FrameLayout ajaw;
 
 
     @Override
@@ -42,6 +44,7 @@ public class Alerts extends AppCompatActivity {
         delete.setOnClickListener(view -> onDel());
         addalerts = findViewById(R.id.Addalerts);
         db = FirebaseFirestore.getInstance();
+        ajaw = findViewById(R.id.ajaw);
 
         getAnnouncements();
         checkEmail(); // Call function to check email
@@ -82,17 +85,19 @@ public class Alerts extends AppCompatActivity {
 
 
     private void checkEmail() {
-        emailpref = getSharedPreferences("Emailpref", MODE_PRIVATE);
-        String userEmail = emailpref.getString("email", "default@gmail.com"); // Default if not found
+        emailpref = getSharedPreferences("Emailpref", MODE_PRIVATE); //get email key from pref
+        String userEmail = emailpref.getString("email", "default@gmail.com"); //get email value from pref, default@gmail.com is set if not found
         Log.d("email",userEmail);
         if (userEmail.equals("nyoom123@gmail.com")) {
             add.setVisibility(View.VISIBLE);
             delete.setVisibility(View.VISIBLE);
             addalerts.setVisibility(View.VISIBLE);
+            ajaw.setVisibility(View.VISIBLE);
         } else {
             add.setVisibility(View.GONE);
             delete.setVisibility(View.GONE);
             addalerts.setVisibility(View.GONE);
+            ajaw.setVisibility(View.GONE);
         }
     }
 

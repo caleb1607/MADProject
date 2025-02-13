@@ -118,9 +118,9 @@ public class BTMap extends Fragment {
             return;
         }
 
-        LatLng singaporeLocation = new LatLng(1.3500, 103.7044);
+        LatLng singaporeLocation = new LatLng(1.3098, 103.7775);
         mapView.moveCamera(singaporeLocation, 16f);  // Zoom level 15
-        updateVisibleMarkers(new LatLng(1.3500, 103.7044));
+        updateVisibleMarkers(new LatLng(1.3098, 103.7775));
         mapView.addMarker(singaporeLocation, "My Bookmark", BitmapDescriptorFactory.HUE_RED);
 
 
@@ -133,7 +133,7 @@ public class BTMap extends Fragment {
         for (BusStopsComplete busStop : busStopsCompleteList) {
             LatLng position = new LatLng(busStop.getLatitude(), busStop.getLongitude());
 
-            double distance = calculateDistance(1.3500, 103.7044, busStop.getLatitude(), busStop.getLongitude());
+            double distance = calculateDistance(1.3098, 103.7775, busStop.getLatitude(), busStop.getLongitude());
 
 
         }
@@ -147,7 +147,7 @@ public class BTMap extends Fragment {
     private void updateVisibleMarkers(LatLng center) {
         mapView.clearBookmarks(); // Remove old markers
 
-        LatLng singaporeLocation = new LatLng(1.3500, 103.7044);
+        LatLng singaporeLocation = new LatLng(1.3098, 103.7775);
         mapView.addMarker(singaporeLocation, "My Bookmark", BitmapDescriptorFactory.HUE_RED);
 
         for (BusStopsComplete busStop : busStopsCompleteList) {
