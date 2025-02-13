@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_weight="1"
-    android:background="@color/black"
     android:orientation="vertical">
 
     <TextView
@@ -14,6 +13,7 @@
         android:layout_weight="1"
         android:text="Woodgrove Pr Sch"
         android:textColor="@color/white"
+        android:fontFamily="@font/albertsans6_semibold"
         android:textSize="20sp" />
 
     <LinearLayout
@@ -22,55 +22,146 @@
         android:layout_weight="1"
         android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/TAKE"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:text="TAKE "
-            android:textColor="@color/nyoomLightYellow"
-            android:textSize="20sp" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/ModeTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Buses 901/69"
-            android:textColor="@color/nyoomLightYellow"
-            android:textSize="20sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/TO"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" TO "
-            android:textColor="@color/nyoomLightYellow"
-            android:textSize="20sp" />
+                <TextView
+                    android:id="@+id/TAKE"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/albertsans6_semibold"
+                    android:text="Take "
+                    android:textColor="@color/nyoomLightBlue"
+                    android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/ToTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Wlands Stn"
-            android:textColor="@color/nyoomLightYellow"
-            android:textSize="20sp" />
+                <TextView
+                    android:id="@+id/ModeTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/albertsans6_semibold"
+                    android:text="Buses 901/69"
+                    android:textColor="@color/nyoomLightBlue"
+                    android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/TimeTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="35"
-            android:textColor="@color/nyoomBlue"
-            android:textSize="20sp" />
+                <TextView
+                    android:id="@+id/openBracket"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/albertsans6_semibold"
+                    android:text=" ("
+                    android:textColor="@color/nyoomLightBlue"
+                    android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/MINS2"
-            android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/MethodView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/albertsans6_semibold"
+                    android:text="busNum"
+                    android:textColor="@color/nyoomLightBlue"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/closeBracket"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/albertsans6_semibold"
+                    android:text=")"
+                    android:textColor="@color/nyoomLightBlue"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/comma"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/albertsans6_semibold"
+                    android:text=","
+                    android:textColor="@color/nyoomLightBlue"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/TO"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/albertsans6_semibold"
+                    android:text="to "
+                    android:textColor="@color/LnyoomYellow"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/ToTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/albertsans6_semibold"
+                    android:text="Wlands Stn"
+                    android:textColor="@color/LnyoomYellow"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/dot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/albertsans6_semibold"
+                    android:text="."
+                    android:textColor="@color/nyoomYellow"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="MINS"
-            android:textColor="@color/nyoomBlue"
-            android:textSize="20sp" />
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/TimeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/albertsans6_semibold"
+                android:text="35"
+                android:textColor="@color/nyoomBlue"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/MINS2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/albertsans6_semibold"
+                android:text="MINS"
+                android:textColor="@color/nyoomBlue"
+                android:textSize="20sp" />
+        </LinearLayout>
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/space"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:fontFamily="@font/albertsans6_semibold"
+        android:text=" "
+        android:textColor="@color/nyoomBlue"
+        android:textSize="20sp" />
 
 </LinearLayout>
