@@ -1,6 +1,7 @@
 package com.example.madproject.pages.settings;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.transition.Transition;
@@ -124,7 +125,9 @@ public class Feedback extends Fragment {
         }.execute(message);
     }
     private String generateMSG() {
-        String message = "From: email\nMessage:\n";
+        SharedPreferences Emailpref = this.getActivity().getSharedPreferences("Emailpref", Context.MODE_PRIVATE);
+        String email = Emailpref.getString("email", "Guest User");
+        String message = "From: " + email + "\nMessage:\n";
         message += feedbackTextBox.getText().toString();
         return message;
     }
