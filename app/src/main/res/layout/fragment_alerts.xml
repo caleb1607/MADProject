@@ -67,6 +67,7 @@
             android:gravity="center"
             android:hint="Enter text to add/delete"
             android:inputType="text"
+            android:textColor="@color/nyoomDarkYellow"
             android:textSize="20sp" />
 
         <Space
