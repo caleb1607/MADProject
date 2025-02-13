@@ -120,22 +120,26 @@ public class Main extends AppCompatActivity {
     public void onStart() {
         super.onStart();
 
-        db.collection("users").document(currentUser.getUid()).get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                        String username = documentSnapshot.getString("username");
-                        String email = documentSnapshot.getString("email");
+        if (currentUser==null) {
+            return;
+        } else {
+            db.collection("users").document(currentUser.getUid()).get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            String username = documentSnapshot.getString("username");
+                            String email = documentSnapshot.getString("email");
 
-                        usernamepref.edit().putString("username", username).apply();
-                        emailpref.edit().putString("email", email).apply();
-                        SharedPreferences emailpref2 = getSharedPreferences("Emailpref", MODE_PRIVATE);
-                        String userEmail = emailpref2.getString("email", "default@gmail.com"); // Default if not found
-                        Log.d("email",userEmail);
+                            usernamepref.edit().putString("username", username).apply();
+                            emailpref.edit().putString("email", email).apply();
+                            SharedPreferences emailpref2 = getSharedPreferences("Emailpref", MODE_PRIVATE);
+                            String userEmail = emailpref2.getString("email", "default@gmail.com"); // Default if not found
+                            Log.d("email", userEmail);
 
 
-                        //Log.d("UserInfo", "Username: " + username + "Email: " + email);
-                    }
-                });
+                            //Log.d("UserInfo", "Username: " + username + "Email: " + email);
+                        }
+                    });
+        }
     }
 
 
