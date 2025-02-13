@@ -60,7 +60,7 @@ public class Alerts extends Fragment {
         manageTheme();
 
         db = FirebaseFirestore.getInstance();
-        ajaw = findViewById(R.id.ajaw);
+        ajaw = rootView.findViewById(R.id.ajaw);
 
         getAnnouncements();
         checkEmail(); // Call function to check email
@@ -118,13 +118,8 @@ public class Alerts extends Fragment {
 
 
     private void checkEmail() {
-<<<<<<< HEAD
-        emailpref = getSharedPreferences("Emailpref", MODE_PRIVATE); //get email key from pref
-        String userEmail = emailpref.getString("email", "default@gmail.com"); //get email value from pref, default@gmail.com is set if not found
-=======
         emailpref = getContext().getSharedPreferences("Emailpref", getContext().MODE_PRIVATE);
         String userEmail = emailpref.getString("email", "default@gmail.com"); // Default if not found
->>>>>>> 6e215e3702743166014a944fc2078676990e6705
         Log.d("email",userEmail);
         if (userEmail.equals("nyoom123@gmail.com")) {
             add.setVisibility(View.VISIBLE);
