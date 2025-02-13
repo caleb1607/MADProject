@@ -225,9 +225,12 @@ public class Settings extends Fragment {
 
     }
     private void onAlertsView() {
-        //activateAlertsButton(false);
-        Intent alert = new Intent(mainContext, Alerts.class);
-        startActivity(alert);
+        FragmentTransaction transaction = getActivity()
+                .getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, new Alerts())
+                .addToBackStack(null);
+        transaction.commit();
     }
     private void onMRTMapView() {
         mapFL.setVisibility(View.VISIBLE);

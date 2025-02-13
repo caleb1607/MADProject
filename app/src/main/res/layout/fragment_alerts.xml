@@ -3,62 +3,133 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/hintGray">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="2dp">
+
+            <ImageView
+                android:id="@+id/ReturnButton6"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/arrow_left_thin"
+                android:backgroundTint="@color/LdarkGray" />
+
+            <TextView
+                android:id="@+id/SETTINGS2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:fontFamily="@font/albertsans5_medium"
+                android:paddingLeft="2dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="Settings"
+                android:textColor="@color/LdarkGray"
+                android:textSize="20dp"
+                android:transitionName="SettingsText" />
+
+        </LinearLayout>
+
         <TextView
             android:id="@+id/alerts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/albertsans6_semibold"
+            android:padding="4dp"
             android:text="TextView"
+            android:textColor="@color/nyoomBlue"
             android:textSize="20sp" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
+
+        <EditText
+            android:id="@+id/Addalerts"
+            android:layout_width="360dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:background="@drawable/rounder_box"
+            android:backgroundTint="@color/white"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="Enter text to add/delete"
+            android:inputType="text"
+            android:textSize="20sp" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/Addalerts"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:hint="Enter text to add/delete"
-                android:inputType="text"
-                android:textSize="20sp" />
+            <Space
+                android:layout_width="30dp"
+                android:layout_height="match_parent" />
 
             <Button
-                android:id="@+id/Add"
-                android:layout_width="wrap_content"
+                android:id="@+id/AddBtn"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="add"
-                android:textColor="#FFFFFF" />
+                android:background="@drawable/round_button"
+                android:fontFamily="@font/albertsans6_semibold"
+                android:letterSpacing="0.04"
+                android:text="Add"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                app:backgroundTint="@color/nyoomGreen" />
+
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="match_parent" />
 
             <Button
-                android:id="@+id/Delete"
-                android:layout_width="wrap_content"
+                android:id="@+id/DeleteBtn"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="delete"
-                android:textColor="#FFFFFF" />
+                android:background="@drawable/round_button"
+                android:fontFamily="@font/albertsans6_semibold"
+                android:letterSpacing="0.04"
+                android:text="Delete"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                app:backgroundTint="@color/redError" />
+
+            <Space
+                android:layout_width="30dp"
+                android:layout_height="match_parent" />
 
         </LinearLayout>
 
         <FrameLayout
-            android:id="@+id/ajaw"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <LinearLayout
+                android:id="@+id/ajaw"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="invisible">
 
                 <TextView
                     android:id="@+id/textView3"

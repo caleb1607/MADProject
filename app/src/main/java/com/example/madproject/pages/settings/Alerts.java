@@ -4,14 +4,21 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.madproject.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -23,42 +30,68 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Alerts extends AppCompatActivity {
+public class Alerts extends Fragment {
+    View rootView;
+    ImageView returnButton;
+    TextView SETTINGS;
     private TextView alert;
     private EditText addalerts;
-    private Button add,delete;
+    private Button add, delete;
     private FirebaseFirestore db;
     private SharedPreferences emailpref;
     private FrameLayout ajaw;
 
-
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_alerts);
-
-        alert = findViewById(R.id.alerts);
-        add = findViewById(R.id.Add);
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        rootView = inflater.inflate(R.layout.fragment_alerts, container, false);
+        alert = rootView.findViewById(R.id.alerts);
+        add = rootView.findViewById(R.id.AddBtn);
         add.setOnClickListener(view -> onAdd());
-        delete = findViewById(R.id.Delete);
+        delete = rootView.findViewById(R.id.DeleteBtn);
         delete.setOnClickListener(view -> onDel());
-        addalerts = findViewById(R.id.Addalerts);
+        addalerts = rootView.findViewById(R.id.Addalerts);
+        returnButton = rootView.findViewById(R.id.ReturnButton6);
+        returnButton.setOnClickListener(view -> goBack());
+        SETTINGS = rootView.findViewById(R.id.SETTINGS2);
+        // manage theme
+        manageTheme();
+
         db = FirebaseFirestore.getInstance();
         ajaw = findViewById(R.id.ajaw);
 
         getAnnouncements();
         checkEmail(); // Call function to check email
+        return rootView;
     }
 
-
-
-    private void restartActivity() {
-        Intent intent = getIntent();
-        finish();
-        startActivity(intent);
+    public void manageTheme() {
+        if (ThemeManager.isDarkTheme()) {
+            rootView.setBackgroundColor(getResources().getColor(R.color.mainBackground));
+            alert.setTextColor(getResources().getColor(R.color.nyoomBlue));
+            returnButton.setImageTintList(getResources().getColorStateList(R.color.hintGray));
+            SETTINGS.setTextColor(getResources().getColor(R.color.hintGray));
+        } else { // light
+            rootView.setBackgroundColor(getResources().getColor(R.color.LhintGray));
+            alert.setTextColor(getResources().getColor(R.color.nyoomLightBlue));
+            returnButton.setImageTintList(getResources().getColorStateList(R.color.LdarkGray));
+            SETTINGS.setTextColor(getResources().getColor(R.color.LdarkGray));
+        }
     }
 
+    private void restartActivity() { // restart itself
+        FragmentTransaction transaction = getActivity()
+                .getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, new Alerts());
+        transaction.commit();
+    }
 
+    private void goBack() {
+        getParentFragmentManager().popBackStack();
+    }
 
     void getAnnouncements() {
         db.collection("announcements")
@@ -85,8 +118,13 @@ public class Alerts extends AppCompatActivity {
 
 
     private void checkEmail() {
+<<<<<<< HEAD
         emailpref = getSharedPreferences("Emailpref", MODE_PRIVATE); //get email key from pref
         String userEmail = emailpref.getString("email", "default@gmail.com"); //get email value from pref, default@gmail.com is set if not found
+=======
+        emailpref = getContext().getSharedPreferences("Emailpref", getContext().MODE_PRIVATE);
+        String userEmail = emailpref.getString("email", "default@gmail.com"); // Default if not found
+>>>>>>> 6e215e3702743166014a944fc2078676990e6705
         Log.d("email",userEmail);
         if (userEmail.equals("nyoom123@gmail.com")) {
             add.setVisibility(View.VISIBLE);
@@ -108,7 +146,7 @@ public class Alerts extends AppCompatActivity {
         String alerts = addalerts.getText().toString();
 
         if (alerts.isEmpty()) {
-            Toast.makeText(this, "Text cannot be empty!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Text cannot be empty!", Toast.LENGTH_SHORT).show();
             return; // Stop if the text is empty
         }
 
@@ -121,11 +159,11 @@ public class Alerts extends AppCompatActivity {
         db.collection("announcements")
                 .add(announcement) // Auto-generates a document ID
                 .addOnSuccessListener(documentReference -> {
-                        Toast.makeText(this, "Saved successfully!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Saved successfully!", Toast.LENGTH_SHORT).show();
                         restartActivity();
                 })
                 .addOnFailureListener(e ->
-                        Toast.makeText(this, "Failed to save!", Toast.LENGTH_SHORT).show());
+                        Toast.makeText(getContext(), "Failed to save!", Toast.LENGTH_SHORT).show());
 
     }
 
@@ -136,7 +174,7 @@ public class Alerts extends AppCompatActivity {
         String announcementText = addalerts.getText().toString();
 
         if (announcementText.isEmpty()) {
-            Toast.makeText(this, "No text to delete!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "No text to delete!", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -151,18 +189,18 @@ public class Alerts extends AppCompatActivity {
                                     .document(doc.getId()) // Get the document ID
                                     .delete()
                                     .addOnSuccessListener(unused -> {
-                                        Toast.makeText(this, "Deleted successfully!", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getContext(), "Deleted successfully!", Toast.LENGTH_SHORT).show();
                                         restartActivity();
                                     })
                                     .addOnFailureListener(e ->
-                                            Toast.makeText(this, "Failed to delete!", Toast.LENGTH_SHORT).show());
+                                            Toast.makeText(getContext(), "Failed to delete!", Toast.LENGTH_SHORT).show());
                         }
                     } else {
-                        Toast.makeText(this, "No matching document found!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "No matching document found!", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnFailureListener(e ->
-                        Toast.makeText(this, "Failed to find document!", Toast.LENGTH_SHORT).show());
+                        Toast.makeText(getContext(), "Failed to find document!", Toast.LENGTH_SHORT).show());
 
     }
 }
