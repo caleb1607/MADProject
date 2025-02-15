@@ -20,6 +20,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.security.AlgorithmConstraints;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -45,6 +46,7 @@ import com.example.madproject.pages.bus_times.BusServicesList;
 import com.example.madproject.pages.bus_times.BusStopPanel;
 import com.example.madproject.pages.bus_times.BusStopsList;
 import com.example.madproject.pages.settings.ThemeManager;
+import com.google.rpc.Help;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -62,6 +64,7 @@ public class RouteView extends Fragment {
     TextView endTimeV;
     TextView fareV;
     RecyclerView routeRV;
+    TextView routeNotFound;
     List<LegPanel> fullLegList = new ArrayList<>();
     @Nullable
     @Override
@@ -74,6 +77,7 @@ public class RouteView extends Fragment {
         startTimeV = rootView.findViewById(R.id.startTime);
         endTimeV = rootView.findViewById(R.id.endTime);
         fareV = rootView.findViewById(R.id.fare);
+        routeNotFound = rootView.findViewById(R.id.noRouteFound);
         backButton.setOnClickListener(view -> {getParentFragmentManager().popBackStack();});
         routeRV = rootView.findViewById(R.id.routeViewRV);
         routeRV.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -81,6 +85,7 @@ public class RouteView extends Fragment {
         end = rootView.findViewById(R.id.routeEnd);
         assert getArguments() != null;
         adapter = new LegAdapter(fullLegList, getContext());
+        routeRV.setAdapter(adapter);
         // manage theme
         manageTheme();
         // input
@@ -107,7 +112,7 @@ public class RouteView extends Fragment {
         start.setText(name1);
         end.setText(name2);
         OnemapRouteApi onemapRouteApi = OnemapRouteClient.getApiService();
-        onemapRouteApi.getRouteResults(APIReader.getAPIKey(), startCoords, endCoords, "pt", formattedDate, "15%253A05%253A40", "TRANSIT", "1")
+        onemapRouteApi.getRouteResults(APIReader.getAPIKey(), startCoords, endCoords, "pt", formattedDate, encodedTime, "TRANSIT", "1")
             .enqueue(new Callback<OnemapRouteResponse>() {
                 @Override
                 public void onResponse(Call<OnemapRouteResponse> call, Response<OnemapRouteResponse> response) {
@@ -135,20 +140,24 @@ public class RouteView extends Fragment {
                         for (OnemapRouteResponse.Leg leg: itinerary.get(0).getLegs()) {
                             OnemapRouteResponse.from from = leg.getFrom();
                             OnemapRouteResponse.to to = leg.getTo();
+                            String route = leg.getRoute();
                             String mode = leg.getMode();
                             String fromLocation = from.getName();
                             String toLocation = to.getName();
-                            int durationPerLeg = leg.getDuration();
+                            float durationPerLeg = leg.getDuration();
+                            float durationPerLegInMin = Math.round(durationPerLeg/60);
                             fullLegList.add(new LegPanel(
                                     fromLocation,
                                     mode,
                                     toLocation,
-                                    durationPerLeg
+                                    (int) durationPerLegInMin,
+                                    route
                             ));
                         }
                         adapter.notifyDataSetChanged();
                     } else {
-
+                        routeRV.setVisibility(View.GONE);
+                        routeNotFound.setVisibility(View.VISIBLE);
                     }
                 }
 
@@ -187,9 +196,25 @@ public class RouteView extends Fragment {
         @Override
         public void onBindViewHolder(RouteView.LegAdapter.ItemViewHolder holder, int position) {
             LegPanel item = panelList.get(position);
-            holder.fromTextView.setText(item.getFromLocation());
-            holder.modeTextView.setText(item.getMode());
-            holder.toTextView.setText(item.getToLocation());
+            holder.fromTextView.setText(Helper.FormatSEARCHVAL(item.getFromLocation()));
+            String mode = Helper.FormatSEARCHVAL(item.getMode());
+            if (mode.equals("Subway")) {
+                holder.modeTextView.setText("MRT");
+            } else {
+                holder.modeTextView.setText(Helper.FormatSEARCHVAL(item.getMode()));
+            }
+            if (mode.equals("Walk")) {
+                holder.TAKE.setVisibility(View.GONE);
+            }
+            String route = item.getRoute();
+            if (route.equals("")) {
+                holder.openBracket.setVisibility(View.GONE);
+                holder.methodView.setVisibility(View.GONE);
+                holder.closeBracket.setVisibility(View.GONE);
+            } else {
+                holder.methodView.setText(item.getRoute());
+            }
+            holder.toTextView.setText(Helper.FormatSEARCHVAL(item.getToLocation()));
             holder.timeTextView.setText(String.valueOf(item.getDuration()));
             manageThemeRV(holder); // light mode
         }
@@ -209,8 +234,8 @@ public class RouteView extends Fragment {
         // contains the reference of views (UI) of a single item in recyclerview
         public class ItemViewHolder extends RecyclerView.ViewHolder {
             LinearLayout panelBG;
-            TextView fromTextView, modeTextView, toTextView, timeTextView;
-            TextView TAKE, TO, MINS;
+            TextView fromTextView, modeTextView, toTextView, timeTextView, methodView;
+            TextView TAKE, TO, MINS, openBracket, closeBracket;
             public ItemViewHolder(View itemView) {
                 super(itemView);
                 //panelBG = itemView.findViewById(R.id.) no name yet
@@ -221,6 +246,9 @@ public class RouteView extends Fragment {
                 TAKE = itemView.findViewById(R.id.TAKE);
                 TO = itemView.findViewById(R.id.TO);
                 MINS = itemView.findViewById(R.id.MINS);
+                methodView = itemView.findViewById(R.id.MethodView);
+                openBracket = itemView.findViewById(R.id.openBracket);
+                closeBracket = itemView.findViewById(R.id.closeBracket);
             }
         }
     }

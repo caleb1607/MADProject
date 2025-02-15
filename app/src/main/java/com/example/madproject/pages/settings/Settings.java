@@ -1,13 +1,15 @@
 package com.example.madproject.pages.settings;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,9 +32,7 @@ import com.example.madproject.R;
 import com.example.madproject.helper.BusTimesBookmarksDB;
 import com.example.madproject.helper.BusTimesRecentsDB;
 import com.example.madproject.helper.LocalStorageDB;
-import com.example.madproject.pages.Main;
 import com.example.madproject.pages.misc.Login;
-import com.example.madproject.pages.misc.Startup;
 import com.github.chrisbanes.photoview.PhotoView;
 
 public class Settings extends Fragment {
@@ -112,7 +112,7 @@ public class Settings extends Fragment {
             deleteAccountSpace.setVisibility(View.VISIBLE);
         }
         // transition
-        Transition transition = TransitionInflater.from(requireContext()).inflateTransition(R.transition.shared_textview);
+        Transition transition = TransitionInflater.from(requireContext()).inflateTransition(R.transition.shared_view);
         setSharedElementEnterTransition(transition);
         // manage theme
         manageTheme();
@@ -206,18 +206,28 @@ public class Settings extends Fragment {
     }
     private void onLogout() {
         localStorageDB.insertOrUpdate("LoginToken", "0");
+        SharedPreferences usernamepref = getActivity().getSharedPreferences("Usernamepref", MODE_PRIVATE);
+        usernamepref.edit().clear().apply();
+        SharedPreferences emailpref = getActivity().getSharedPreferences("Emailpref", MODE_PRIVATE);
+        emailpref.edit().clear().apply();
+
         Intent logout = new Intent(mainContext, Login.class);
         startActivity(logout);
+
         if (mainContext instanceof Activity) {
             Activity activity = (Activity) mainContext;
             activity.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             activity.finish();
         }
+
     }
     private void onAlertsView() {
-        //activateAlertsButton(false);
-        Intent alert = new Intent(mainContext, Alerts.class);
-        startActivity(alert);
+        FragmentTransaction transaction = getActivity()
+                .getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, new Alerts())
+                .addToBackStack(null);
+        transaction.commit();
     }
     private void onMRTMapView() {
         mapFL.setVisibility(View.VISIBLE);

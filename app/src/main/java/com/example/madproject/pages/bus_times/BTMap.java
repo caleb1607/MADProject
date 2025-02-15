@@ -82,7 +82,7 @@ public class BTMap extends Fragment {
         BusServicesBT.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
         // transition
-        Transition transition = TransitionInflater.from(requireContext()).inflateTransition(R.transition.shared_textview);
+        Transition transition = TransitionInflater.from(requireContext()).inflateTransition(R.transition.shared_view);
         setSharedElementEnterTransition(transition);
 
         // setup widgets
@@ -112,7 +112,10 @@ public class BTMap extends Fragment {
             return;
         }
 
+
         LatLng singaporeLocation = new LatLng(1.3098, 103.7775); // hardcoded to sp as android studio location is set to san fransico
+
+
         mapView.moveCamera(singaporeLocation, 16f);  // Zoom level 15
         updateVisibleMarkers(new LatLng(1.3098, 103.7775));
         mapView.addMarker(singaporeLocation, "My Bookmark", BitmapDescriptorFactory.HUE_RED);
