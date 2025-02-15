@@ -15,11 +15,9 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,7 +38,6 @@ import com.example.madproject.MapView;
 import com.example.madproject.R;
 import com.example.madproject.datasets.BusServicesAtStop;
 import com.example.madproject.datasets.BusStopsComplete;
-import com.example.madproject.datasets.BusStopsMap;
 import com.example.madproject.helper.APIReader;
 import com.example.madproject.helper.BusTimesBookmarksDB;
 import com.example.madproject.helper.Helper;
@@ -53,9 +50,6 @@ import com.google.android.gms.maps.model.Marker;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 public class BTMap extends Fragment {
     MapView mapView;
@@ -118,9 +112,9 @@ public class BTMap extends Fragment {
             return;
         }
 
-        LatLng singaporeLocation = new LatLng(1.3500, 103.7044);
+        LatLng singaporeLocation = new LatLng(1.3098, 103.7775); // hardcoded to sp as android studio location is set to san fransico
         mapView.moveCamera(singaporeLocation, 16f);  // Zoom level 15
-        updateVisibleMarkers(new LatLng(1.3500, 103.7044));
+        updateVisibleMarkers(new LatLng(1.3098, 103.7775));
         mapView.addMarker(singaporeLocation, "My Bookmark", BitmapDescriptorFactory.HUE_RED);
 
 
@@ -133,7 +127,7 @@ public class BTMap extends Fragment {
         for (BusStopsComplete busStop : busStopsCompleteList) {
             LatLng position = new LatLng(busStop.getLatitude(), busStop.getLongitude());
 
-            double distance = calculateDistance(1.3500, 103.7044, busStop.getLatitude(), busStop.getLongitude());
+            double distance = calculateDistance(1.3098, 103.7775, busStop.getLatitude(), busStop.getLongitude());
 
 
         }
@@ -147,7 +141,7 @@ public class BTMap extends Fragment {
     private void updateVisibleMarkers(LatLng center) {
         mapView.clearBookmarks(); // Remove old markers
 
-        LatLng singaporeLocation = new LatLng(1.3500, 103.7044);
+        LatLng singaporeLocation = new LatLng(1.3098, 103.7775);
         mapView.addMarker(singaporeLocation, "My Bookmark", BitmapDescriptorFactory.HUE_RED);
 
         for (BusStopsComplete busStop : busStopsCompleteList) {
@@ -219,7 +213,7 @@ public class BTMap extends Fragment {
                 new Handler(Looper.getMainLooper()).post(() -> {
                     try {
                         for (int i = 0; i < fullPanelList.size(); i++) {
-                            String[] arrivals = futures.get(i).get(); // Blocking call, waits for result
+                            String[] arrivals = futures.get(i).get();
                             fullPanelList.get(i).setAT(arrivals);
                         }
                     } catch (Exception e) {
@@ -228,16 +222,16 @@ public class BTMap extends Fragment {
                 });
 
 
-                // Find the corresponding BusServicesAtStop object based on the bus stop code
+
                 for (BusServicesAtStop serviceAtStop : busServicesAtStopList) {
                     if (serviceAtStop.getBusStopCode().equals(busStopCode)) {
                         List<String> services = serviceAtStop.getBusServices();
-                        busServices += String.join(", ", services); // Add services to the string
-                        break; // Once we find the matching bus stop code, no need to continue the loop
+                        busServices += String.join(", ", services);
+                        break;
                     }
                 }
                 executor.shutdown();
-                break; // Exit the outer loop once we find the clicked bus stop
+                break;
             }
         }
 
