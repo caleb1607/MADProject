@@ -59,12 +59,18 @@ public class RouteView extends Fragment {
     TextView start;
     TextView end;
     LegAdapter adapter;
+    TextView timeTakenStatic;
     TextView timeTakenV;
+    TextView minutes;
+    TextView startTimeStatic;
     TextView startTimeV;
+    TextView endTimeStatic;
     TextView endTimeV;
+    TextView fareStatic;
     TextView fareV;
     RecyclerView routeRV;
     TextView routeNotFound;
+    TextView loading;
     List<LegPanel> fullLegList = new ArrayList<>();
     @Nullable
     @Override
@@ -73,11 +79,17 @@ public class RouteView extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_routeview, container, false);
         backButton = rootView.findViewById(R.id.ReturnButton3);
+        timeTakenStatic = rootView.findViewById(R.id.timeTakenStatic);
         timeTakenV = rootView.findViewById(R.id.timeTaken);
+        minutes = rootView.findViewById(R.id.min);
+        startTimeStatic = rootView.findViewById(R.id.startTimeStatic);
         startTimeV = rootView.findViewById(R.id.startTime);
+        endTimeStatic = rootView.findViewById(R.id.endTimeStatic);
         endTimeV = rootView.findViewById(R.id.endTime);
+        fareStatic = rootView.findViewById(R.id.fareStatic);
         fareV = rootView.findViewById(R.id.fare);
         routeNotFound = rootView.findViewById(R.id.noRouteFound);
+        loading = rootView.findViewById(R.id.loading);
         backButton.setOnClickListener(view -> {getParentFragmentManager().popBackStack();});
         routeRV = rootView.findViewById(R.id.routeViewRV);
         routeRV.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -86,6 +98,16 @@ public class RouteView extends Fragment {
         assert getArguments() != null;
         adapter = new LegAdapter(fullLegList, getContext());
         routeRV.setAdapter(adapter);
+        timeTakenStatic.setVisibility(View.GONE);
+        timeTakenV.setVisibility(View.GONE);
+        minutes.setVisibility(View.GONE);
+        startTimeStatic.setVisibility(View.GONE);
+        startTimeV.setVisibility(View.GONE);
+        endTimeStatic.setVisibility(View.GONE);
+        endTimeV.setVisibility(View.GONE);
+        fareStatic.setVisibility(View.GONE);
+        fareV.setVisibility(View.GONE);
+        routeRV.setVisibility(View.GONE);
         // manage theme
         manageTheme();
         // input
@@ -116,8 +138,18 @@ public class RouteView extends Fragment {
             .enqueue(new Callback<OnemapRouteResponse>() {
                 @Override
                 public void onResponse(Call<OnemapRouteResponse> call, Response<OnemapRouteResponse> response) {
-
+                    loading.setVisibility(View.GONE);
                     if (response.isSuccessful()) {
+                        timeTakenStatic.setVisibility(View.VISIBLE);
+                        timeTakenV.setVisibility(View.VISIBLE);
+                        minutes.setVisibility(View.VISIBLE);
+                        startTimeStatic.setVisibility(View.VISIBLE);
+                        startTimeV.setVisibility(View.VISIBLE);
+                        endTimeStatic.setVisibility(View.VISIBLE);
+                        endTimeV.setVisibility(View.VISIBLE);
+                        fareStatic.setVisibility(View.VISIBLE);
+                        fareV.setVisibility(View.VISIBLE);
+                        routeRV.setVisibility(View.VISIBLE);
                         OnemapRouteResponse OnemapResponse = response.body();
                         OnemapRouteResponse.Plan plan = OnemapResponse.getPlan();
                         List<OnemapRouteResponse.Itinerary> itinerary = plan.getItineraries();
@@ -156,7 +188,6 @@ public class RouteView extends Fragment {
                         }
                         adapter.notifyDataSetChanged();
                     } else {
-                        routeRV.setVisibility(View.GONE);
                         routeNotFound.setVisibility(View.VISIBLE);
                     }
                 }
@@ -205,6 +236,7 @@ public class RouteView extends Fragment {
             }
             if (mode.equals("Walk")) {
                 holder.TAKE.setVisibility(View.GONE);
+                holder.comma.setVisibility(View.GONE);
             }
             String route = item.getRoute();
             if (route.equals("")) {
@@ -235,7 +267,7 @@ public class RouteView extends Fragment {
         public class ItemViewHolder extends RecyclerView.ViewHolder {
             LinearLayout panelBG;
             TextView fromTextView, modeTextView, toTextView, timeTextView, methodView;
-            TextView TAKE, TO, MINS, openBracket, closeBracket;
+            TextView TAKE, TO, MINS, openBracket, closeBracket, comma;
             public ItemViewHolder(View itemView) {
                 super(itemView);
                 //panelBG = itemView.findViewById(R.id.) no name yet
@@ -249,6 +281,7 @@ public class RouteView extends Fragment {
                 methodView = itemView.findViewById(R.id.MethodView);
                 openBracket = itemView.findViewById(R.id.openBracket);
                 closeBracket = itemView.findViewById(R.id.closeBracket);
+                comma = itemView.findViewById(R.id.comma);
             }
         }
     }
