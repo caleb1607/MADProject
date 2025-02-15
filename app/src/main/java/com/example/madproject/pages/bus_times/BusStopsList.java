@@ -1,7 +1,6 @@
 package com.example.madproject.pages.bus_times;
 
 import android.animation.Animator;
-import android.content.res.ColorStateList;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,7 +16,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewAnimationUtils;
@@ -33,7 +31,6 @@ import com.example.madproject.helper.APIReader;
 import com.example.madproject.helper.BusTimesBookmarksDB;
 import com.example.madproject.helper.Helper;
 import com.example.madproject.helper.JSONReader;
-import com.example.madproject.pages.bookmarks.Bookmarks;
 import com.example.madproject.pages.settings.ThemeManager;
 
 import java.util.ArrayList;
@@ -70,7 +67,7 @@ public class BusStopsList extends Fragment {
         backButton.setOnClickListener(view -> { goBack(); });
         BUS = rootView.findViewById(R.id.BUS);
         // transition
-        Transition transition = TransitionInflater.from(requireContext()).inflateTransition(R.transition.shared_textview);
+        Transition transition = TransitionInflater.from(requireContext()).inflateTransition(R.transition.shared_view);
         setSharedElementEnterTransition(transition);
         // get input params
         Bundle bundle = getArguments();

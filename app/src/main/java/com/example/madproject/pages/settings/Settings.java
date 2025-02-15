@@ -10,7 +10,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,9 +32,7 @@ import com.example.madproject.R;
 import com.example.madproject.helper.BusTimesBookmarksDB;
 import com.example.madproject.helper.BusTimesRecentsDB;
 import com.example.madproject.helper.LocalStorageDB;
-import com.example.madproject.pages.Main;
 import com.example.madproject.pages.misc.Login;
-import com.example.madproject.pages.misc.Startup;
 import com.github.chrisbanes.photoview.PhotoView;
 
 public class Settings extends Fragment {
@@ -115,7 +112,7 @@ public class Settings extends Fragment {
             deleteAccountSpace.setVisibility(View.VISIBLE);
         }
         // transition
-        Transition transition = TransitionInflater.from(requireContext()).inflateTransition(R.transition.shared_textview);
+        Transition transition = TransitionInflater.from(requireContext()).inflateTransition(R.transition.shared_view);
         setSharedElementEnterTransition(transition);
         // manage theme
         manageTheme();

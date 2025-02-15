@@ -61,7 +61,7 @@ public class Feedback extends Fragment {
             Toast.makeText(getContext(), "Thanks for your time!", Toast.LENGTH_SHORT).show();
         });
         // transition
-        Transition transition = TransitionInflater.from(requireContext()).inflateTransition(R.transition.shared_textview);
+        Transition transition = TransitionInflater.from(requireContext()).inflateTransition(R.transition.shared_view);
         setSharedElementEnterTransition(transition);
         // manage theme
         manageTheme();

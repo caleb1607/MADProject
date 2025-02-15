@@ -65,7 +65,7 @@ public class BusServicesList extends Fragment {
         backButton = rootView.findViewById(R.id.ReturnButton2);
         backButton.setOnClickListener(view -> { goBack(); });
         // transition
-        Transition transition = TransitionInflater.from(requireContext()).inflateTransition(R.transition.shared_textview);
+        Transition transition = TransitionInflater.from(requireContext()).inflateTransition(R.transition.shared_view);
         setSharedElementEnterTransition(transition);
         // get input params
         Bundle bundle = getArguments();

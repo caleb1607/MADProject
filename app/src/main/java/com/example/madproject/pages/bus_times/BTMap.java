@@ -15,11 +15,9 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,7 +38,6 @@ import com.example.madproject.MapView;
 import com.example.madproject.R;
 import com.example.madproject.datasets.BusServicesAtStop;
 import com.example.madproject.datasets.BusStopsComplete;
-import com.example.madproject.datasets.BusStopsMap;
 import com.example.madproject.helper.APIReader;
 import com.example.madproject.helper.BusTimesBookmarksDB;
 import com.example.madproject.helper.Helper;
@@ -53,9 +50,6 @@ import com.google.android.gms.maps.model.Marker;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 public class BTMap extends Fragment {
     MapView mapView;
@@ -88,7 +82,7 @@ public class BTMap extends Fragment {
         BusServicesBT.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
         // transition
-        Transition transition = TransitionInflater.from(requireContext()).inflateTransition(R.transition.shared_textview);
+        Transition transition = TransitionInflater.from(requireContext()).inflateTransition(R.transition.shared_view);
         setSharedElementEnterTransition(transition);
 
         // setup widgets
