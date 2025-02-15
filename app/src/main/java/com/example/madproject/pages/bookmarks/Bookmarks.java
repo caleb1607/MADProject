@@ -185,7 +185,7 @@ public class Bookmarks extends Fragment {
                 ));
             } else {
                 holder.bookmarkIcon.setImageTintList(ColorStateList.valueOf(
-                        ContextCompat.getColor(holder.itemView.getContext(), R.color.nyoomYellow)
+                        ContextCompat.getColor(holder.itemView.getContext(), R.color.nyoomDarkYellow)
                 ));
             }
             manageThemeRV(holder);

@@ -282,13 +282,13 @@ public class BusTimes extends Fragment {
             if (ThemeManager.isDarkTheme()) {
                 holder.BTSRCardView.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.backgroundPanel));
                 holder.icon.setImageTintList(ContextCompat.getColorStateList(context, R.color.hintGray));
-                holder.bookmarkButton.setImageTintList(ContextCompat.getColorStateList(context, R.color.buttonPanel));
+                holder.bookmarkButton.setImageTintList(ContextCompat.getColorStateList(context, R.color.LhintGray));
                 holder.BUS.setTextColor(ContextCompat.getColorStateList(context, R.color.nyoomYellow));
                 holder.header.setTextColor(ContextCompat.getColorStateList(context, R.color.nyoomYellow));
             } else { // light
                 holder.BTSRCardView.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.LbackgroundPanel));
                 holder.icon.setImageTintList(ContextCompat.getColorStateList(context, R.color.LhintGray));
-                holder.bookmarkButton.setImageTintList(ContextCompat.getColorStateList(context, R.color.LbuttonPanel));
+                holder.bookmarkButton.setImageTintList(ContextCompat.getColorStateList(context, R.color.LdarkGray));
                 holder.BUS.setTextColor(ContextCompat.getColorStateList(context, R.color.nyoomDarkYellow));
                 holder.header.setTextColor(ContextCompat.getColorStateList(context, R.color.nyoomDarkYellow));
             }
