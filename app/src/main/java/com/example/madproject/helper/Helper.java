@@ -111,7 +111,7 @@ public class Helper {
             }
         }
         for (LocationData locationdata : copyList) {
-            if (!locationdata.getName().toLowerCase().startsWith(query)) {
+            if (!locationdata.getName().toLowerCase().contains(query)) {
                 list.add(locationdata);
             }
         }

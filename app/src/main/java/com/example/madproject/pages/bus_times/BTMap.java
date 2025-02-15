@@ -142,7 +142,7 @@ public class BTMap extends Fragment {
 
 
     private void updateVisibleMarkers(LatLng center) {
-        mapView.clearBookmarks(); // Remove old markers
+        //mapView.clearBookmarks(); // Remove old markers
 
         LatLng singaporeLocation = new LatLng(1.3098, 103.7775);
         mapView.addMarker(singaporeLocation, "My Bookmark", BitmapDescriptorFactory.HUE_RED);
