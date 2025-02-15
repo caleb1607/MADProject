@@ -222,7 +222,7 @@ public class BusServicesList extends Fragment {
                 holder.busNumber.setTextColor(ContextCompat.getColor(context, R.color.nyoomYellow));
                 holder.RECTANGLE.setBackgroundColor(ContextCompat.getColor(context, R.color.darkGray));
                 holder.ARRIVING_IN.setTextColor(ContextCompat.getColor(context, R.color.hintGray));
-                holder.bookmarkIcon.setImageTintList(ContextCompat.getColorStateList(context, R.color.buttonPanel));
+                holder.bookmarkIcon.setImageTintList(ContextCompat.getColorStateList(context, R.color.LhintGray));
                 //holder.enabledBookmarkIcon.setImageTintList(ContextCompat.getColorStateList(context, R.color.nyoomLightYellow));
             } else { // light
                 holder.BSVPCardView.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.LbackgroundPanel));
@@ -230,7 +230,7 @@ public class BusServicesList extends Fragment {
                 holder.busNumber.setTextColor(ContextCompat.getColor(context, R.color.black));
                 holder.RECTANGLE.setBackgroundColor(ContextCompat.getColor(context, R.color.LdarkGray));
                 holder.ARRIVING_IN.setTextColor(ContextCompat.getColor(context, R.color.LhintGray));
-                holder.bookmarkIcon.setImageTintList(ContextCompat.getColorStateList(context, R.color.LbuttonPanel));
+                holder.bookmarkIcon.setImageTintList(ContextCompat.getColorStateList(context, R.color.LdarkGray));
                 //holder.enabledBookmarkIcon.setImageTintList(ContextCompat.getColorStateList(context, R.color.nyoomDarkYellow));
             }
         }
