@@ -176,6 +176,10 @@ public class RouteView extends Fragment {
                             int endIndex = to.getStopIndex();
                             float durationPerLeg = leg.getDuration();
                             float durationPerLegInMin = Math.round(durationPerLeg/60);
+                            double startLat = from.getLat();
+                            double startLon = from.getLon();
+                            double endLat = to.getLat();
+                            double endLon = to.getLon();
                             fullLegList.add(new LegPanel(
                                     fromLocation,
                                     mode,

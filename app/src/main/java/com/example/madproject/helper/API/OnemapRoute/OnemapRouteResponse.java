@@ -92,10 +92,18 @@ public class OnemapRouteResponse {
         private String name;
         @SerializedName("stopIndex")
         private int stopIndex;
+        @SerializedName("lat")
+        private double lat;
+        @SerializedName("lon")
+        private double lon;
 
         public String getName() {return name;}
 
         public int getStopIndex() {return stopIndex;}
+
+        public double getLat() {return lat;}
+
+        public double getLon() {return lon;}
     }
 
     public class to {
@@ -103,9 +111,17 @@ public class OnemapRouteResponse {
         private String name;
         @SerializedName("stopIndex")
         private int stopIndex;
+        @SerializedName("lat")
+        private double lat;
+        @SerializedName("lon")
+        private double lon;
 
         public String getName() {return name;}
 
         public int getStopIndex() {return stopIndex;}
+
+        public double getLat() {return lat;}
+
+        public double getLon() {return lon;}
     }
 }
