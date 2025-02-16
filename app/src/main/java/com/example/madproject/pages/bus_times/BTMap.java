@@ -34,6 +34,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import com.example.madproject.DoxxYourself;
 import com.example.madproject.MapView;
 import com.example.madproject.R;
 import com.example.madproject.datasets.BusServicesAtStop;
@@ -112,11 +113,23 @@ public class BTMap extends Fragment {
             return;
         }
 
-        LatLng singaporeLocation = new LatLng(1.3098, 103.7775); // hardcoded to sp as android studio location is set to san fransico
+        DoxxYourself doxxYourself = new DoxxYourself(getContext());
+        double lat = doxxYourself.getLatitude();
+        double lon = doxxYourself.getLongitude();
+        if (lat == 0.0 && lon == 0.0) {
+            lat = 1.3098;
+            lon = 103.7775;
+            Toast.makeText(getContext(), "Couldn't get location", Toast.LENGTH_LONG).show();
+        }
+        Log.d("BTMAP", "lat = " + lat);
+        Log.d("BTMAP", "lon = " + lon);
+
+
+        LatLng singaporeLocation = new LatLng(lat, lon); // hardcoded to sp as android studio location is set to san fransico
 
 
         mapView.moveCamera(singaporeLocation, 16f);  // Zoom level 15
-        updateVisibleMarkers(new LatLng(1.3098, 103.7775));
+        updateVisibleMarkers(new LatLng(lat, lon));
         mapView.addMarker(singaporeLocation, "My Bookmark", BitmapDescriptorFactory.HUE_RED);
 
 
@@ -129,7 +142,7 @@ public class BTMap extends Fragment {
         for (BusStopsComplete busStop : busStopsCompleteList) {
             LatLng position = new LatLng(busStop.getLatitude(), busStop.getLongitude());
 
-            double distance = calculateDistance(1.3098, 103.7775, busStop.getLatitude(), busStop.getLongitude());
+            double distance = calculateDistance(lat, lon, busStop.getLatitude(), busStop.getLongitude());
 
 
         }
@@ -143,7 +156,10 @@ public class BTMap extends Fragment {
     private void updateVisibleMarkers(LatLng center) {
         //mapView.clearBookmarks(); // Remove old markers
 
-        LatLng singaporeLocation = new LatLng(1.3098, 103.7775);
+        DoxxYourself doxxYourself = new DoxxYourself(getContext());
+        double lat = doxxYourself.getLatitude();
+        double lon = doxxYourself.getLongitude();
+        LatLng singaporeLocation = new LatLng(lat, lon);
         mapView.addMarker(singaporeLocation, "My Bookmark", BitmapDescriptorFactory.HUE_RED);
 
         for (BusStopsComplete busStop : busStopsCompleteList) {

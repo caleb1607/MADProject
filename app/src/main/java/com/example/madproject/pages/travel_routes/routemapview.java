@@ -1,6 +1,7 @@
 package com.example.madproject.pages.travel_routes;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,8 @@ import com.example.madproject.R;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.ArrayList;
+
 public class routemapview extends Fragment {
     View rootView;
     Button backButton;
@@ -32,6 +35,14 @@ public class routemapview extends Fragment {
         loadMapFragment(new MapView());
         updateMap();
 
+        ArrayList<LatLng> receivedCoordinates = getArguments().getParcelableArrayList("coordinates");
+
+        if (receivedCoordinates != null) {
+            for (LatLng coord : receivedCoordinates) {
+                Log.d("Coordinates", "Lat: " + coord.latitude + ", Lon: " + coord.longitude);
+            }
+        }
+
         return rootView;
         }
 
@@ -44,45 +55,33 @@ public class routemapview extends Fragment {
 
     private void updateMap() {
 //        FragmentManager fragmentManager = getChildFragmentManager(); // Or getChildFragmentManager() if inside another fragment
-//        MapView mapView = (MapView) fragmentManager.findFragmentById(R.id.MapFragmentContainer);
-//        // coords manipulation
-//        Double fromLat = null;
-//        Double fromLon = null;
-//        Double toLat = null;
-//        Double toLon = null;
-//        if (fromData.getLat() != null) {
-//            fromLat = Double.parseDouble(fromData.getLat());
-//            fromLon = Double.parseDouble(fromData.getLon());
-//        }
-//        if (toData.getLat() != null) {
-//            toLat = Double.parseDouble(toData.getLat());
-//            toLon = Double.parseDouble(toData.getLon());
-//        }
-//        // place markers
-////        float[] hsv = new float[3];
-////        Color.colorToHSV(ContextCompat.getColor(getContext(), R.color.nyoomYellow), hsv);
-////        float nyoomYellow = hsv[0];
-////        Color.colorToHSV(ContextCompat.getColor(getContext(), R.color.nyoomBlue), hsv);
-////        float nyoomBlue = hsv[0];
-//        if (fromLat != null) {
-//            mapView.addMarker(
-//                    new LatLng(fromLat, fromLon),
-//                    fromData.getName(),
-//                    BitmapDescriptorFactory.HUE_YELLOW
+//        MapView mapView = (MapView) fragmentManager.findFragmentById(R.id.MapFragmentContainer3);
+//        Log.d("TAG", "updateMap: " + mapView);
+//        ArrayList<LatLng> receivedCoordinates = getArguments().getParcelableArrayList("coordinates_list");
+//        ArrayList<String> receivedNames = getArguments().getStringArrayList("nameList");
+//        LatLng startCoords = null;
+//        LatLng endCoords = null;
+//
+//        if (receivedCoordinates != null) {
+//            startCoords = receivedCoordinates.get(0);
+//            endCoords = receivedCoordinates.get(receivedCoordinates.size()-1);
+//            for (int i = 0; i < receivedCoordinates.size(); i++) {
+//                LatLng coord = receivedCoordinates.get(i);
+//                String name = receivedNames.get(i);
+//                System.out.println("Index " + i + ": Lat = " + coord.latitude + ", Lon = " + coord.longitude);
+//                Log.d("Coordinates", "Lat: " + coord.latitude + ", Lon: " + coord.longitude);
+//                mapView.addMarker(
+//                        new LatLng(coord.latitude, coord.longitude),
+//                        name,
+//                        BitmapDescriptorFactory.HUE_YELLOW
+//                );
+//            }
+//            // position camera
+//            mapView.moveCamera(new LatLng(
+//                            (startCoords.latitude + startCoords.longitude) / 2,
+//                            (endCoords.latitude + endCoords.longitude) / 2
+//                    ), 11f
 //            );
 //        }
-//        if (toLat != null) {
-//            mapView.addMarker(
-//                    new LatLng(toLat, toLon),
-//                    toData.getName(),
-//                    BitmapDescriptorFactory.HUE_AZURE
-//            );
-//        }
-//        // position camera
-//        mapView.moveCamera(new LatLng(
-//                        (fromLat + toLat) / 2,
-//                        (fromLon + toLon) / 2
-//                ), 11f
-//        );
     }
 }

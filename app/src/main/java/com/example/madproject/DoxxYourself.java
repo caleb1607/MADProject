@@ -26,7 +26,6 @@ public class DoxxYourself extends Service implements LocationListener, ActivityC
     public DoxxYourself() {
         getLocation();
     }
-
     public DoxxYourself(Context context) {
         this.mContext = context;
         getLocation();
@@ -75,7 +74,7 @@ public class DoxxYourself extends Service implements LocationListener, ActivityC
 
     public double getLongitude() {
         if (location != null) {
-            longitude = location.getLatitude();
+            longitude = location.getLongitude();
         }
         return longitude;
     }

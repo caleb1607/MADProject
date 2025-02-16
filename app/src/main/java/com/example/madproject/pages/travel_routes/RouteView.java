@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,6 +34,9 @@ import com.example.madproject.helper.API.OnemapRoute.OnemapRouteResponse;
 import com.example.madproject.helper.APIReader;
 import com.example.madproject.helper.Helper;
 import com.example.madproject.pages.settings.ThemeManager;
+import com.google.android.gms.maps.model.LatLng;
+
+import org.checkerframework.checker.units.qual.A;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -60,6 +64,8 @@ public class RouteView extends Fragment {
     TextView routeNotFound;
     TextView loading;
     List<LegPanel> fullLegList = new ArrayList<>();
+    ArrayList<LatLng> coordinatesList = new ArrayList<>();
+    ArrayList<String> nameList = new ArrayList<>();
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -180,6 +186,12 @@ public class RouteView extends Fragment {
                             double startLon = from.getLon();
                             double endLat = to.getLat();
                             double endLon = to.getLon();
+                            LatLng startCoords = new LatLng(startLat, startLon);
+                            LatLng endCoords = new LatLng(endLat, endLon);
+                            coordinatesList.add(startCoords);
+                            coordinatesList.add(endCoords);
+                            nameList.add(fromLocation);
+                            nameList.add(toLocation);
                             fullLegList.add(new LegPanel(
                                     fromLocation,
                                     mode,
@@ -193,12 +205,17 @@ public class RouteView extends Fragment {
                         adapter.notifyDataSetChanged();
                     } else {
                         routeNotFound.setVisibility(View.VISIBLE);
+                        showOnMapButton.setVisibility(View.GONE);
+                        showOnMapButton.setVisibility(View.GONE);
                     }
                 }
 
                 @Override
                 public void onFailure(Call<OnemapRouteResponse> call, Throwable t) {
                     Log.e("Failed to load data: ", t.getMessage());
+                    routeNotFound.setVisibility(View.VISIBLE);
+                    showOnMapButton.setVisibility(View.GONE);
+                    showOnMapButton.setVisibility(View.GONE);
                 }
             });
 
@@ -307,13 +324,10 @@ public class RouteView extends Fragment {
     private void onMapView() {
         Fragment selectedFragment = new routemapview();
 
-        ArrayList<String> coordinates = new ArrayList<>();
-        coordinates.add("1.320981,103.844150"); // Example coordinates
-        coordinates.add("1.326762,103.855900");
-
         // Create a bundle to pass data
         Bundle bundle = new Bundle();
-        bundle.putStringArrayList("coordinates_list", coordinates);
+        bundle.putParcelableArrayList("coordinates_list", coordinatesList);
+        bundle.putStringArrayList("nameList", nameList);
         selectedFragment.setArguments(bundle);
 
         // Create an instance of FragmentMapView and set arguments
@@ -326,4 +340,5 @@ public class RouteView extends Fragment {
                 .addToBackStack("RouteView")
                 .commit();
     }
+
 }
