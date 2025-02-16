@@ -111,7 +111,7 @@
             android:fontFamily="@font/albertsans4_regular"
             android:gravity="start"
             android:hint="Type here..."
-            android:inputType="text"
+            android:inputType="textMultiLine"
             android:padding="12dp"
             android:textColor="@color/nyoomBlue"
             android:textColorHint="@color/hintGray"

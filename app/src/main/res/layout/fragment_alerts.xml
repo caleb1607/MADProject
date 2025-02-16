@@ -1,229 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/hintGray">
 
+    <ImageView
+        android:id="@+id/ajaw"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center|top"
+        app:srcCompat="@drawable/ajaw" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="2dp">
+            android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/ReturnButton6"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_gravity="center_vertical"
-                android:background="@drawable/arrow_left_thin"
-                android:backgroundTint="@color/LdarkGray" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="2dp">
+
+                <ImageView
+                    android:id="@+id/ReturnButton6"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/arrow_left_thin"
+                    android:backgroundTint="@color/LdarkGray" />
+
+                <TextView
+                    android:id="@+id/SETTINGS2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/albertsans5_medium"
+                    android:paddingLeft="2dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="Settings"
+                    android:textColor="@color/LdarkGray"
+                    android:textSize="20dp"
+                    android:transitionName="SettingsText" />
+
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/SETTINGS2"
+                android:id="@+id/DeleteBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:fontFamily="@font/albertsans5_medium"
+                android:layout_gravity="center_vertical|end"
+                android:fontFamily="@font/albertsans8_extrabold"
                 android:paddingLeft="2dp"
                 android:paddingTop="8dp"
+                android:paddingRight="8dp"
                 android:paddingBottom="8dp"
-                android:text="Settings"
-                android:textColor="@color/LdarkGray"
+                android:text="Delete"
+                android:textColor="@color/redError"
                 android:textSize="20dp"
-                android:transitionName="SettingsText" />
+                android:transitionName="SettingsText"
+                android:visibility="gone" />
+        </FrameLayout>
 
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/alerts"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="@font/albertsans6_semibold"
-            android:padding="4dp"
-            android:text="TextView"
-            android:textColor="@color/nyoomBlue"
-            android:textSize="20sp" />
+        <ListView
+            android:id="@+id/AlertsList"
+            android:layout_width="match_parent"
+            android:layout_height="400dp" />
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="10dp" />
 
-        <EditText
-            android:id="@+id/Addalerts"
+        <FrameLayout
             android:layout_width="360dp"
-            android:layout_height="60dp"
-            android:layout_gravity="center"
-            android:background="@drawable/rounder_box"
-            android:backgroundTint="@color/white"
-            android:ems="10"
-            android:gravity="center"
-            android:hint="Enter text to add/delete"
-            android:inputType="text"
-            android:textColor="@color/nyoomDarkYellow"
-            android:textSize="20sp" />
+            android:layout_height="82dp"
+            android:layout_gravity="center">
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Space
-                android:layout_width="30dp"
-                android:layout_height="match_parent" />
+            <EditText
+                android:id="@+id/Addalerts"
+                android:layout_width="360dp"
+                android:layout_height="82dp"
+                android:layout_gravity="center"
+                android:background="@drawable/rounder_box"
+                android:backgroundTint="@color/white"
+                android:ems="10"
+                android:gravity="start"
+                android:hint="Write an announcement..."
+                android:inputType="textMultiLine"
+                android:maxLines="3"
+                android:padding="8dp"
+                android:singleLine="false"
+                android:textColor="@color/nyoomDarkYellow"
+                android:textSize="18sp" />
 
             <Button
                 android:id="@+id/AddBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="bottom|end"
                 android:background="@drawable/round_button"
                 android:fontFamily="@font/albertsans6_semibold"
                 android:letterSpacing="0.04"
-                android:text="Add"
+                android:text="+"
                 android:textAllCaps="false"
                 android:textColor="#FFFFFF"
                 android:textSize="20sp"
                 app:backgroundTint="@color/nyoomGreen" />
+        </FrameLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="4dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
 
             <Space
                 android:layout_width="10dp"
                 android:layout_height="match_parent" />
 
-            <Button
-                android:id="@+id/DeleteBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/round_button"
-                android:fontFamily="@font/albertsans6_semibold"
-                android:letterSpacing="0.04"
-                android:text="Delete"
-                android:textAllCaps="false"
-                android:textColor="#FFFFFF"
-                android:textSize="20sp"
-                app:backgroundTint="@color/redError" />
-
-            <Space
-                android:layout_width="30dp"
-                android:layout_height="match_parent" />
-
         </LinearLayout>
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <LinearLayout
-                android:id="@+id/ajaw"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:visibility="visible">
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp" />
-
-                <ImageView
-                    android:id="@+id/imageView2"
-                    android:layout_width="200dp"
-                    android:layout_height="160dp"
-                    android:layout_gravity="center"
-                    app:srcCompat="@drawable/ajaw" />
-
-                <TextView
-                    android:id="@+id/textView3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩"
-                    android:visibility="gone" />
-
-                <TextView
-                    android:id="@+id/textView8"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="⬛⬛🟩🟩🟩🟩🟩🟩🟩🟩🟩"
-                    android:visibility="gone" />
-
-                <TextView
-                    android:id="@+id/textView18"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟩🟩"
-                    android:visibility="gone" />
-
-                <TextView
-                    android:id="@+id/textView19"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="⬛⬛🟩⬛⬛⬛🟩⬛🟨🟨🟨🟩🟩"
-                    android:visibility="gone" />
-
-                <TextView
-                    android:id="@+id/textView29"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="⬛⬛⬛🟨⬛⬛⬛🟨🟧🟨🟧"
-                    android:visibility="gone" />
-
-                <TextView
-                    android:id="@+id/textView20"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="🟨🟨🟨🟨🟨🟥🟨🟨🟨🟧🟨🟩🟩"
-                    android:visibility="gone" />
-
-                <TextView
-                    android:id="@+id/textView21"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="🟨🟥🟥🟥🟥🟨🟨🟨🟧🟨🟧🟩🟩"
-                    android:visibility="gone" />
-
-                <TextView
-                    android:id="@+id/textView22"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨"
-                    android:visibility="gone" />
-
-                <TextView
-                    android:id="@+id/textView25"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="⬛️⬛️⬛🟨⬜️⬜️⬜️⬜️⬜️🟨🟨"
-                    android:visibility="gone" />
-
-                <TextView
-                    android:id="@+id/textView26"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="🟨🟨⬛️🟨⬜️⬜️⬜️⬜️⬜️🟨🟨⬛🟨🟨"
-                    android:visibility="gone" />
-
-                <TextView
-                    android:id="@+id/textView27"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="🟨🟨⬛️🟨⬜️⬜️⬜️⬜️⬜️🟨🟨⬛🟨🟨"
-                    android:visibility="gone" />
-
-            </LinearLayout>
-
-        </FrameLayout>
 
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>
