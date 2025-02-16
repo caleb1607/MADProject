@@ -128,28 +128,61 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/TimeTextView"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/TimeTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/albertsans6_semibold"
+                    android:text="35"
+                    android:textColor="@color/nyoomBlue"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/MINS2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/albertsans6_semibold"
+                    android:text="MINS"
+                    android:textColor="@color/nyoomBlue"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/albertsans6_semibold"
-                android:text="35"
-                android:textColor="@color/nyoomBlue"
-                android:textSize="20sp" />
+                android:layout_gravity="center"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/MINS2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/albertsans6_semibold"
-                android:text="MINS"
-                android:textColor="@color/nyoomBlue"
-                android:textSize="20sp" />
+                <TextView
+                    android:id="@+id/stopsTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/albertsans6_semibold"
+                    android:text="3"
+                    android:textColor="@color/nyoomGreen"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/STOPS"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/albertsans6_semibold"
+                    android:text=" STOPS"
+                    android:textColor="@color/nyoomGreen"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>
