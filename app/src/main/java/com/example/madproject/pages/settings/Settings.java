@@ -121,6 +121,8 @@ public class Settings extends Fragment {
                 SharedPreferences sharedPreferences = getActivity().getSharedPreferences("readAnnouncementsCount", Context.MODE_PRIVATE);
                 int readAnnouncementsCount = sharedPreferences.getInt("readAnnouncementsCount", -1);
                 activateAlertsButton(count != readAnnouncementsCount);
+                alertsButton.setScaleX(1.0f);
+                alertsButton.setScaleY(1.0f);
             }
         });
         return rootView;
@@ -180,6 +182,8 @@ public class Settings extends Fragment {
         manageTheme(); // update to default
         scaleX.end();
         scaleY.end();
+        alertsButton.setScaleX(1.0f);
+        alertsButton.setScaleY(1.0f);
     }
     @Override
     public void onAttach(@NonNull Context context) {
