@@ -7,11 +7,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,19 +31,26 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class Alerts extends Fragment {
     View rootView;
     ImageView returnButton;
     TextView SETTINGS;
-    private TextView alert;
+    private ListView alertsListView;
+    private ArrayList<String> alertsList = new ArrayList<>();
+    private ArrayAdapter<String> listAdapter;
     private EditText addalerts;
-    private Button add, delete;
+    private Button add;
+    private TextView delete;
     private FirebaseFirestore db;
     private SharedPreferences emailpref;
-    private LinearLayout ajaw;
+    private ImageView ajaw;
+    boolean isAdmin = false;
+    int selectedItemPosition;
 
     @Nullable
     @Override
@@ -48,7 +58,6 @@ public class Alerts extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_alerts, container, false);
-        alert = rootView.findViewById(R.id.alerts);
         add = rootView.findViewById(R.id.AddBtn);
         add.setOnClickListener(view -> onAdd());
         delete = rootView.findViewById(R.id.DeleteBtn);
@@ -57,26 +66,30 @@ public class Alerts extends Fragment {
         returnButton = rootView.findViewById(R.id.ReturnButton6);
         returnButton.setOnClickListener(view -> goBack());
         SETTINGS = rootView.findViewById(R.id.SETTINGS2);
+        alertsListView = rootView.findViewById(R.id.AlertsList);
+        listAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, alertsList);
+        alertsListView.setAdapter(listAdapter);
+        alertsListView.setOnItemClickListener(this::onListItemClick);
         // manage theme
         manageTheme();
 
         db = FirebaseFirestore.getInstance();
         ajaw = rootView.findViewById(R.id.ajaw);
 
-        getAnnouncements();
         checkEmail(); // Call function to check email
+        getAnnouncements();
         return rootView;
     }
 
     public void manageTheme() {
         if (ThemeManager.isDarkTheme()) {
             rootView.setBackgroundColor(getResources().getColor(R.color.mainBackground));
-            alert.setTextColor(getResources().getColor(R.color.nyoomBlue));
+            addalerts.setTextColor(getResources().getColor(R.color.nyoomBlue));
             returnButton.setImageTintList(getResources().getColorStateList(R.color.hintGray));
             SETTINGS.setTextColor(getResources().getColor(R.color.hintGray));
         } else { // light
             rootView.setBackgroundColor(getResources().getColor(R.color.LhintGray));
-            alert.setTextColor(getResources().getColor(R.color.nyoomLightBlue));
+            addalerts.setTextColor(getResources().getColor(R.color.nyoomLightBlue));
             returnButton.setImageTintList(getResources().getColorStateList(R.color.LdarkGray));
             SETTINGS.setTextColor(getResources().getColor(R.color.LdarkGray));
         }
@@ -101,35 +114,44 @@ public class Alerts extends Fragment {
                     @Override
                     public void onComplete(Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            StringBuilder announcements = new StringBuilder();
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 String message = document.getString("message");
-                                announcements.append("🔹 ").append(message).append("\n\n");
-                                Log.d("Firestore", document.getId() + " => " + document.getData());
+                                alertsList.add(message);
+                                listAdapter.notifyDataSetChanged();
+                                addalerts.setText("");
                             }
-                            alert.setText(announcements.toString());
                         } else {
                             Log.w("Firestore", "Error getting documents.", task.getException());
-                            alert.setText("Failed to load announcements.");
+                            alertsList.add("Failed to load announcements.");
                         }
                     }
                 });
     }
 
-
+    private void onListItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (isAdmin) {
+            for (int i = 0; i < parent.getChildCount(); i++) {
+                View child = parent.getChildAt(i);
+                child.setBackgroundColor(getResources().getColor(R.color.transparent));
+            }
+            view.setBackgroundColor(getResources().getColor(R.color.LbuttonPanel));
+            delete.setVisibility(View.VISIBLE);
+            selectedItemPosition = position;
+        }
+    }
 
     private void checkEmail() {
         emailpref = getContext().getSharedPreferences("Emailpref", getContext().MODE_PRIVATE);
         String userEmail = emailpref.getString("email", "default@gmail.com"); // Default if not found
         Log.d("email",userEmail);
         if (userEmail.equals("nyoom123@gmail.com")) {
+            isAdmin = true;
             add.setVisibility(View.VISIBLE);
-            delete.setVisibility(View.VISIBLE);
             addalerts.setVisibility(View.VISIBLE);
             ajaw.setVisibility(View.VISIBLE);
         } else {
+            isAdmin = false;
             add.setVisibility(View.GONE);
-            delete.setVisibility(View.GONE);
             addalerts.setVisibility(View.GONE);
             ajaw.setVisibility(View.GONE);
         }
@@ -166,13 +188,9 @@ public class Alerts extends Fragment {
 
 
     private void onDel() {
-        // 4️⃣ Get text from TextView
-        String announcementText = addalerts.getText().toString();
-
-        if (announcementText.isEmpty()) {
-            Toast.makeText(getContext(), "No text to delete!", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        String announcementText = alertsList.get(selectedItemPosition);
+        alertsList.remove(selectedItemPosition);
+        listAdapter.notifyDataSetChanged();
 
         // 5️⃣ Find the document that matches the text
         db.collection("announcements")
