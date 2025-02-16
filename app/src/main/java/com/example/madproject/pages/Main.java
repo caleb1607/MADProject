@@ -136,9 +136,11 @@ public class Main extends AppCompatActivity {
 
                             usernamepref.edit().putString("username", username).apply();
                             emailpref.edit().putString("email", email).apply();
-                            SharedPreferences emailpref2 = getSharedPreferences("Emailpref", MODE_PRIVATE);
-                            String userEmail = emailpref2.getString("email", "default@gmail.com"); // Default if not found
-                            Log.d("email", userEmail);
+
+                            //Logs
+                            //SharedPreferences emailpref2 = getSharedPreferences("Emailpref", MODE_PRIVATE);
+                            //String userEmail = emailpref2.getString("email", "default@gmail.com"); // Default if not found
+                            //Log.d("email", userEmail);
 
                             //Log.d("UserInfo", "Username: " + username + "Email: " + email);
                         }
