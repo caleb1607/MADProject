@@ -107,9 +107,9 @@ public class BusStopsList extends Fragment {
         new Handler(Looper.getMainLooper()).post(() -> {
             try {
                 for (int i = 0; i < fullPanelList.size(); i++) {
-                    String[] arrivals = futures.get(i).get(); // Blocking call, waits for result
+                    String[] arrivals = futures.get(i).get();
                     fullPanelList.get(i).setAT(arrivals);
-                    adapter.notifyItemChanged(i); // Update only the changed item
+                    adapter.notifyItemChanged(i);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -198,6 +198,7 @@ public class BusStopsList extends Fragment {
                 holder.AT2.setVisibility(View.INVISIBLE);
                 holder.AT3.setVisibility(View.INVISIBLE);
                 holder.MINS.setVisibility(View.INVISIBLE);
+                holder.NOW.setVisibility(View.INVISIBLE);
             }
             if (!item.getIsBookmarked()) {
                 holder.bookmarkIcon.setVisibility(View.VISIBLE);

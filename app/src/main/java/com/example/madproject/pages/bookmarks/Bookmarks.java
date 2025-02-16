@@ -179,6 +179,7 @@ public class Bookmarks extends Fragment {
                 holder.AT2.setVisibility(View.INVISIBLE);
                 holder.AT3.setVisibility(View.INVISIBLE);
                 holder.MINS.setVisibility(View.INVISIBLE);
+                holder.NOW.setVisibility(View.INVISIBLE);
             }
             if (!item.getIsBookmarked()) {
                 holder.bookmarkIcon.setImageTintList(ColorStateList.valueOf(

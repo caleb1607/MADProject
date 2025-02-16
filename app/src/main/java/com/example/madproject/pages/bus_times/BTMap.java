@@ -112,7 +112,6 @@ public class BTMap extends Fragment {
             return;
         }
 
-
         LatLng singaporeLocation = new LatLng(1.3098, 103.7775); // hardcoded to sp as android studio location is set to san fransico
 
 
@@ -218,6 +217,7 @@ public class BTMap extends Fragment {
                         for (int i = 0; i < fullPanelList.size(); i++) {
                             String[] arrivals = futures.get(i).get();
                             fullPanelList.get(i).setAT(arrivals);
+                            adapter.notifyItemChanged(i);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -327,6 +327,7 @@ public class BTMap extends Fragment {
                 holder.AT2.setVisibility(View.INVISIBLE);
                 holder.AT3.setVisibility(View.INVISIBLE);
                 holder.MINS.setVisibility(View.INVISIBLE);
+                holder.NOW.setVisibility(View.INVISIBLE);
             }
             if (!item.getIsBookmarked()) {
                 holder.bookmarkIcon.setVisibility(View.VISIBLE);
