@@ -1,26 +1,18 @@
 package com.example.madproject.pages.travel_routes;
 
-import android.animation.Animator;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ViewAnimationUtils;
-import android.view.ViewTreeObserver;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.security.AlgorithmConstraints;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,7 +23,6 @@ import java.net.URLEncoder;
 import java.io.UnsupportedEncodingException;
 import java.util.Locale;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
@@ -39,14 +30,9 @@ import com.example.madproject.R;
 import com.example.madproject.helper.API.OnemapRoute.OnemapRouteApi;
 import com.example.madproject.helper.API.OnemapRoute.OnemapRouteClient;
 import com.example.madproject.helper.API.OnemapRoute.OnemapRouteResponse;
-import com.example.madproject.helper.API.OnemapSearch.OnemapSearchResponse;
 import com.example.madproject.helper.APIReader;
 import com.example.madproject.helper.Helper;
-import com.example.madproject.pages.bus_times.BusServicesList;
-import com.example.madproject.pages.bus_times.BusStopPanel;
-import com.example.madproject.pages.bus_times.BusStopsList;
 import com.example.madproject.pages.settings.ThemeManager;
-import com.google.rpc.Help;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -56,6 +42,8 @@ public class RouteView extends Fragment {
 
     View rootView;
     Button backButton;
+    TextView showOnMapStatic;
+    Button showOnMapButton;
     TextView start;
     TextView end;
     LegAdapter adapter;
@@ -78,7 +66,10 @@ public class RouteView extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_routeview, container, false);
-        backButton = rootView.findViewById(R.id.ReturnButton3);
+
+        backButton = rootView.findViewById(R.id.ReturnButton30);
+        showOnMapStatic = rootView.findViewById(R.id.showOnMapStatic);
+        showOnMapButton = rootView.findViewById(R.id.showOnMapButton);
         timeTakenStatic = rootView.findViewById(R.id.timeTakenStatic);
         timeTakenV = rootView.findViewById(R.id.timeTaken);
         minutes = rootView.findViewById(R.id.min);
@@ -90,14 +81,10 @@ public class RouteView extends Fragment {
         fareV = rootView.findViewById(R.id.fare);
         routeNotFound = rootView.findViewById(R.id.noRouteFound);
         loading = rootView.findViewById(R.id.loading);
-        backButton.setOnClickListener(view -> {getParentFragmentManager().popBackStack();});
         routeRV = rootView.findViewById(R.id.routeViewRV);
-        routeRV.setLayoutManager(new LinearLayoutManager(getContext()));
         start = rootView.findViewById(R.id.routeStart);
         end = rootView.findViewById(R.id.routeEnd);
-        assert getArguments() != null;
-        adapter = new LegAdapter(fullLegList, getContext());
-        routeRV.setAdapter(adapter);
+
         timeTakenStatic.setVisibility(View.GONE);
         timeTakenV.setVisibility(View.GONE);
         minutes.setVisibility(View.GONE);
@@ -108,8 +95,17 @@ public class RouteView extends Fragment {
         fareStatic.setVisibility(View.GONE);
         fareV.setVisibility(View.GONE);
         routeRV.setVisibility(View.GONE);
+
+        backButton.setOnClickListener(view -> {getParentFragmentManager().popBackStack();});
+        showOnMapStatic.setOnClickListener(view -> onMapView());
+        showOnMapButton.setOnClickListener(view -> onMapView());
+        routeRV.setLayoutManager(new LinearLayoutManager(getContext()));
+        assert getArguments() != null;
+        adapter = new LegAdapter(fullLegList, getContext());
+        routeRV.setAdapter(adapter);
         // manage theme
         manageTheme();
+
         // input
         String TAG = "RouteView.javaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
         String lat1 = getArguments().getString("lat1");
@@ -291,5 +287,28 @@ public class RouteView extends Fragment {
         } else { // light
             rootView.setBackgroundColor(getResources().getColor(R.color.nyoomGreen));
         }
+    }
+
+    private void onMapView() {
+        Fragment selectedFragment = new routemapview();
+
+        ArrayList<String> coordinates = new ArrayList<>();
+        coordinates.add("1.320981,103.844150"); // Example coordinates
+        coordinates.add("1.326762,103.855900");
+
+        // Create a bundle to pass data
+        Bundle bundle = new Bundle();
+        bundle.putStringArrayList("coordinates_list", coordinates);
+        selectedFragment.setArguments(bundle);
+
+        // Create an instance of FragmentMapView and set arguments
+        getParentFragmentManager()
+                .beginTransaction()
+                /*.setCustomAnimations(
+                        do fade animation later
+                )*/
+                .replace(R.id.fragment_container, selectedFragment)
+                .addToBackStack("RouteView")
+                .commit();
     }
 }
