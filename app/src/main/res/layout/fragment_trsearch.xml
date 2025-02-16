@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <Space
+        <View
             android:layout_width="match_parent"
             android:layout_height="8dp" />
 
@@ -23,7 +23,7 @@
             android:paddingTop="8dp"
             android:paddingBottom="8dp">
 
-            <Space
+            <View
                 android:layout_width="12dp"
                 android:layout_height="match_parent" />
 
@@ -36,7 +36,7 @@
                 android:text="@string/blank"
                 app:backgroundTint="@color/white" />
 
-            <Space
+            <View
                 android:layout_width="12dp"
                 android:layout_height="match_parent" />
 
@@ -58,13 +58,13 @@
                 android:textColorHint="@color/hintGray"
                 android:textSize="15sp" />
 
-            <Space
+            <View
                 android:layout_width="16dp"
                 android:layout_height="match_parent" />
 
         </LinearLayout>
 
-        <Space
+        <View
             android:layout_width="match_parent"
             android:layout_height="8dp" />
 

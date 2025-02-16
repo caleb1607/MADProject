@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_weight="1">
 
-    <Space
+    <View
         android:layout_width="4dp"
         android:layout_height="match_parent" />
 
@@ -15,7 +15,7 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <Space
+        <View
             android:layout_width="match_parent"
             android:layout_height="4dp" />
 
@@ -106,7 +106,7 @@
                         android:layout_gravity="center"
                         android:background="@color/darkGray" />
 
-                    <Space
+                    <View
                         android:layout_width="match_parent"
                         android:layout_height="4dp" />
 
@@ -209,7 +209,7 @@
                                 android:textColor="@color/nyoomBlue"
                                 android:textSize="30sp" />
 
-                            <Space
+                            <View
                                 android:layout_width="6dp"
                                 android:layout_height="match_parent" />
 
@@ -235,13 +235,13 @@
 
         </androidx.cardview.widget.CardView>
 
-        <Space
+        <View
             android:layout_width="match_parent"
             android:layout_height="4dp" />
 
     </LinearLayout>
 
-    <Space
+    <View
         android:layout_width="4dp"
         android:layout_height="match_parent" />
 

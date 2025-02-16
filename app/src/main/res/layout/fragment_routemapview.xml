@@ -27,7 +27,7 @@
             android:background="@drawable/arrow_left_thin"
             android:backgroundTint="@color/white" />
 
-        <Space
+        <View
             android:layout_width="12dp"
             android:layout_height="match_parent" />
 

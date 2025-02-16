@@ -47,7 +47,7 @@
 
         </LinearLayout>
 
-        <Space
+        <View
             android:layout_width="match_parent"
             android:layout_height="20dp" />
 
@@ -92,7 +92,7 @@
 
             </LinearLayout>
 
-            <Space
+            <View
                 android:layout_width="12dp"
                 android:layout_height="match_parent" />
 
@@ -131,7 +131,7 @@
 
             </LinearLayout>
 
-            <Space
+            <View
                 android:layout_width="12dp"
                 android:layout_height="match_parent" />
 
@@ -174,11 +174,11 @@
 
         </LinearLayout>
 
-        <Space
+        <View
             android:layout_width="match_parent"
             android:layout_height="20dp" />
 
-        <Space
+        <View
             android:layout_width="match_parent"
             android:layout_height="10dp" />
 
@@ -198,7 +198,7 @@
             android:textSize="20sp"
             app:backgroundTint="@color/buttonPanel" />
 
-        <Space
+        <View
             android:layout_width="match_parent"
             android:layout_height="10dp" />
 
@@ -218,7 +218,7 @@
             android:textSize="20sp"
             app:backgroundTint="@color/redError" />
 
-        <Space
+        <View
             android:layout_width="match_parent"
             android:layout_height="10dp" />
 

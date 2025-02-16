@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <Space
+        <View
             android:layout_width="match_parent"
             android:layout_height="16dp" />
 
@@ -47,7 +47,7 @@
         </FrameLayout>
 
 
-        <Space
+        <View
             android:layout_width="match_parent"
             android:layout_height="16dp" />
 
@@ -67,7 +67,7 @@
             android:textSize="18sp" />
 
 
-        <Space
+        <View
             android:layout_width="match_parent"
             android:layout_height="16dp" />
 
@@ -93,7 +93,7 @@
                 android:textSize="16sp"
                 app:backgroundTint="@color/buttonPanel" />
 
-            <Space
+            <View
                 android:layout_width="10dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0" />
@@ -116,7 +116,7 @@
 
         </LinearLayout>
 
-        <Space
+        <View
             android:layout_width="match_parent"
             android:layout_height="16dp" />
 
@@ -138,7 +138,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center" />
 
-        <Space
+        <View
             android:layout_width="match_parent"
             android:layout_height="16dp" />
 
