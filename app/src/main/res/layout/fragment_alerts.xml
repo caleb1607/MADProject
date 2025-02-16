@@ -67,6 +67,22 @@
                 android:textSize="20dp"
                 android:transitionName="SettingsText"
                 android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/AddBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:fontFamily="@font/albertsans8_extrabold"
+                android:paddingLeft="2dp"
+                android:paddingTop="8dp"
+                android:paddingRight="8dp"
+                android:paddingBottom="8dp"
+                android:text="Add"
+                android:textColor="@color/nyoomGreen"
+                android:textSize="20dp"
+                android:transitionName="SettingsText"
+                android:visibility="gone" />
         </FrameLayout>
 
         <ListView
@@ -98,19 +114,6 @@
                 android:textColor="@color/nyoomBlue"
                 android:textSize="16sp" />
 
-            <Button
-                android:id="@+id/AddBtn"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="bottom|end"
-                android:background="@drawable/round_box"
-                android:fontFamily="@font/albertsans6_semibold"
-                android:letterSpacing="0.04"
-                android:text="+"
-                android:textAllCaps="false"
-                android:textColor="#FFFFFF"
-                android:textSize="20sp"
-                app:backgroundTint="@color/nyoomGreen" />
         </FrameLayout>
 
         <Space

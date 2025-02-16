@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,10 @@ import com.example.madproject.helper.BusTimesRecentsDB;
 import com.example.madproject.helper.LocalStorageDB;
 import com.example.madproject.pages.misc.Login;
 import com.github.chrisbanes.photoview.PhotoView;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class Settings extends Fragment {
 
@@ -57,12 +62,15 @@ public class Settings extends Fragment {
     TextView MRTMAP;
     ImageView FEEDBACK_ICON;
     TextView FEEDBACK;
+    FirebaseFirestore db;
+    int announcementsCount;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_settings, container, false);
+        db = FirebaseFirestore.getInstance();
         // views setup
         toggleThemeButton = rootView.findViewById(R.id.ToggleThemeButton);
         toggleThemeButton.setOnClickListener(view -> toggleTheme());
@@ -107,9 +115,14 @@ public class Settings extends Fragment {
         setSharedElementEnterTransition(transition);
         // manage theme
         manageTheme();
-        if (true) { // announcement got
-            activateAlertsButton(true);
-        }
+        getAnnouncementsCount(new AnnouncementCountCallback() {
+            @Override
+            public void onCountReceived(int count) {
+                SharedPreferences sharedPreferences = getActivity().getSharedPreferences("readAnnouncementsCount", Context.MODE_PRIVATE);
+                int readAnnouncementsCount = sharedPreferences.getInt("readAnnouncementsCount", -1);
+                activateAlertsButton(count != readAnnouncementsCount);
+            }
+        });
         return rootView;
     }
     public void manageTheme() {
@@ -145,9 +158,6 @@ public class Settings extends Fragment {
             FEEDBACK_ICON.setImageTintList(getResources().getColorStateList(R.color.white));
             FEEDBACK.setTextColor(getResources().getColor(R.color.white));
             MRT_MAP.setImageResource(R.drawable.mrtlight2048);
-        }
-        if (true) { // announcement got
-            activateAlertsButton(true);
         }
     }
     private void activateAlertsButton(boolean activate) {
@@ -240,5 +250,24 @@ public class Settings extends Fragment {
                 .addSharedElement(FEEDBACK_ICON, "FeedbackIcon")
                 .addToBackStack(null);
         transaction.commit();
+    }
+    private void getAnnouncementsCount(final AnnouncementCountCallback callback) {
+        db.collection("announcements")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            // Pass the count to the callback
+                            callback.onCountReceived(task.getResult().size());
+                        } else {
+                            Log.w("Firestore", "Error getting documents.", task.getException());
+                            callback.onCountReceived(0);  // In case of failure, return 0
+                        }
+                    }
+                });
+    }
+    public interface AnnouncementCountCallback {
+        void onCountReceived(int count);
     }
 }

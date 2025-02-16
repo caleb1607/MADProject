@@ -46,8 +46,7 @@ public class Alerts extends Fragment {
     private ArrayList<String> alertsList = new ArrayList<>();
     private ArrayAdapter<String> listAdapter;
     private EditText addalerts;
-    private Button add;
-    private TextView delete;
+    private TextView add, delete;
     private FirebaseFirestore db;
     private SharedPreferences emailpref;
     private ImageView ajaw;
@@ -65,6 +64,7 @@ public class Alerts extends Fragment {
         delete = rootView.findViewById(R.id.DeleteBtn);
         delete.setOnClickListener(view -> onDel());
         addalerts = rootView.findViewById(R.id.Addalerts);
+        addalerts.setOnFocusChangeListener(this::onTextboxFocus);
         returnButton = rootView.findViewById(R.id.ReturnButton6);
         returnButton.setOnClickListener(view -> goBack());
         SETTINGS = rootView.findViewById(R.id.SETTINGS2);
@@ -117,6 +117,7 @@ public class Alerts extends Fragment {
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(Task<QuerySnapshot> task) {
+
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 String message = document.getString("message");
@@ -124,6 +125,9 @@ public class Alerts extends Fragment {
                                 listAdapter.notifyDataSetChanged();
                                 addalerts.setText("");
                             }
+                            SharedPreferences sharedPreferences = getActivity().getSharedPreferences("readAnnouncementsCount", Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putInt("readAnnouncementsCount", task.getResult().size()).apply();
                         } else {
                             Log.w("Firestore", "Error getting documents.", task.getException());
                             alertsList.add("Failed to load announcements.");
@@ -134,13 +138,28 @@ public class Alerts extends Fragment {
 
     private void onListItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (isAdmin) {
+            addalerts.clearFocus();
             for (int i = 0; i < parent.getChildCount(); i++) {
                 View child = parent.getChildAt(i);
                 child.setBackgroundColor(getResources().getColor(R.color.transparent));
             }
-            view.setBackgroundColor(getResources().getColor(R.color.LbuttonPanel));
+            if (ThemeManager.isDarkTheme()) {
+                view.setBackgroundColor(getResources().getColor(R.color.darkGray));
+            } else {
+                view.setBackgroundColor(getResources().getColor(R.color.LdarkGray));
+            }
             delete.setVisibility(View.VISIBLE);
             selectedItemPosition = position;
+        }
+    }
+
+    private void onTextboxFocus(View view, boolean hasFocus) {
+        if (hasFocus) {
+            add.setVisibility(View.VISIBLE);
+            delete.setVisibility(View.GONE);
+        } else {
+            add.setVisibility(View.GONE);
+            delete.setVisibility(View.VISIBLE);
         }
     }
 
@@ -150,12 +169,10 @@ public class Alerts extends Fragment {
         Log.d("email",userEmail);
         if (userEmail.equals("nyoom123@gmail.com")) {
             isAdmin = true;
-            add.setVisibility(View.VISIBLE);
             addalerts.setVisibility(View.VISIBLE);
             ajaw.setVisibility(View.VISIBLE);
         } else {
             isAdmin = false;
-            add.setVisibility(View.GONE);
             addalerts.setVisibility(View.GONE);
             ajaw.setVisibility(View.GONE);
         }
@@ -164,20 +181,16 @@ public class Alerts extends Fragment {
 
 
     private void onAdd() {
-        // 5️⃣ Get text from TextView
         String alerts = addalerts.getText().toString();
-
         if (alerts.isEmpty()) {
             Toast.makeText(getContext(), "Text cannot be empty!", Toast.LENGTH_SHORT).show();
             return; // Stop if the text is empty
         }
 
-        // 6️⃣ Create a Firestore document
         Map<String, Object> announcement = new HashMap<>();
         announcement.put("message", alerts);
-        announcement.put("timestamp", System.currentTimeMillis()); // Optional: Timestamp
+        announcement.put("timestamp", System.currentTimeMillis());
 
-        // 7️⃣ Add to Firestore
         db.collection("announcements")
                 .add(announcement) // Auto-generates a document ID
                 .addOnSuccessListener(documentReference -> {
