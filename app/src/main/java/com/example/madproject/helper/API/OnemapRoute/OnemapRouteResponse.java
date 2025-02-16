@@ -91,21 +91,21 @@ public class OnemapRouteResponse {
         @SerializedName("name")
         private String name;
         @SerializedName("stopIndex")
-        private String stopIndex;
+        private int stopIndex;
 
         public String getName() {return name;}
 
-        public String getStopIndex() {return stopIndex;}
+        public int getStopIndex() {return stopIndex;}
     }
 
     public class to {
         @SerializedName("name")
         private String name;
         @SerializedName("stopIndex")
-        private String stopIndex;
+        private int stopIndex;
 
         public String getName() {return name;}
 
-        public String getStopIndex() {return stopIndex;}
+        public int getStopIndex() {return stopIndex;}
     }
 }

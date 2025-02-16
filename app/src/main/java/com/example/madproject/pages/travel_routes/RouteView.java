@@ -171,7 +171,9 @@ public class RouteView extends Fragment {
                             String route = leg.getRoute();
                             String mode = leg.getMode();
                             String fromLocation = from.getName();
+                            int startIndex = from.getStopIndex();
                             String toLocation = to.getName();
+                            int endIndex = to.getStopIndex();
                             float durationPerLeg = leg.getDuration();
                             float durationPerLegInMin = Math.round(durationPerLeg/60);
                             fullLegList.add(new LegPanel(
@@ -179,7 +181,9 @@ public class RouteView extends Fragment {
                                     mode,
                                     toLocation,
                                     (int) durationPerLegInMin,
-                                    route
+                                    route,
+                                    startIndex,
+                                    endIndex
                             ));
                         }
                         adapter.notifyDataSetChanged();
@@ -233,6 +237,11 @@ public class RouteView extends Fragment {
             if (mode.equals("Walk")) {
                 holder.TAKE.setVisibility(View.GONE);
                 holder.comma.setVisibility(View.GONE);
+                holder.stopsTextView.setVisibility(View.GONE);
+                holder.STOPS.setVisibility(View.GONE);
+            } else {
+                int stopCount = Math.abs(item.getEndIndex() - item.getStartIndex());
+                holder.stopsTextView.setText(String.valueOf(stopCount));
             }
             String route = item.getRoute();
             if (route.equals("")) {
@@ -262,8 +271,8 @@ public class RouteView extends Fragment {
         // contains the reference of views (UI) of a single item in recyclerview
         public class ItemViewHolder extends RecyclerView.ViewHolder {
             LinearLayout panelBG;
-            TextView fromTextView, modeTextView, toTextView, timeTextView, methodView;
-            TextView TAKE, TO, MINS, openBracket, closeBracket, comma;
+            TextView fromTextView, modeTextView, toTextView, timeTextView, methodView, stopsTextView;
+            TextView TAKE, TO, MINS, openBracket, closeBracket, comma, STOPS;
             public ItemViewHolder(View itemView) {
                 super(itemView);
                 //panelBG = itemView.findViewById(R.id.) no name yet
@@ -278,6 +287,8 @@ public class RouteView extends Fragment {
                 openBracket = itemView.findViewById(R.id.openBracket);
                 closeBracket = itemView.findViewById(R.id.closeBracket);
                 comma = itemView.findViewById(R.id.comma);
+                stopsTextView = itemView.findViewById(R.id.stopsTextView);
+                STOPS = itemView.findViewById(R.id.STOPS);
             }
         }
     }
