@@ -97,7 +97,7 @@
             android:textSize="20sp"
             android:transitionName="SettingsText" />
 
-        <Space
+        <View
             android:layout_width="match_parent"
             android:layout_height="20dp" />
 
@@ -117,7 +117,7 @@
             android:textColorHint="@color/hintGray"
             android:textSize="16sp" />
 
-        <Space
+        <View
             android:layout_width="match_parent"
             android:layout_height="20dp" />
 

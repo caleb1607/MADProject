@@ -55,7 +55,7 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
-                <Space
+                <View
                     android:layout_width="12dp"
                     android:layout_height="47dp"
                     android:layout_weight="0" />
@@ -65,7 +65,7 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <Space
+                    <View
                         android:layout_width="match_parent"
                         android:layout_height="5dp"
                         android:layout_weight="0" />
@@ -92,7 +92,7 @@
 
                 </LinearLayout>
 
-                <Space
+                <View
                     android:id="@+id/weight"
                     android:layout_width="11dp"
                     android:layout_height="47dp"
