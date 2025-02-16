@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -44,6 +46,7 @@ public class Startup extends AppCompatActivity {
     }
     private void onEnter() {
         Intent enter = new Intent(Startup.this, Main.class);
+        enter.putExtra("guest", "1");
         startActivity(enter);
         finish();
     }

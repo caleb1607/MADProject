@@ -1,5 +1,6 @@
 package com.example.madproject.pages.settings;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -67,7 +69,7 @@ public class Alerts extends Fragment {
         returnButton.setOnClickListener(view -> goBack());
         SETTINGS = rootView.findViewById(R.id.SETTINGS2);
         alertsListView = rootView.findViewById(R.id.AlertsList);
-        listAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, alertsList);
+        listAdapter = new AlertsAdapter(getContext(), alertsList);
         alertsListView.setAdapter(listAdapter);
         alertsListView.setOnItemClickListener(this::onListItemClick);
         // manage theme
@@ -84,14 +86,16 @@ public class Alerts extends Fragment {
     public void manageTheme() {
         if (ThemeManager.isDarkTheme()) {
             rootView.setBackgroundColor(getResources().getColor(R.color.mainBackground));
-            addalerts.setTextColor(getResources().getColor(R.color.nyoomBlue));
             returnButton.setImageTintList(getResources().getColorStateList(R.color.hintGray));
             SETTINGS.setTextColor(getResources().getColor(R.color.hintGray));
+            addalerts.setBackgroundTintList(getResources().getColorStateList(R.color.backgroundPanel));
+            addalerts.setHintTextColor(getResources().getColor(R.color.hintGray));
         } else { // light
             rootView.setBackgroundColor(getResources().getColor(R.color.LhintGray));
-            addalerts.setTextColor(getResources().getColor(R.color.nyoomLightBlue));
             returnButton.setImageTintList(getResources().getColorStateList(R.color.LdarkGray));
             SETTINGS.setTextColor(getResources().getColor(R.color.LdarkGray));
+            addalerts.setBackgroundTintList(getResources().getColorStateList(R.color.LbackgroundPanel));
+            addalerts.setHintTextColor(getResources().getColor(R.color.LhintGray));
         }
     }
 
@@ -141,7 +145,7 @@ public class Alerts extends Fragment {
     }
 
     private void checkEmail() {
-        emailpref = getContext().getSharedPreferences("Emailpref", getContext().MODE_PRIVATE);
+        emailpref = getActivity().getSharedPreferences("Emailpref", Context.MODE_PRIVATE);
         String userEmail = emailpref.getString("email", "default@gmail.com"); // Default if not found
         Log.d("email",userEmail);
         if (userEmail.equals("nyoom123@gmail.com")) {
@@ -217,4 +221,39 @@ public class Alerts extends Fragment {
                         Toast.makeText(getContext(), "Failed to find document!", Toast.LENGTH_SHORT).show());
 
     }
+    public class AlertsAdapter extends ArrayAdapter<String> {
+        private Context context;
+        private List<String> alertsList;
+
+        public AlertsAdapter(Context context, List<String> alertsList) {
+            super(context, R.layout.alerts_list_item, alertsList);
+            this.context = context;
+            this.alertsList = alertsList;
+        }
+
+        TextView alertTextView;
+        @NonNull
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+
+            // Inflate the custom layout
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View listItem = inflater.inflate(R.layout.alerts_list_item, parent, false);
+
+            alertTextView = listItem.findViewById(R.id.AlertsText);
+            alertTextView.setText(alertsList.get(position));
+            // manage theme
+            manageThemeLV();
+
+            return listItem;
+        }
+        private void manageThemeLV() {
+            if (ThemeManager.isDarkTheme()) {
+                alertTextView.setTextColor(getResources().getColor(R.color.white));
+            } else { // light
+                alertTextView.setTextColor(getResources().getColor(R.color.black));
+            }
+        }
+    }
+
 }

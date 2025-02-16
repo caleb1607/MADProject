@@ -223,27 +223,6 @@
             android:layout_height="10dp" />
 
         <Button
-            android:id="@+id/DeleteAccountButton"
-            android:layout_width="275dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/round_button"
-            android:fontFamily="@font/albertsans6_semibold"
-            android:gravity="center_horizontal|center_vertical"
-            android:letterSpacing="0.04"
-            android:text="Delete Account"
-            android:textAlignment="center"
-            android:textAllCaps="false"
-            android:textColor="#FFFFFF"
-            android:textSize="20sp"
-            app:backgroundTint="@color/redError" />
-
-        <Space
-            android:id="@+id/DeleteAccountSpace"
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
-
-        <Button
             android:id="@+id/LogOutButton"
             android:layout_width="275dp"
             android:layout_height="wrap_content"

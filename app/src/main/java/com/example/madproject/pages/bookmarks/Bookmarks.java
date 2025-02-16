@@ -3,6 +3,7 @@ package com.example.madproject.pages.bookmarks;
 
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.Handler;

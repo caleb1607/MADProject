@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Paint;
@@ -53,9 +54,13 @@ public class Main extends AppCompatActivity {
         usernamepref = getSharedPreferences("Usernamepref", MODE_PRIVATE);
         emailpref = getSharedPreferences("Emailpref", MODE_PRIVATE);
         // Initialize Firebase Auth
-        mAuth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
-        currentUser = mAuth.getCurrentUser();
+        Intent intent = getIntent();
+        String guest = intent.getStringExtra("guest");
+        if (guest == null) {
+            mAuth = FirebaseAuth.getInstance();
+            db = FirebaseFirestore.getInstance();
+            currentUser = mAuth.getCurrentUser();
+        }
         // set default fragment
         loadFragment(new Bookmarks(), null);
         currentFragmentId = R.id.bookmarks;
@@ -134,7 +139,6 @@ public class Main extends AppCompatActivity {
                             SharedPreferences emailpref2 = getSharedPreferences("Emailpref", MODE_PRIVATE);
                             String userEmail = emailpref2.getString("email", "default@gmail.com"); // Default if not found
                             Log.d("email", userEmail);
-
 
                             //Log.d("UserInfo", "Username: " + username + "Email: " + email);
                         }

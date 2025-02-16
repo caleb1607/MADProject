@@ -43,8 +43,6 @@ public class Settings extends Fragment {
     // views
     Button toggleThemeButton;
     Button clearCacheButton;
-    Button deleteAccountButton;
-    Space deleteAccountSpace;
     Button logoutButton;
     LinearLayout alertsButton;
     LinearLayout MRTMapButton;
@@ -70,9 +68,6 @@ public class Settings extends Fragment {
         toggleThemeButton.setOnClickListener(view -> toggleTheme());
         clearCacheButton = rootView.findViewById(R.id.ClearCacheButton);
         clearCacheButton.setOnClickListener(view -> clearCache());
-        deleteAccountButton = rootView.findViewById(R.id.DeleteAccountButton);
-        deleteAccountButton.setOnClickListener(view -> onDeleteAccount());
-        deleteAccountSpace = rootView.findViewById(R.id.DeleteAccountSpace);
         logoutButton = rootView.findViewById(R.id.LogOutButton);
         logoutButton.setOnClickListener(view -> onLogout());
         alertsButton = rootView.findViewById(R.id.AlertsButton);
@@ -104,12 +99,8 @@ public class Settings extends Fragment {
         localStorageDB = new LocalStorageDB(getContext());
         if (localStorageDB.getValue("LoginToken").equals("0")) {
             logoutButton.setText("Sign In");
-            deleteAccountButton.setVisibility(View.GONE);
-            deleteAccountSpace.setVisibility(View.GONE);
         } else { // equals("1")
             logoutButton.setText("Log Out");
-            deleteAccountButton.setVisibility(View.VISIBLE);
-            deleteAccountSpace.setVisibility(View.VISIBLE);
         }
         // transition
         Transition transition = TransitionInflater.from(requireContext()).inflateTransition(R.transition.shared_view);
@@ -201,14 +192,11 @@ public class Settings extends Fragment {
         busTimesRecentsDB.deleteAllRecords();
         Toast.makeText(getContext(), "Cache Cleared", Toast.LENGTH_SHORT).show();
     }
-    private void onDeleteAccount() {
-
-    }
     private void onLogout() {
         localStorageDB.insertOrUpdate("LoginToken", "0");
-        SharedPreferences usernamepref = getActivity().getSharedPreferences("Usernamepref", MODE_PRIVATE);
+        SharedPreferences usernamepref = getActivity().getSharedPreferences("Usernamepref", Context.MODE_PRIVATE);
         usernamepref.edit().clear().apply();
-        SharedPreferences emailpref = getActivity().getSharedPreferences("Emailpref", MODE_PRIVATE);
+        SharedPreferences emailpref = getActivity().getSharedPreferences("Emailpref", Context.MODE_PRIVATE);
         emailpref.edit().clear().apply();
 
         Intent logout = new Intent(mainContext, Login.class);

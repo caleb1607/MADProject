@@ -74,7 +74,7 @@
             android:layout_width="match_parent"
             android:layout_height="400dp" />
 
-        <Space
+        <View
             android:layout_width="match_parent"
             android:layout_height="10dp" />
 
@@ -88,24 +88,22 @@
                 android:layout_width="360dp"
                 android:layout_height="82dp"
                 android:layout_gravity="center"
-                android:background="@drawable/rounder_box"
+                android:background="@drawable/round_box"
                 android:backgroundTint="@color/white"
-                android:ems="10"
                 android:gravity="start"
                 android:hint="Write an announcement..."
                 android:inputType="textMultiLine"
                 android:maxLines="3"
                 android:padding="8dp"
-                android:singleLine="false"
-                android:textColor="@color/nyoomDarkYellow"
-                android:textSize="18sp" />
+                android:textColor="@color/nyoomBlue"
+                android:textSize="16sp" />
 
             <Button
                 android:id="@+id/AddBtn"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="bottom|end"
-                android:background="@drawable/round_button"
+                android:background="@drawable/round_box"
                 android:fontFamily="@font/albertsans6_semibold"
                 android:letterSpacing="0.04"
                 android:text="+"
