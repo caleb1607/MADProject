@@ -5,6 +5,7 @@ package com.example.madproject.pages.bookmarks;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -53,6 +54,7 @@ public class Bookmarks extends Fragment {
     Bookmarks.ItemAdapter adapter;
     boolean confirmed;
     int bookmarkPosition;
+    ImageView refreshButton;
 
     @Nullable
     @Override
@@ -72,6 +74,8 @@ public class Bookmarks extends Fragment {
         bookmarksPanels.setLayoutManager(new GridLayoutManager(getContext(), 2));
         busTimesBookmarks = new BusTimesBookmarksDB(getContext());
         bookmarkStopName = rootView.findViewById(R.id.BookmarkStopName);
+        refreshButton = rootView.findViewById(R.id.REFRESH_ICON);
+        refreshButton.setOnClickListener(view -> refreshArrivalTimes());
         // manage theme
         manageTheme();
         // Clear any previous data to avoid duplication
@@ -129,6 +133,34 @@ public class Bookmarks extends Fragment {
             BOOKMARK_ICON.setImageTintList(ContextCompat.getColorStateList(getContext(), R.color.white));
         }
     }
+
+    private void refreshArrivalTimes() {
+        Log.d("sending pipe bomb", "sending pipe bomb");
+        ExecutorService executor = Executors.newFixedThreadPool(10);
+        List<Future<String[]>> futures = new ArrayList<>();
+
+        for (BookmarkPanel panel : fullPanelList) {
+            Future<String[]> future = executor.submit(() ->
+                    APIReader.fetchBusArrivals(panel.getBusStopCode(), panel.getBusNumber())
+            );
+            futures.add(future);
+        }
+
+        new Handler(Looper.getMainLooper()).post(() -> {
+            try {
+                for (int i = 0; i < fullPanelList.size(); i++) {
+                    String[] arrivals = futures.get(i).get();
+                    fullPanelList.get(i).setAT(arrivals);
+                    adapter.notifyItemChanged(i);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+        executor.shutdown();
+    }
+
     // adapter for recycler view
     public static class ItemAdapter extends RecyclerView.Adapter<Bookmarks.ItemAdapter.ItemViewHolder> {
         private List<BookmarkPanel> panelList;

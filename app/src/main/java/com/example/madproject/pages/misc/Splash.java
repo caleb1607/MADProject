@@ -18,6 +18,7 @@ import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
 import com.example.madproject.R;
+import com.example.madproject.helper.BusTimesBookmarksDB;
 import com.example.madproject.helper.LocalStorageDB;
 import com.example.madproject.pages.Main;
 import com.example.madproject.pages.settings.ThemeManager;
@@ -78,9 +79,14 @@ public class Splash extends AppCompatActivity {
         if (!localStorageDB.keyExists("LoginToken")) {
             localStorageDB.insertOrUpdate("LoginToken", "0");
         }
+
+        BusTimesBookmarksDB bookmarksDB = new BusTimesBookmarksDB(this);
+        bookmarksDB.syncBookmarksFromFirestore(() -> Log.d("Init", "Firestore sync complete"));
+
         ThemeManager.setTheme(
                 null,
                 localStorageDB.getValue("theme_preference").equals("dark")
         );
     }
+
 }

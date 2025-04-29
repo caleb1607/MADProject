@@ -212,6 +212,11 @@ public class Settings extends Fragment {
         usernamepref.edit().clear().apply();
         SharedPreferences emailpref = getActivity().getSharedPreferences("Emailpref", Context.MODE_PRIVATE);
         emailpref.edit().clear().apply();
+        SharedPreferences userdocumentidpref = getActivity().getSharedPreferences("UserIDpref", Context.MODE_PRIVATE);
+        userdocumentidpref.edit().clear().apply();
+
+        BusTimesBookmarksDB busTimesBookmarksDB = new BusTimesBookmarksDB(getContext());
+        busTimesBookmarksDB.deleteAllBookmarks();
 
         Intent logout = new Intent(mainContext, Login.class);
         startActivity(logout);

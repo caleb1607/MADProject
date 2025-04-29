@@ -98,8 +98,8 @@ public class BusStopsList extends Fragment {
                             busStopData.getBusStopCode(),
                             busStopInfo.getRoadName(),
                             new String[]{" ", " ", " "},
-                            busTimesBookmarksDB.doesBusStopCodeExist(busStopData.getBusStopCode()),
-                            !busTimesBookmarksDB.doesBusStopCodeExist(busStopData.getBusStopCode())
+                            busTimesBookmarksDB.isBookmarked(busStopData.getBusStopCode(), busService),
+                            !busTimesBookmarksDB.isBookmarked(busStopData.getBusStopCode(), busService)
                     ));
                 }
             }
@@ -314,7 +314,7 @@ public class BusStopsList extends Fragment {
         if (!fullPanelList.get(position).getIsBookmarked()) {
             busTimesBookmarksDB.insert(busStopName, busStopCode, busService);
         } else {
-           busTimesBookmarksDB.deleteBookmarksbyBusStop(busStopName, busStopCode);
+           busTimesBookmarksDB.deleteBookmarksByBusStop(busStopName, busStopCode);
         }
         fullPanelList.get(position).toggleIsBookmarked();
         adapter.notifyDataSetChanged();

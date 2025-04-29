@@ -4,11 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.madproject.R;
+import com.example.madproject.helper.BusTimesBookmarksDB;
 import com.example.madproject.helper.LocalStorageDB;
 import com.example.madproject.pages.Main;
 import com.example.madproject.pages.settings.ThemeManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import android.content.Intent;
@@ -111,23 +113,41 @@ public class Login extends AppCompatActivity {
             mAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, task -> {
                         if (task.isSuccessful()) {
-                            // Sign in success
                             LocalStorageDB localStorageDB = new LocalStorageDB(this);
                             localStorageDB.insertOrUpdate("LoginToken", "1");
 
                             FirebaseUser user = mAuth.getCurrentUser();
 
-                            Toast.makeText(Login.this, "Login successful: " + user.getEmail(), Toast.LENGTH_SHORT).show();
-                            //Logs
-                            //Log.d("Firebase", "User logged in: " + user.getEmail());
+                            FirebaseFirestore db = FirebaseFirestore.getInstance();
+                            db.collection("users")
+                                    .whereEqualTo("email", user.getEmail())
+                                    .limit(1)
+                                    .get()
+                                    .addOnSuccessListener(querySnapshot -> {
+                                        if (!querySnapshot.isEmpty()) {
+                                            DocumentSnapshot doc = querySnapshot.getDocuments().get(0);
+                                            String documentId = doc.getId();
 
-                            // Navigate to the next activity (e.g., HomeActivity)
-                            // startActivity(new Intent(Login.this, HomeActivity.class));
-                            Intent login = new Intent(Login.this, Main.class);
-                            startActivity(login);
-                            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                            finish();
+                                            SharedPreferences prefs = getSharedPreferences("UserIDpref", MODE_PRIVATE);
+                                            prefs.edit()
+                                                    .putString("USER_DOC_ID", documentId)
+                                                    .apply();
 
+                                            BusTimesBookmarksDB bookmarksDB = new BusTimesBookmarksDB(this);
+                                            bookmarksDB.syncBookmarksFromFirestore(() -> Log.d("Init", "Firestore sync complete"));
+
+                                            Toast.makeText(Login.this, "Login successful: " + user.getEmail(), Toast.LENGTH_SHORT).show();
+                                            Intent login = new Intent(Login.this, Main.class);
+                                            startActivity(login);
+                                            finish();
+                                        } else {
+                                            Toast.makeText(this, "No user profile found in Firestore.", Toast.LENGTH_SHORT).show();
+                                        }
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Log.e("Firestore", "Error querying user doc", e);
+                                        Toast.makeText(this, "Error fetching profile", Toast.LENGTH_SHORT).show();
+                                    });
                         } else {
                             // Sign in failure
                             Toast.makeText(Login.this, "Authentication failed", Toast.LENGTH_SHORT).show();
